@@ -235,28 +235,26 @@ class HomeScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                    Expanded(
-                      child: ListView.builder(
-                        itemCount: 4, // kitni baar repeat karna hai
-                        shrinkWrap: true,
-                        physics: NeverScrollableScrollPhysics(),
-                        itemBuilder: (context, index) {
-                          return ServiceListCard(
-                            imagePath: "assets/images/electrianImg.png",
-                            serviceTitle: "Electrician",
-                            providerName: "Jackson Henry",
-                            price: "\$125.00",
-                            onBookNow: () {
-                              // Book Now action
-                            },
-                            onFavorite: () {
-                              // Favourite action
-                            },
-                          );
-                        },
-                      ),
-                    ),
                   ],
+                ),
+                ListView.builder(
+                  itemCount: 4, // kitni baar repeat karna hai
+                  shrinkWrap: true,
+                  physics: NeverScrollableScrollPhysics(),
+                  itemBuilder: (context, index) {
+                    return ServiceListCard(
+                      imagePath: "assets/images/electrianImg.png",
+                      serviceTitle: "Electrician",
+                      providerName: "Jackson Henry",
+                      price: "\$125.00",
+                      onBookNow: () {
+                        // Book Now action
+                      },
+                      onFavorite: () {
+                        // Favourite action
+                      },
+                    );
+                  },
                 ),
               ],
             ),

@@ -21,7 +21,7 @@ class ServiceListCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8, horizontal: 12),
+      margin: const EdgeInsets.symmetric(vertical: 8, ),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
         color: Colors.white,
@@ -43,7 +43,7 @@ class ServiceListCard extends StatelessWidget {
               imagePath,
               width: 100,
               height: 100,
-              fit: BoxFit.fill,
+              fit: BoxFit.cover,
             ),
           ),
 
@@ -56,7 +56,6 @@ class ServiceListCard extends StatelessWidget {
               children: [
                 // Title + Favorite
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Expanded(
                       child: Text(
@@ -80,9 +79,13 @@ class ServiceListCard extends StatelessWidget {
                   children: [
                     const Icon(Icons.person, size: 16, color: Colors.grey),
                     const SizedBox(width: 4),
-                    Text(
-                      providerName,
-                      style: const TextStyle(fontSize: 14, color: Colors.grey),
+                    Flexible(
+                      child: Text(
+                        providerName,
+                        style: const TextStyle(
+                            fontSize: 14, color: Colors.grey),
+                        overflow: TextOverflow.ellipsis,
+                      ),
                     ),
                   ],
                 ),
@@ -100,17 +103,24 @@ class ServiceListCard extends StatelessWidget {
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    ElevatedButton(
-                      onPressed: onBookNow,
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.orange,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(12),
+                    SizedBox(
+                      height: 35,
+                      child: ElevatedButton(
+                        onPressed: onBookNow,
+                        style: ElevatedButton.styleFrom(
+                          backgroundColor: Colors.orange,
+                          padding: const EdgeInsets.symmetric(horizontal: 12),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(12),
+                          ),
                         ),
-                      ),
-                      child: const Text(
-                        "Book Now",
-                        style: TextStyle(color: Colors.white),
+                        child: const Text(
+                          "Book Now",
+                          style: TextStyle(
+                            fontSize: 13,
+                            color: Colors.white,
+                          ),
+                        ),
                       ),
                     ),
                   ],
