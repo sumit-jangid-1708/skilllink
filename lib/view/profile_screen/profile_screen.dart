@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:skill_link/utils/curved_background.dart';
 
 import '../../res/colors/app_color.dart' show AppColor;
+import '../../res/components/widgets/profileHeader.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -55,9 +56,24 @@ class ProfileScreen extends StatelessWidget {
                         ),
                       ),
                     ),
-                  ],
-                )
 
+                  ],
+                ),
+                  SizedBox(height: 50,),
+                  ProfileHeader(
+                    avatarPath: "assets/images/avatar.png",
+                    name: "Jackson Henry",
+                    email: "Example@gmail.com",
+                  ),
+                  
+                  Container(
+                    width: double.infinity,
+                    height: 500,
+                    decoration: BoxDecoration(
+                      color: AppColor.white,
+                      borderRadius: BorderRadius.circular(40)
+                    ),
+                  )
               ],
             ),
           )),
