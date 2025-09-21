@@ -38,7 +38,7 @@ class ProfileScreen extends StatelessWidget {
                               padding: const EdgeInsets.all(8.0),
                               child: Icon(
                                 Icons.arrow_back,
-                                color: Colors.black54,
+                                color: Colors.black,
                               ),
                             ),
                           ),
@@ -59,7 +59,7 @@ class ProfileScreen extends StatelessWidget {
                               padding: const EdgeInsets.all(8.0),
                               child: Icon(
                                 Icons.settings,
-                                color: Colors.black54,
+                                color: Colors.black,
                               ),
                             ),
                           ),

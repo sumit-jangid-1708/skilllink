@@ -210,9 +210,11 @@ class HomeScreen extends StatelessWidget {
                         title: "Cleaner",
                         onTap: () {},
                       ),
+
                     ],
                   ),
                 ),
+                SizedBox(height: 10,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
