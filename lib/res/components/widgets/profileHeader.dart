@@ -33,7 +33,7 @@ class ProfileHeader extends StatelessWidget {
             CircleAvatar(
               backgroundColor: AppColor.white,
               radius: 40,
-              backgroundImage: AssetImage("assets/images/avatar.png"),
+              backgroundImage: NetworkImage("https://ik.imagekit.io/img4u/4b19d41e0ddf82539c2e239281939da495ccc7d5.png?updatedAt=1758465429790"),
             ),
             const SizedBox(height: 12),
 
