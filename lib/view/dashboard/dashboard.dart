@@ -18,7 +18,7 @@ class DashboardScreen extends StatelessWidget {
   final List<IconData> icons = [
     Icons.home_outlined,
     Icons.location_on_outlined,
-    Icons.star_border_outlined,
+    // Icons.star_border_outlined,
     Icons.bookmark_outline_outlined,
     Icons.perm_identity_outlined,
   ];
@@ -28,7 +28,7 @@ class DashboardScreen extends StatelessWidget {
     final List<Widget> screens = [
       HomeScreen(),
       MapScreen(),
-      StarScreen(),
+      // StarScreen(),
       BookingScreen(),
       ProfileScreen(),
     ];
@@ -36,20 +36,15 @@ class DashboardScreen extends StatelessWidget {
     return Obx(() {
       return Scaffold(
         backgroundColor: Colors.white,
-        body: Stack(
+        body: Column(
           children: [
-            /// Main screen content
-            Positioned.fill(
+            /// Main content
+            Expanded(
               child: screens[dashboardController.currentIndex.value],
             ),
 
-            /// Floating Bottom Navigation Bar
-            Positioned(
-              left: 16,
-              right: 16,
-              bottom: 20,
-              child: customBottomBar(),
-            ),
+            /// Fixed bottom navigation bar
+            customBottomBar(),
           ],
         ),
       );
@@ -59,45 +54,42 @@ class DashboardScreen extends StatelessWidget {
   Widget customBottomBar() {
     return Container(
       height: 70,
+      width: double.infinity,
       decoration: BoxDecoration(
-        color: AppColor.mainColor,
-        borderRadius: BorderRadius.circular(50),
+        color: AppColor.darkGrey,
+        borderRadius: const BorderRadius.only(
+          topLeft: Radius.circular(0),
+          topRight: Radius.circular(0),
+        ),
         boxShadow: [
           BoxShadow(
             color: Colors.black26,
-            offset: Offset(1, 5),
-            blurRadius: 8,
+            offset: Offset(0, -2),
+            blurRadius: 6,
           ),
         ],
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceAround,
         children: List.generate(icons.length, (index) {
+          final isSelected = dashboardController.currentIndex.value == index;
           return Expanded(
             child: GestureDetector(
               onTap: () => dashboardController.changeTab(index),
-              child: Center(
-                child: Obx(() {
-                  final isSelected =
-                      dashboardController.currentIndex.value == index;
-
-                  return AnimatedContainer(
-                    duration: const Duration(milliseconds: 350),
-                    curve: Curves.easeOutBack,
-                    padding: const EdgeInsets.all(10),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      color: isSelected
-                          ? AppColor.white.withOpacity(0.9)
-                          : Colors.transparent,
-                    ),
-                    child: Icon(
-                      icons[index],
-                      color: AppColor.darkGrey,
-                      size: isSelected ? 32 : 28,
-                    ),
-                  );
-                }),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 300),
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                decoration: BoxDecoration(
+                  color: isSelected
+                      ? AppColor.white.withOpacity(0.9)
+                      : Colors.transparent,
+                  borderRadius: BorderRadius.circular(25),
+                ),
+                child: Icon(
+                  icons[index],
+                  color: isSelected ? AppColor.darkGrey : Colors.white,
+                  size: isSelected ? 30 : 26,
+                ),
               ),
             ),
           );

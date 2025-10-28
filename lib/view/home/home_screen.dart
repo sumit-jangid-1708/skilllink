@@ -38,7 +38,7 @@ class HomeScreen extends StatelessWidget {
                               "S",
                               style: TextStyle(
                                 fontSize: 22,
-                                color: AppColor.mainColor,
+                                color: AppColor.blackColor,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
@@ -60,7 +60,7 @@ class HomeScreen extends StatelessWidget {
                               children: [
                                 Icon(
                                   Icons.notifications,
-                                  color: AppColor.mainColor,
+                                  color: AppColor.blackColor,
                                   size: 30,
                                 ),
 
@@ -85,31 +85,31 @@ class HomeScreen extends StatelessWidget {
                     ],
                   ),
                 ),
-                SizedBox(height: 130),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(
-                      "Special For You",
-                      style: TextStyle(
-                        fontSize: 22,
-                        color: AppColor.blackColor,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    TextButton(
-                      onPressed: () {},
-                      child: Text(
-                        "See All",
-                        style: TextStyle(
-                          fontSize: 15,
-                          color: AppColor.mainColor,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+                SizedBox(height: 20),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: [
+                //     // Text(
+                //     //   "Special For You",
+                //     //   style: TextStyle(
+                //     //     fontSize: 22,
+                //     //     color: AppColor.blackColor,
+                //     //     fontWeight: FontWeight.bold,
+                //     //   ),
+                //     // ),
+                //     TextButton(
+                //       onPressed: () {},
+                //       child: Text(
+                //         "See All",
+                //         style: TextStyle(
+                //           fontSize: 15,
+                //           color: AppColor.mainColor,
+                //           fontWeight: FontWeight.bold,
+                //         ),
+                //       ),
+                //     ),
+                //   ],
+                // ),
                 Container(
                   width: double.infinity,
                   height: 220,
