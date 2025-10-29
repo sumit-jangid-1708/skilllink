@@ -16,9 +16,9 @@ class CurvedBackground extends StatelessWidget {
           alignment: Alignment.topCenter,
           child: Container(
             width: MediaQuery.of(context).size.width,
-            height: 300,
+            height: 200,
             decoration: const BoxDecoration(
-              color: AppColor.red,
+              color: AppColor.mainColor,
               borderRadius: BorderRadius.only(
                 bottomLeft: Radius.circular(20),
                 bottomRight: Radius.circular(20),

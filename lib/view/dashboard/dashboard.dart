@@ -56,7 +56,7 @@ class DashboardScreen extends StatelessWidget {
       height: 70,
       width: double.infinity,
       decoration: BoxDecoration(
-        color: AppColor.darkGrey,
+        color: AppColor.mainColor,
         borderRadius: const BorderRadius.only(
           topLeft: Radius.circular(0),
           topRight: Radius.circular(0),
