@@ -86,30 +86,7 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 20),
-                // Row(
-                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                //   children: [
-                //     // Text(
-                //     //   "Special For You",
-                //     //   style: TextStyle(
-                //     //     fontSize: 22,
-                //     //     color: AppColor.blackColor,
-                //     //     fontWeight: FontWeight.bold,
-                //     //   ),
-                //     // ),
-                //     TextButton(
-                //       onPressed: () {},
-                //       child: Text(
-                //         "See All",
-                //         style: TextStyle(
-                //           fontSize: 15,
-                //           color: AppColor.mainColor,
-                //           fontWeight: FontWeight.bold,
-                //         ),
-                //       ),
-                //     ),
-                //   ],
-                // ),
+
                 Container(
                   width: double.infinity,
                   height: 220,
@@ -266,3 +243,29 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
+
+
+// Row(
+//   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+//   children: [
+//     // Text(
+//     //   "Special For You",
+//     //   style: TextStyle(
+//     //     fontSize: 22,
+//     //     color: AppColor.blackColor,
+//     //     fontWeight: FontWeight.bold,
+//     //   ),
+//     // ),
+//     TextButton(
+//       onPressed: () {},
+//       child: Text(
+//         "See All",
+//         style: TextStyle(
+//           fontSize: 15,
+//           color: AppColor.mainColor,
+//           fontWeight: FontWeight.bold,
+//         ),
+//       ),
+//     ),
+//   ],
+// ),

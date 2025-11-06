@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:skill_link/res/colors/app_color.dart';
 
 class WorkerBottomSheet extends StatelessWidget {
   final String name;
@@ -39,24 +40,48 @@ class WorkerBottomSheet extends StatelessWidget {
                 ),
               ),
               const Spacer(),
-              IconButton(icon: const Icon(Icons.close),
-                  onPressed: onClose
-              ),
+              IconButton(icon: const Icon(Icons.close), onPressed: onClose),
             ],
           ),
           const SizedBox(height: 8),
-          const Text ("⭐ 4.0   |   ₹10/hour   |   18 min drive",
+          const Text(
+            "⭐ 4.0   |   ₹10/hour   |   18 min drive",
             style: TextStyle(color: Colors.grey),
           ),
-          const SizedBox(height: 16,),
-          const Expanded(child: Row(
-            children: [
-              CircleAvatar(
-                radius: 35,
-                backgroundImage: AssetImage('assets/images/offerImage.png'),
-              )
-            ],
-          ))
+          const SizedBox(height: 16),
+          const Expanded(
+            child: Row(
+              children: [
+                CircleAvatar(
+                  radius: 35,
+                  backgroundImage: AssetImage('assets/images/offerImage.png'),
+                ),
+                SizedBox(width: 16),
+                Expanded(
+                  child: Text(
+                    "Experienced electrician for home and office wiring jobs.",
+                    style: TextStyle(fontSize: 14, color: Colors.black87),
+                  ),
+                ),
+              ],
+            ),
+          ),
+          const SizedBox(height: 12),
+          ElevatedButton(
+            style: ElevatedButton.styleFrom(
+              backgroundColor: AppColor.mainColor,
+              shape: RoundedRectangleBorder(
+                borderRadius: BorderRadius.circular(30),
+              ),
+              maximumSize: const Size.fromHeight(45),
+            ),
+
+            onPressed: () {},
+            child: const Text(
+              "Book Now",
+              style: TextStyle(color: Colors.white),
+            ),
+          ),
         ],
       ),
     );

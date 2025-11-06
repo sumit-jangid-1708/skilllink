@@ -53,48 +53,52 @@ class DashboardScreen extends StatelessWidget {
 
   Widget customBottomBar() {
     return Container(
-      height: 70,
-      width: double.infinity,
+      padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
       decoration: BoxDecoration(
-        color: AppColor.mainColor,
+        // color: const Color(0xFF1C1C1E),  dark background (like iOS)
+        color: Colors.white,
         borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(0),
-          topRight: Radius.circular(0),
+          topLeft: Radius.circular(30),
+          topRight: Radius.circular(30),
         ),
         boxShadow: [
           BoxShadow(
-            color: Colors.black26,
-            offset: Offset(0, -2),
-            blurRadius: 6,
+            color: Colors.black.withOpacity(0.3),
+            offset: const Offset(0, -2),
+            blurRadius: 10,
           ),
         ],
       ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: List.generate(icons.length, (index) {
-          final isSelected = dashboardController.currentIndex.value == index;
-          return Expanded(
-            child: GestureDetector(
+      child: Obx(() {
+        return Row(
+          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: List.generate(icons.length, (index) {
+            final isSelected = dashboardController.currentIndex.value == index;
+
+            return GestureDetector(
               onTap: () => dashboardController.changeTab(index),
               child: AnimatedContainer(
-                duration: const Duration(milliseconds: 300),
-                padding: const EdgeInsets.symmetric(vertical: 8),
+                duration: const Duration(milliseconds: 250),
+                curve: Curves.easeOut,
+                padding: const EdgeInsets.all(10),
                 decoration: BoxDecoration(
                   color: isSelected
-                      ? AppColor.white.withOpacity(0.9)
+                      ? AppColor.mainColor.withOpacity(0.15)
                       : Colors.transparent,
-                  borderRadius: BorderRadius.circular(25),
+                  shape: BoxShape.circle,
                 ),
                 child: Icon(
                   icons[index],
-                  color: isSelected ? AppColor.darkGrey : Colors.white,
+                  color:
+                  isSelected ? AppColor.mainColor : Colors.grey.shade400,
                   size: isSelected ? 30 : 26,
                 ),
               ),
-            ),
-          );
-        }),
-      ),
+            );
+          }),
+        );
+      }),
     );
   }
+
 }
