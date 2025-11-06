@@ -18,14 +18,15 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: const BoxDecoration(
-        gradient: LinearGradient(
-          begin: Alignment.topCenter,
-          end: Alignment.bottomCenter,
-          colors: [
-            Color(0xFFFFB64D), // Same as CurvedBackground top color
-            Color(0xFFFFE7B3), // Bottom blend for smooth transition
-          ],
-        ),
+        color: Color(0xFFFFB64D),
+        // gradient: LinearGradient(
+        //   begin: Alignment.topCenter,
+        //   end: Alignment.bottomCenter,
+        //   colors: [
+        //     Color(0xFFFFB64D), // Same as CurvedBackground top color
+        //     Color(0xFFFFE7B3), // Bottom blend for smooth transition
+        //   ],
+        // ),
       ),
       child: SafeArea(
         bottom: false,

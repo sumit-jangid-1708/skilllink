@@ -15,7 +15,8 @@ class CurvedBackground extends StatelessWidget {
           end: Alignment.bottomCenter,
           colors: [
             Color(0xFFFFB64D), // light orange-yellow (top)
-            Color(0xFFFFE7B3), // pale warm yellow (bottom)
+            Color(0xFFFDEFCD),// pale warm yellow (bottom)
+            Color(0xFFF8F7F5),
           ],
         ),
       ),

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:skill_link/res/colors/app_color.dart';
+import 'package:skill_link/utils/custom_appbar.dart';
 
 import '../../res/colors/app_color.dart';
 import '../../res/components/widgets/serviceCard.dart';
@@ -12,6 +13,7 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: const CustomAppBar(initial: "JH"),
       body: CurvedBackground(
         child: SafeArea(
           child: SingleChildScrollView(
@@ -19,73 +21,8 @@ class HomeScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                Container(
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      Container(
-                        width: 50,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
-                          // border: BoxBorder.all(width: 1, color: AppColor.blackColor),
-                          color: AppColor.white,
-                        ),
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Text(
-                              "S",
-                              style: TextStyle(
-                                fontSize: 22,
-                                color: AppColor.blackColor,
-                                fontWeight: FontWeight.bold,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      Container(
-                        width: 50,
-                        height: 50,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
-                          // border: BoxBorder.all(width: 1, color: AppColor.blackColor),
-                          color: AppColor.white,
-                        ),
-                        child: Center(
-                          child: Padding(
-                            padding: const EdgeInsets.all(8.0),
-                            child: Stack(
-                              children: [
-                                Icon(
-                                  Icons.notifications,
-                                  color: AppColor.blackColor,
-                                  size: 30,
-                                ),
 
-                                Positioned(
-                                  left: 18,
-                                  top: 4,
-                                  child: Container(
-                                    width: 10,
-                                    height: 10,
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(50),
-                                      // border: BoxBorder.all(width: 1, color: AppColor.blackColor),
-                                      color: AppColor.red,
-                                    ),
-                                  ),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                SizedBox(height: 20),
+                // SizedBox(height: 20),
 
                 Container(
                   width: double.infinity,
@@ -187,11 +124,10 @@ class HomeScreen extends StatelessWidget {
                         title: "Cleaner",
                         onTap: () {},
                       ),
-
                     ],
                   ),
                 ),
-                SizedBox(height: 10,),
+                SizedBox(height: 10),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -243,7 +179,6 @@ class HomeScreen extends StatelessWidget {
     );
   }
 }
-
 
 // Row(
 //   mainAxisAlignment: MainAxisAlignment.spaceBetween,

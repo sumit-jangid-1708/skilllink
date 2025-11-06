@@ -57,10 +57,10 @@ class DashboardScreen extends StatelessWidget {
       decoration: BoxDecoration(
         // color: const Color(0xFF1C1C1E),  dark background (like iOS)
         color: Colors.white,
-        borderRadius: const BorderRadius.only(
-          topLeft: Radius.circular(30),
-          topRight: Radius.circular(30),
-        ),
+        // borderRadius: const BorderRadius.only(
+        //   topLeft: Radius.circular(30),
+        //   topRight: Radius.circular(30),
+        // ),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.3),
