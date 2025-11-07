@@ -75,6 +75,43 @@ class BookingScreen extends StatelessWidget {
                       ),
                     ],
                   ),
+                  SizedBox(height: 20,),
+
+                  Container(
+                    width: double.infinity,
+                    height: 70,
+                    // margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
+                    decoration: BoxDecoration(
+                      gradient: const LinearGradient(
+                        colors: [Color(0xFFFFD580), Color(0xFFFFA726)], // soft orange gradient
+                        begin: Alignment.topLeft,
+                        end: Alignment.bottomRight,
+                      ),
+                      borderRadius: BorderRadius.circular(18),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.orangeAccent.withOpacity(0.3),
+                          blurRadius: 8,
+                          offset: const Offset(2, 4),
+                        ),
+                      ],
+                    ),
+                    child: Center(
+                      child: Text(
+                        "Book SkillLink's Professionals",
+                        style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.w700,
+                          color: Colors.white,
+                          letterSpacing: 0.5,
+                        ),
+                        textAlign: TextAlign.center,
+                      ),
+                    ),
+                  ),
+
+
+
                 ],
               ),
             ),
