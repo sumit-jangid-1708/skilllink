@@ -18,7 +18,7 @@ class DashboardScreen extends StatelessWidget {
   final List<IconData> icons = [
     Icons.home_outlined,
     Icons.location_on_outlined,
-    // Icons.star_border_outlined,
+    Icons.star_border_outlined,
     Icons.bookmark_outline_outlined,
     Icons.perm_identity_outlined,
   ];
@@ -28,7 +28,7 @@ class DashboardScreen extends StatelessWidget {
     final List<Widget> screens = [
       HomeScreen(),
       MapScreen(),
-      // StarScreen(),
+      StarScreen(),
       BookingScreen(),
       ProfileScreen(),
     ];

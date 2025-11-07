@@ -112,6 +112,36 @@ class ProfileScreen extends StatelessWidget {
                       ),
                     ),
                   ),
+
+                  SizedBox(height: 20,),
+                  Container(
+                    width: double.infinity,
+                    height: 150,
+                    margin: const EdgeInsets.only(left: 0, right: 0),
+                    padding: const EdgeInsets.symmetric(
+                      vertical: 20,
+                      horizontal: 12,
+                    ),
+                    decoration: BoxDecoration(
+                      color: AppColor.white,
+                      borderRadius: BorderRadius.circular(50),
+                      border: Border.all(width: 2, color: Colors.white30),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.05),
+                          blurRadius: 10,
+                          offset: const Offset(0, 4),
+                        ),
+                      ],
+                    ),
+                    child: Column(
+                      mainAxisAlignment:MainAxisAlignment.start,
+                      children: [
+                        TextButton(onPressed: (){}, child: Text("About US", style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),)),
+                        TextButton(onPressed: (){}, child: Text("Terms of Service", style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),))
+                      ],
+                    ),
+                  )
                 ],
               ),
             ),
