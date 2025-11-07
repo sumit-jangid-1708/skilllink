@@ -3,6 +3,7 @@ import 'package:get/get.dart';
 import 'package:skill_link/utils/curved_background.dart';
 
 import '../../res/colors/app_color.dart';
+import '../../utils/gradient_textfield.dart';
 
 class BookingScreen extends StatelessWidget {
   final VoidCallback? onNotificationTap;
@@ -110,6 +111,19 @@ class BookingScreen extends StatelessWidget {
                     ),
                   ),
 
+                  SizedBox(
+                    height: 20,
+                  ),
+                  Column(
+                    children: [
+                      GradientTextField(
+                        hintText: 'Name',
+                        obscureText: true,
+                         keyboardType: TextInputType.text,
+                      ),
+                      SizedBox(height: 10,),
+                    ],
+                  )
 
 
                 ],
