@@ -3,14 +3,18 @@ import 'package:get/get.dart';
 import 'package:skill_link/utils/curved_background.dart';
 
 import '../../res/colors/app_color.dart';
+import '../../res/components/widgets/gradient_dropdown.dart';
 import '../../utils/gradient_textfield.dart';
 
 class BookingScreen extends StatelessWidget {
+  String? selectedValue;
   final VoidCallback? onNotificationTap;
   const BookingScreen({super.key, this.onNotificationTap});
 
+
   @override
   Widget build(BuildContext context) {
+    String? selectedValue;
     return Scaffold(
       body: CurvedBackground(
         child: SafeArea(
@@ -116,12 +120,22 @@ class BookingScreen extends StatelessWidget {
                   ),
                   Column(
                     children: [
-                      GradientTextField(
-                        hintText: 'Name',
-                        obscureText: true,
-                         keyboardType: TextInputType.text,
+                      GradientDropdown<String>(
+                        hintText: "Select Service Type",
+                        items: ["Plumbing", "Electrical", "Carpentry", "Cleaning"],
+                        value: selectedValue,
+                        onChanged: (value) {
+                          selectedValue = value;
+                        },
+                        prefixIcon: Icons.home_repair_service_outlined,
                       ),
                       SizedBox(height: 10,),
+
+                      GradientTextField(
+                        hintText: '',
+                        obscureText: false,
+                        keyboardType: TextInputType.text,
+                      ),
                     ],
                   )
 
