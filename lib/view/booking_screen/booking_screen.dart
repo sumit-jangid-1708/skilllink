@@ -9,7 +9,7 @@ import '../../utils/gradient_textfield.dart';
 class BookingScreen extends StatelessWidget {
   String? selectedValue;
   final VoidCallback? onNotificationTap;
-  const BookingScreen({super.key, this.onNotificationTap});
+  BookingScreen({super.key, this.onNotificationTap});
 
 
   @override
@@ -127,12 +127,12 @@ class BookingScreen extends StatelessWidget {
                         onChanged: (value) {
                           selectedValue = value;
                         },
-                        prefixIcon: Icons.home_repair_service_outlined,
+                        // prefixIcon: Icons.home_repair_service_outlined,
                       ),
                       SizedBox(height: 10,),
 
                       GradientTextField(
-                        hintText: '',
+                        hintText: 'Enter your Problem ',
                         obscureText: false,
                         keyboardType: TextInputType.text,
                       ),
