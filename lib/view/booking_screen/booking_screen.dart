@@ -91,11 +91,12 @@ class BookingScreen extends StatelessWidget {
                     height: 70,
                     // margin: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
                     decoration: BoxDecoration(
-                      gradient: const LinearGradient(
-                        colors: [Color(0xFFFFD580), Color(0xFFFFA726)], // soft orange gradient
-                        begin: Alignment.topLeft,
-                        end: Alignment.bottomRight,
-                      ),
+                      // gradient: const LinearGradient(
+                      //   colors: [Color(0xFFFFD580), Color(0xFFFFA726)], // soft orange gradient
+                      //   begin: Alignment.topLeft,
+                      //   end: Alignment.bottomRight,
+                      // ),
+                      color: Color(0xFFFFB64D),
                       borderRadius: BorderRadius.circular(18),
                       boxShadow: [
                         BoxShadow(
