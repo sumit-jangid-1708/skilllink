@@ -5,10 +5,14 @@ import 'package:skill_link/utils/curved_background.dart';
 import '../../res/colors/app_color.dart';
 import '../../res/components/widgets/gradient_dropdown.dart';
 import '../../utils/gradient_textfield.dart';
+import '../../view_models/controller/booking_controller.dart';
 
 class BookingScreen extends StatelessWidget {
   String? selectedValue;
   final VoidCallback? onNotificationTap;
+
+  final BookingController controller = Get.put(BookingController());
+
   BookingScreen({super.key, this.onNotificationTap});
 
 
@@ -20,7 +24,7 @@ class BookingScreen extends StatelessWidget {
         child: SafeArea(
           child: SingleChildScrollView(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+              padding: EdgeInsets.symmetric(horizontal: 20, vertical: 16),
               child: Column(
                 children: [
                   Row(
@@ -80,7 +84,7 @@ class BookingScreen extends StatelessWidget {
                       ),
                     ],
                   ),
-                  SizedBox(height: 20,),
+                  SizedBox(height: 24,),
 
                   Container(
                     width: double.infinity,
@@ -116,10 +120,24 @@ class BookingScreen extends StatelessWidget {
                   ),
 
                   SizedBox(
-                    height: 20,
+                    height: 24,
                   ),
                   Column(
                     children: [
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Select Service type",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black87,
+                          ),
+                        ),
+                      ),
+
+                      SizedBox(height: 10),
+
                       GradientDropdown<String>(
                         hintText: "Select Service Type",
                         items: ["Plumbing", "Electrical", "Carpentry", "Cleaning"],
@@ -131,10 +149,114 @@ class BookingScreen extends StatelessWidget {
                       ),
                       SizedBox(height: 10,),
 
-                      GradientTextField(
-                        hintText: 'Enter your Problem ',
-                        obscureText: false,
-                        keyboardType: TextInputType.text,
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Select sub-category",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black87,
+                          ),
+                        ),
+                      ),
+                      SizedBox(height: 10),
+                      GradientDropdown<String>(
+                        hintText: "Select Sub-category",
+                        items: ["Fan Repair", "Pipe Leakage", "Door Repair", "Switch-board Repair"],
+                        value: selectedValue,
+                        onChanged: (value) {
+                          selectedValue = value;
+                        },
+                        // prefixIcon: Icons.home_repair_service_outlined,
+                      ),
+                      SizedBox(height: 10,),
+
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Service Urgency",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black87,
+                          ),
+                        ),
+                      ),
+
+                      SizedBox(height: 10),
+
+                      Obx(() {
+                        final urgencies = ["Normal (24 hrs)", "Urgent (4 hrs)", "Schedule Later"];
+                        return Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: urgencies.map((type) {
+                            final isSelected = controller.selectedUrgency.value == type;
+                            return Expanded(
+                              child: Padding(
+                                padding: const EdgeInsets.symmetric(horizontal: 4),
+                                child: GestureDetector(
+                                  onTap: () => controller.selectUrgency(type),
+                                  child: Container(
+                                    height: 48,
+                                    alignment: Alignment.center,
+                                    decoration: BoxDecoration(
+                                      color: isSelected ? Color(0xFFFFA726) : Colors.white,
+                                      borderRadius: BorderRadius.circular(12),
+                                      border: Border.all(
+                                        color: isSelected ? Color(0xFFFFA726) : Colors.grey.shade400,
+                                        width: 1.2,
+                                      ),
+                                    ),
+                                    child: Text(
+                                      type,
+                                      style: TextStyle(
+                                        color: isSelected ? Colors.white : Colors.black87,
+                                        fontWeight: FontWeight.w500,
+                                        fontSize: 13,
+                                      ),
+                                    ),
+                                  ),
+                                ),
+                              ),
+                            );
+                          }).toList(),
+                        );
+                      }),
+
+                      Align(
+                        alignment: Alignment.centerLeft,
+                        child: Text(
+                          "Problem description",
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            color: Colors.black87,
+                          ),
+                        ),
+                      ),
+
+                      SizedBox(height: 10),
+
+                      TextField(
+                        minLines: 4,
+                        maxLines: 6,
+                        keyboardType: TextInputType.multiline,
+                        decoration: InputDecoration(
+                          hintText: "Describe your issue clearly...",
+                          filled: true,
+                          fillColor: Colors.white,
+                          contentPadding: const EdgeInsets.all(16),
+                          enabledBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: Colors.orange.shade300),
+                          ),
+                          focusedBorder: OutlineInputBorder(
+                            borderRadius: BorderRadius.circular(12),
+                            borderSide: BorderSide(color: Color(0xFFFFA726), width: 1.8),
+                          ),
+                        ),
+                        style: const TextStyle(fontSize: 14),
                       ),
                     ],
                   )
