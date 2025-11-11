@@ -348,6 +348,7 @@ class BookingScreen extends StatelessWidget {
                         color: Colors.grey.shade400,
                         onPressed: () {
                           // Clear your fields here
+                          controller.clearForm();
                         },
                       ),
                     ),
@@ -358,6 +359,7 @@ class BookingScreen extends StatelessWidget {
                         color: const Color(0xFFFFB64D),
                         onPressed: () {
                           // Your booking logic here
+                          controller.bookService();
                         },
                       ),
                     ),
