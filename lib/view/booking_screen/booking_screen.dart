@@ -7,6 +7,7 @@ import 'package:skill_link/utils/curved_background.dart';
 import '../../res/colors/app_color.dart';
 import '../../res/components/widgets/custom_button.dart';
 import '../../res/components/widgets/gradient_dropdown.dart';
+import '../../utils/top_action_bar.dart';
 import '../../view_models/controller/booking_controller.dart';
 
 class BookingScreen extends StatelessWidget {
@@ -26,55 +27,61 @@ class BookingScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 /// TOP BAR
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GestureDetector(
-                      onTap: () => Get.back(),
-                      child: Container(
-                        width: 46,
-                        height: 46,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          color: AppColor.white,
-                        ),
-                        child: const Center(
-                          child: Icon(Icons.arrow_back, color: Colors.black, size: 20),
-                        ),
-                      ),
-                    ),
-                    GestureDetector(
-                      onTap: onNotificationTap,
-                      child: Container(
-                        width: 46,
-                        height: 46,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(12),
-                          color: AppColor.white,
-                        ),
-                        child: Stack(
-                          alignment: Alignment.center,
-                          children: [
-                            Icon(Icons.notifications_none_rounded,
-                                color: AppColor.blackColor, size: 28),
-                            Positioned(
-                              right: 12,
-                              top: 12,
-                              child: Container(
-                                width: 10,
-                                height: 10,
-                                decoration: BoxDecoration(
-                                  color: AppColor.red,
-                                  borderRadius: BorderRadius.circular(50),
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                    ),
-                  ],
+                TopActionBar(
+                  leftIcon: Icons.arrow_back,
+                  rightIcon: Icons.notifications_none_rounded,
+                  showNotificationDot: true,
+                  onRightTap: () => Get.toNamed('/notifications'),
                 ),
+                // Row(
+                //   mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                //   children: [
+                //     GestureDetector(
+                //       onTap: () => Get.back(),
+                //       child: Container(
+                //         width: 46,
+                //         height: 46,
+                //         decoration: BoxDecoration(
+                //           borderRadius: BorderRadius.circular(12),
+                //           color: AppColor.white,
+                //         ),
+                //         child: const Center(
+                //           child: Icon(Icons.arrow_back, color: Colors.black, size: 20),
+                //         ),
+                //       ),
+                //     ),
+                //     GestureDetector(
+                //       onTap: onNotificationTap,
+                //       child: Container(
+                //         width: 46,
+                //         height: 46,
+                //         decoration: BoxDecoration(
+                //           borderRadius: BorderRadius.circular(12),
+                //           color: AppColor.white,
+                //         ),
+                //         child: Stack(
+                //           alignment: Alignment.center,
+                //           children: [
+                //             Icon(Icons.notifications_none_rounded,
+                //                 color: AppColor.blackColor, size: 28),
+                //             Positioned(
+                //               right: 12,
+                //               top: 12,
+                //               child: Container(
+                //                 width: 10,
+                //                 height: 10,
+                //                 decoration: BoxDecoration(
+                //                   color: AppColor.red,
+                //                   borderRadius: BorderRadius.circular(50),
+                //                 ),
+                //               ),
+                //             ),
+                //           ],
+                //         ),
+                //       ),
+                //     ),
+                //   ],
+                // ),
 
                 const SizedBox(height: 24),
 

@@ -42,7 +42,7 @@ class BookingController extends GetxController {
       Get.snackbar(
         "Incomplete Form",
         "Please select a service type and urgency before booking.",
-        snackPosition: SnackPosition.BOTTOM,
+        snackPosition: SnackPosition.TOP,
       );
       return;
     }
@@ -51,7 +51,7 @@ class BookingController extends GetxController {
     Get.snackbar(
       "Success",
       "Your service has been booked successfully!",
-      snackPosition: SnackPosition.BOTTOM,
+      snackPosition: SnackPosition.TOP,
     );
 
     clearForm(); // optional: reset after booking

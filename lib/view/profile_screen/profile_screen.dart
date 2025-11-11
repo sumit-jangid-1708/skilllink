@@ -4,6 +4,7 @@ import 'package:skill_link/utils/curved_background.dart';
 
 import '../../res/colors/app_color.dart' show AppColor;
 import '../../res/components/widgets/profileHeader.dart';
+import '../../utils/top_action_bar.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -15,58 +16,15 @@ class ProfileScreen extends StatelessWidget {
         child: SafeArea(
           child: SingleChildScrollView(
             child: Padding(
-              padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
+              padding: EdgeInsets.symmetric(horizontal: 25, vertical: 16),
               child: Column(
                 children: [
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                    children: [
-                      InkWell(
-                        onTap: () {
-                          Get.back();
-                        },
-                        child: Container(
-                          width: 50,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50),
-                            // border: BoxBorder.all(width: 1, color: AppColor.blackColor),
-                            color: AppColor.white,
-                          ),
-                          child: Center(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Icon(
-                                Icons.arrow_back,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                      InkWell(
-                        onTap: () {},
-                        child: Container(
-                          width: 50,
-                          height: 50,
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(50),
-                            // border: BoxBorder.all(width: 1, color: AppColor.blackColor),
-                            color: AppColor.white,
-                          ),
-                          child: Center(
-                            child: Padding(
-                              padding: const EdgeInsets.all(8.0),
-                              child: Icon(
-                                Icons.settings,
-                                color: Colors.black,
-                              ),
-                            ),
-                          ),
-                        ),
-                      ),
-                    ],
+                  TopActionBar(
+                    leftIcon: Icons.arrow_back,
+                    rightIcon: Icons.settings,
+                    onRightTap: () => Get.toNamed('/settings'),
                   ),
+
                   SizedBox(height: 50),
                   ProfileHeader(
                     avatarPath: "assets/images/avatar.png",
@@ -97,23 +55,58 @@ class ProfileScreen extends StatelessWidget {
                     child: Center(
                       child: Column(
                         children: [
-                          Divider(height: 1,indent:120,endIndent: 120, color: Colors.grey.shade200, thickness: 8,radius: BorderRadius.circular(20)),
-                          SizedBox(height: 25,),
-                          _buildMenuItem(Icons.edit, "Edit Profile", (){}),
-                          Divider(height: 1,indent:20,endIndent: 20, color: Colors.grey.shade200,),
-                          _buildMenuItem(Icons.headset_mic, "Help & Support",(){}),
-                          Divider(height: 1,indent:20,endIndent: 20, color: Colors.grey.shade200,),
-                          _buildMenuItem(Icons.star_border, "Favorite", (){}),
-                          Divider(height: 1,indent:20,endIndent: 20, color: Colors.grey.shade200,),
-                          _buildMenuItem(Icons.notifications_none, "Notification", (){}),
-                          Divider(height: 1,indent:20,endIndent: 20, color: Colors.grey.shade200,),
-                          _buildMenuItem(Icons.logout, "Logout", (){}),
+                          Divider(
+                            height: 1,
+                            indent: 120,
+                            endIndent: 120,
+                            color: Colors.grey.shade200,
+                            thickness: 8,
+                            radius: BorderRadius.circular(20),
+                          ),
+                          SizedBox(height: 25),
+                          _buildMenuItem(Icons.edit, "Edit Profile", () {}),
+                          Divider(
+                            height: 1,
+                            indent: 20,
+                            endIndent: 20,
+                            color: Colors.grey.shade200,
+                          ),
+                          _buildMenuItem(
+                            Icons.headset_mic,
+                            "Help & Support",
+                            () {},
+                          ),
+                          Divider(
+                            height: 1,
+                            indent: 20,
+                            endIndent: 20,
+                            color: Colors.grey.shade200,
+                          ),
+                          _buildMenuItem(Icons.star_border, "Favorite", () {}),
+                          Divider(
+                            height: 1,
+                            indent: 20,
+                            endIndent: 20,
+                            color: Colors.grey.shade200,
+                          ),
+                          _buildMenuItem(
+                            Icons.notifications_none,
+                            "Notification",
+                            () {},
+                          ),
+                          Divider(
+                            height: 1,
+                            indent: 20,
+                            endIndent: 20,
+                            color: Colors.grey.shade200,
+                          ),
+                          _buildMenuItem(Icons.logout, "Logout", () {}),
                         ],
                       ),
                     ),
                   ),
 
-                  SizedBox(height: 20,),
+                  SizedBox(height: 20),
                   Container(
                     width: double.infinity,
                     height: 150,
@@ -135,13 +128,33 @@ class ProfileScreen extends StatelessWidget {
                       ],
                     ),
                     child: Column(
-                      mainAxisAlignment:MainAxisAlignment.start,
+                      mainAxisAlignment: MainAxisAlignment.start,
                       children: [
-                        TextButton(onPressed: (){}, child: Text("About US", style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),)),
-                        TextButton(onPressed: (){}, child: Text("Terms of Service", style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),))
+                        TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            "About US",
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
+                        TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            "Terms of Service",
+                            style: const TextStyle(
+                              fontSize: 16,
+                              color: Colors.black,
+                              fontWeight: FontWeight.w500,
+                            ),
+                          ),
+                        ),
                       ],
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
@@ -159,7 +172,7 @@ class ProfileScreen extends StatelessWidget {
         style: const TextStyle(fontSize: 16, fontWeight: FontWeight.w500),
       ),
       trailing: const Icon(Icons.arrow_forward_ios, size: 16),
-      onTap: onTap
+      onTap: onTap,
     );
   }
 }
