@@ -27,7 +27,7 @@ class LoginScreen extends StatelessWidget {
                 gradient: LinearGradient(
                   colors: [
                     Color(0xFFFFA726),
-                    Color(0xFFFFB64D),
+                    Color(0xFFFDF9F3),
                   ],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
@@ -42,32 +42,32 @@ class LoginScreen extends StatelessWidget {
                   const SizedBox(height: 25),
 
                   /// TOP BAR (Back + Skip)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
-                        Text("Back",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                            )),
-                        Text("Skip",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                            )),
-                      ],
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.symmetric(horizontal: 20),
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //     children: const [
+                  //       Text("Back",
+                  //           style: TextStyle(
+                  //             color: Colors.white,
+                  //             fontSize: 16,
+                  //             fontWeight: FontWeight.w500,
+                  //           )),
+                  //       Text("Skip",
+                  //           style: TextStyle(
+                  //             color: Colors.white,
+                  //             fontSize: 16,
+                  //             fontWeight: FontWeight.w500,
+                  //           )),
+                  //     ],
+                  //   ),
+                  // ),
 
                   const SizedBox(height: 15),
 
                   /// ILLUSTRATION IMAGE
                   SizedBox(
-                    height: 200,
+                    height: 250,
                     child: Image.asset("assets/images/service.png"),
                   ),
 
@@ -112,7 +112,7 @@ class LoginScreen extends StatelessWidget {
                           ),
                         ),
 
-                        const SizedBox(height: 25),
+                        const SizedBox(height: 16),
 
                         /// Phone Number
                         const Text(

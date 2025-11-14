@@ -32,7 +32,7 @@ class _SignupScreenState extends State<SignupScreen> {
                 gradient: LinearGradient(
                   colors: [
                     Color(0xFFFFA726),
-                    Color(0xFFFFB64D),
+                    Color(0xFFFDF9F3),
                   ],
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
@@ -47,32 +47,32 @@ class _SignupScreenState extends State<SignupScreen> {
                   const SizedBox(height: 25),
 
                   /// TOP BAR (Back + Already have account)
-                  Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: const [
-                        Text("Back",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                            )),
-                        Text("Login",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 16,
-                              fontWeight: FontWeight.w500,
-                            )),
-                      ],
-                    ),
-                  ),
+                  // Padding(
+                  //   padding: const EdgeInsets.symmetric(horizontal: 20),
+                  //   child: Row(
+                  //     mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  //     children: const [
+                  //       Text("Back",
+                  //           style: TextStyle(
+                  //             color: Colors.white,
+                  //             fontSize: 16,
+                  //             fontWeight: FontWeight.w500,
+                  //           )),
+                  //       Text("Login",
+                  //           style: TextStyle(
+                  //             color: Colors.white,
+                  //             fontSize: 16,
+                  //             fontWeight: FontWeight.w500,
+                  //           )),
+                  //     ],
+                  //   ),
+                  // ),
 
-                  const SizedBox(height: 15),
+                  // const SizedBox(height: 15),
 
                   /// ILLUSTRATION IMAGE
                   SizedBox(
-                    height: 200,
+                    height: 230,
                     child: Image.asset("assets/images/service.png"),
                   ),
 
@@ -99,7 +99,7 @@ class _SignupScreenState extends State<SignupScreen> {
                       children: [
                         /// Title
                         const Text(
-                          "Create Account ✨",
+                          "Create Account",
                           style: TextStyle(
                             fontSize: 28,
                             fontWeight: FontWeight.bold,
