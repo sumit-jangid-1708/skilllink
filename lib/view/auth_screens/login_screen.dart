@@ -4,362 +4,235 @@ import 'package:intl_phone_field/intl_phone_field.dart';
 import 'package:skill_link/res/colors/app_color.dart';
 import 'package:skill_link/view/auth_screens/signup_screen.dart';
 import 'package:skill_link/view/dashboard/dashboard.dart';
-import 'package:skill_link/view_models/controller/auth/login_controller.dart';
-
-import '../../res/routes/routes_names.dart';
 
 class LoginScreen extends StatelessWidget {
   LoginScreen({super.key});
 
-  final loginController = Get.put(LoginController());
+  final RxBool hidePassword = true.obs;
 
   @override
   Widget build(BuildContext context) {
     final size = MediaQuery.of(context).size;
-    return Scaffold(
-      // resizeToAvoidBottomInset: true,
-      body: Stack(
-        children: [
-          SizedBox(
-             width: size.width,
-            height: size.height,
-            child: Image.asset(
-              'assets/images/loginSignup.png',
-              fit: BoxFit.cover, // Fill completely
-            ),
-          ),
-          
-          // ✅ Fullscreen background image with no gaps
-          // Positioned.fill(
-          //   child: Image.asset(
-          //     'assets/images/loginSignup.png',
-          //     fit: BoxFit.cover, // cover fills completely
-          //   ),
-          // ),
 
-          SafeArea(
-            child: SingleChildScrollView(
-              padding: const EdgeInsets.symmetric(horizontal: 24),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: SafeArea(
+        child: Stack(
+          children: [
+            /// TOP GRADIENT BACKGROUND
+            Container(
+              height: size.height * 0.35,
+              width: double.infinity,
+              decoration: const BoxDecoration(
+                gradient: LinearGradient(
+                  colors: [
+                    Color(0xFFFFA726),
+                    Color(0xFFFFB64D),
+                  ],
+                  begin: Alignment.topCenter,
+                  end: Alignment.bottomCenter,
+                ),
+              ),
+            ),
+
+            /// MAIN CONTENT SCROLL
+            SingleChildScrollView(
               child: Column(
                 children: [
-                  const SizedBox(height: 100),
+                  const SizedBox(height: 25),
 
-                  // Container(
-                  //   width: 100,
-                  //   height: 100,
-
-                  //   decoration: BoxDecoration(
-                  //     borderRadius: BorderRadius.circular(50),
-                  //     color: const Color.fromARGB(255, 255, 196, 107),
-                  //   ),
-                  // ),
-
-                  // const SizedBox(height: 16),
-
-                  Text(
-                    "Login Account",
-                    style: TextStyle(fontSize: 32, fontWeight: FontWeight.bold),
-                  ),
-                  const SizedBox(height: 8),
-                  Text(
-                    "Hii, Welcome back, You've been missed",
-                    style: TextStyle(fontSize: 14),
-                  ),
-                  const SizedBox(height: 40),
-
-                  const Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      "Phone Number",
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
+                  /// TOP BAR (Back + Skip)
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: const [
+                        Text("Back",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            )),
+                        Text("Skip",
+                            style: TextStyle(
+                              color: Colors.white,
+                              fontSize: 16,
+                              fontWeight: FontWeight.w500,
+                            )),
+                      ],
                     ),
                   ),
-                  const SizedBox(height: 8),
-                  IntlPhoneField(
-                    decoration: const InputDecoration(
-                      hintText: 'Enter Phone number',
-                      fillColor: Color(0xFFF2F2F2),
-                      filled: true,
-                      border: OutlineInputBorder(
-                        borderSide: BorderSide.none,
-                        borderRadius: BorderRadius.all(Radius.circular(12)),
-                      ),
-                    ),
-                    initialCountryCode: 'IN',
-                    onChanged: (phone) {
-                      print(phone.completeNumber);
-                    },
-                  ),
 
-                  const SizedBox(height: 8),
+                  const SizedBox(height: 15),
 
-                  Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Password',
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.w600,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 8),
-
-                  TextField(
-                    obscureText: true,
-                    decoration: InputDecoration(
-                      hintText: 'Enter Password',
-                      filled: true,
-                      fillColor: const Color(0xFFF2F2F2),
-                      border: OutlineInputBorder(
-                        borderRadius: BorderRadius.circular(12),
-                        borderSide: BorderSide.none,
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 32),
-
+                  /// ILLUSTRATION IMAGE
                   SizedBox(
-                    width: 150,
-                    height: 50,
-                    child: ElevatedButton(
-                      onPressed: () {
-                        Get.to(()=> DashboardScreen());
-                        print("Login button clicked");
-                        },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: AppColor.mainColor,
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(30),
-                        ),
-                      ),
-                      child: const Text(
-                        'Login',
-                        style: TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                            color: AppColor.white
-                        ),
-                      ),
-                    ),
+                    height: 200,
+                    child: Image.asset("assets/images/service.png"),
                   ),
-                  const SizedBox(height: 16),
 
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Text(
-                        "Don't Have an Account?",
-                        style: TextStyle(color: Colors.grey),
-                      ),
-                      const SizedBox(width: 4),
-                      InkWell(
-                        onTap: (){
-                          print("Sign up button clicked");
-                          Get.toNamed(RouteName.signupScreen);
-                        },
-                        child: const Text(
-                          'Create Account',
+                  // const SizedBox(height: 20),
+
+
+                  /// WHITE CARD CONTAINER
+                  Container(
+                    width: double.infinity,
+                    padding: const EdgeInsets.all(20),
+                    margin: const EdgeInsets.symmetric(horizontal: 20),
+                    decoration: BoxDecoration(
+                      color: Colors.white,
+                      borderRadius: BorderRadius.circular(22),
+                      boxShadow: [
+                        BoxShadow(
+                          color: Colors.black.withOpacity(0.1),
+                          blurRadius: 10,
+                          spreadRadius: 2,
+                          offset: const Offset(0, 5),
+                        ),
+                      ],
+                    ),
+
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        /// Title
+                        const Text(
+                          "Welcome Back 👋",
                           style: TextStyle(
-                            color:AppColor.darkGrey,
+                            fontSize: 28,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                      ),
-                    ],
+                        const SizedBox(height: 4),
+                        const Text(
+                          "Login to continue using SkillLink",
+                          style: TextStyle(
+                            fontSize: 14,
+                            color: Colors.grey,
+                          ),
+                        ),
+
+                        const SizedBox(height: 25),
+
+                        /// Phone Number
+                        const Text(
+                          "Phone Number",
+                          style: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.w600),
+                        ),
+                        const SizedBox(height: 8),
+                        IntlPhoneField(
+                          decoration: InputDecoration(
+                            hintText: "Enter phone number",
+                            filled: true,
+                            fillColor: const Color(0xFFF4F4F4),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide.none,
+                            ),
+                          ),
+                          initialCountryCode: "IN",
+                        ),
+
+                        const SizedBox(height: 12),
+
+                        /// PASSWORD FIELD
+                        const Text(
+                          "Password",
+                          style: TextStyle(
+                              fontSize: 15, fontWeight: FontWeight.w600),
+                        ),
+                        const SizedBox(height: 8),
+
+                        Obx(() => TextField(
+                          obscureText: hidePassword.value,
+                          decoration: InputDecoration(
+                            hintText: "Enter Password",
+                            filled: true,
+                            fillColor: const Color(0xFFF4F4F4),
+                            border: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: BorderSide.none,
+                            ),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                hidePassword.value
+                                    ? Icons.visibility_off
+                                    : Icons.visibility,
+                                color: Colors.grey,
+                              ),
+                              onPressed: () {
+                                hidePassword.value =
+                                !hidePassword.value;
+                              },
+                            ),
+                          ),
+                        )),
+
+                        const SizedBox(height: 25),
+
+                        /// LOGIN BUTTON
+                        SizedBox(
+                          width: double.infinity,
+                          height: 52,
+                          child: ElevatedButton(
+                            onPressed: () {
+                              Get.to(() => DashboardScreen());
+                            },
+                            style: ElevatedButton.styleFrom(
+                              backgroundColor: AppColor.mainColor,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(14),
+                              ),
+                            ),
+                            child: const Text(
+                              "Login",
+                              style: TextStyle(
+                                color: Colors.white,
+                                fontSize: 18,
+                                fontWeight: FontWeight.w700,
+                              ),
+                            ),
+                          ),
+                        ),
+
+                        const SizedBox(height: 20),
+
+                        /// SIGN UP OPTION
+                        Row(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const Text(
+                              "Don't have an account?",
+                              style: TextStyle(
+                                color: Colors.grey,
+                                fontSize: 14,
+                              ),
+                            ),
+                            InkWell(
+                              onTap: () => Get.to(() => SignupScreen()),
+                              child: const Text(
+                                "  Sign Up",
+                                style: TextStyle(
+                                  fontSize: 14,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                ),
+                              ),
+                            ),
+                          ],
+                        ),
+
+                        const SizedBox(height: 15),
+                      ],
+                    ),
                   ),
                 ],
               ),
             ),
-
-            // return Scaffold(
-            //   body: SizedBox.expand(
-            //     child: Stack(
-            //       children: [
-            //         // ✅ Fullscreen background image with no gaps
-            //         Positioned.fill(
-            //           child: Image.asset(
-            //             'assets/images/loginSignup.png',
-            //             fit: BoxFit.cover, // cover fills completely
-            //           ),
-            //         ),
-
-            //         Positioned(
-            //           top: 80,
-            //           left: 60,
-            //           child: Container(
-            //             width: 100,
-            //             height: 100,
-
-            //             decoration: BoxDecoration(
-            //               borderRadius: BorderRadius.circular(50),
-            //               color: const Color.fromARGB(255, 255, 196, 107),
-            //             ),
-            //           ),
-            //         ),
-
-            //         Positioned(
-            //           top: 105,
-            //           left: 90,
-            //           child: Column(
-            //             children: [
-            //               Text("Login Account", style: TextStyle(fontSize: 36)),
-            //               SizedBox(height: 22),
-            //               Text(
-            //                 "Hii, Welcome back, You've been missed",
-            //                 style: TextStyle(fontSize: 12),
-            //               ),
-            //             ],
-            //           ),
-            //         ),
-
-            //         Padding(
-            //           padding: const EdgeInsets.symmetric(horizontal: 24.0),
-            //           child: Column(
-            //             mainAxisAlignment: MainAxisAlignment.center,
-            //             children: [
-            //               const Align(
-            //                 alignment: Alignment.centerLeft,
-            //                 child: Text(
-            //                   'Phone Number',
-            //                   style: TextStyle(
-            //                     fontSize: 16,
-            //                     fontWeight: FontWeight.w600,
-            //                   ),
-            //                 ),
-            //               ),
-            //               const SizedBox(height: 8),
-            //               IntlPhoneField(
-            //                 decoration: const InputDecoration(
-            //                   hintText: 'Enter Phone number',
-            //                   fillColor: Color(0xFFF2F2F2),
-            //                   filled: true,
-            //                   border: OutlineInputBorder(
-            //                     borderRadius: BorderRadius.all(Radius.circular(12)),
-            //                     borderSide: BorderSide.none,
-            //                   ),
-            //                 ),
-            //                 initialCountryCode: 'IN',
-            //                 onChanged: (phone) {
-            //                   print(phone.completeNumber);
-            //                 },
-            //               ),
-            //               // const SizedBox(height: 10),
-            //               const Align(
-            //                 alignment: Alignment.centerLeft,
-            //                 child: Text(
-            //                   'Password',
-            //                   style: TextStyle(
-            //                     fontSize: 16,
-            //                     fontWeight: FontWeight.w600,
-            //                   ),
-            //                 ),
-            //               ),
-            //               const SizedBox(height: 8),
-            //               TextField(
-            //                 obscureText: true,
-            //                 decoration: InputDecoration(
-            //                   hintText: 'Enter Password',
-            //                   filled: true,
-            //                   fillColor: const Color(0xFFF2F2F2),
-            //                   border: OutlineInputBorder(
-            //                     borderRadius: BorderRadius.circular(12),
-            //                     borderSide: BorderSide.none,
-            //                   ),
-            //                 ),
-            //               ),
-            //               const SizedBox(height: 24),
-            //               SizedBox(
-            //                 width: double.infinity,
-            //                 height: 50,
-            //                 child: ElevatedButton(
-            //                   onPressed: () {},
-            //                   style: ElevatedButton.styleFrom(
-            //                     backgroundColor: Colors.orange,
-            //                     shape: RoundedRectangleBorder(
-            //                       borderRadius: BorderRadius.circular(30),
-            //                     ),
-            //                   ),
-            //                   child: const Text(
-            //                     'Login',
-            //                     style: TextStyle(
-            //                       fontSize: 18,
-            //                       fontWeight: FontWeight.bold,
-            //                     ),
-            //                   ),
-            //                 ),
-            //               ),
-            //               const SizedBox(height: 16),
-            //               Row(
-            //                 mainAxisAlignment: MainAxisAlignment.center,
-            //                 children: const [
-            //                   Text(
-            //                     "Don't Have an Account?",
-            //                     style: TextStyle(color: Colors.grey),
-            //                   ),
-            //                   SizedBox(width: 4),
-            //                   Text(
-            //                     'Create Account',
-            //                     style: TextStyle(
-            //                       color: Colors.orange,
-            //                       fontWeight: FontWeight.bold,
-            //                     ),
-            //                   ),
-            //                 ],
-            //               ),
-            //             ],
-            //           ),
-            //         ),
-            //       ],
-            //     ),
-            //   ),
-            // );
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 }
-
-
-
-
-
-
-// Center(
-            //   child: Form(
-            //     key: _formKey,
-            //     child: Column(
-            //       mainAxisAlignment: MainAxisAlignment.center,
-            //       children: [
-            //         Text("Phone Number"),
-            //         IntlPhoneField(
-            //           decoration: InputDecoration(
-            //             labelText: 'Phone Number',
-            //             border: OutlineInputBorder(
-            //               borderRadius: BorderRadius.circular(20),
-            //               borderSide: BorderSide(),
-            //             ),
-            //           ),
-            //           initialCountryCode: 'IN',
-            //           onChanged: (phone) {
-            //             print(phone.completeNumber);
-            //           },
-            //         ),
-            //         Text("Password"),
-            //         TextFormField(
-            //           decoration: InputDecoration(
-            //             labelText: "Enter your password",
-            //             border: OutlineInputBorder(
-            //               borderRadius: BorderRadius.circular(20),
-            //               borderSide: BorderSide(),
-            //             ),
-            //           ),
-            //         ),
-            //       ],
-            //     ),
-            //   ),
-            // ),
