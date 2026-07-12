@@ -198,75 +198,75 @@ class _RequestsScreenState extends State<RequestsScreen> {
             ),
           ),
 
-          // ── NEED HELP BANNER ──
-          Container(
-            margin: const EdgeInsets.fromLTRB(16, 8, 16, 12),
-            padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-            decoration: BoxDecoration(
-              color: const Color(0xFFF0F5FF),
-              borderRadius: BorderRadius.circular(16),
-            ),
-            child: Row(
-              children: [
-                Container(
-                  width: 44,
-                  height: 44,
-                  decoration: const BoxDecoration(
-                    color: Color(0xFF2F80ED),
-                    shape: BoxShape.circle,
-                  ),
-                  child: const Icon(Icons.headset_mic_rounded,
-                      color: Colors.white, size: 20),
-                ),
-                const SizedBox(width: 12),
-                Expanded(
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: const [
-                      Text(
-                        "Need Help?",
-                        style: TextStyle(
-                          fontSize: 14,
-                          fontWeight: FontWeight.w700,
-                          color: Color(0xFF1A1A1A),
-                        ),
-                      ),
-                      SizedBox(height: 2),
-                      Text(
-                        "Our support team is here to assist you.",
-                        style: TextStyle(
-                          fontSize: 12,
-                          color: Color(0xFF707070),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-                const SizedBox(width: 8),
-                OutlinedButton(
-                  onPressed: () {},
-                  style: OutlinedButton.styleFrom(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 14, vertical: 10),
-                    side: const BorderSide(color: Color(0xFFDCE4F2), width: 1),
-                    backgroundColor: Colors.white,
-                    elevation: 0,
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(8),
-                    ),
-                  ),
-                  child: const Text(
-                    "Contact Support",
-                    style: TextStyle(
-                      fontSize: 12,
-                      color: Color(0xFF2F80ED),
-                      fontWeight: FontWeight.w600,
-                    ),
-                  ),
-                ),
-              ],
-            ),
-          ),
+          // // ── NEED HELP BANNER ──
+          // Container(
+          //   margin: const EdgeInsets.fromLTRB(16, 8, 16, 12),
+          //   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
+          //   decoration: BoxDecoration(
+          //     color: const Color(0xFFF0F5FF),
+          //     borderRadius: BorderRadius.circular(16),
+          //   ),
+          //   child: Row(
+          //     children: [
+          //       Container(
+          //         width: 44,
+          //         height: 44,
+          //         decoration: const BoxDecoration(
+          //           color: Color(0xFF2F80ED),
+          //           shape: BoxShape.circle,
+          //         ),
+          //         child: const Icon(Icons.headset_mic_rounded,
+          //             color: Colors.white, size: 20),
+          //       ),
+          //       const SizedBox(width: 12),
+          //       Expanded(
+          //         child: Column(
+          //           crossAxisAlignment: CrossAxisAlignment.start,
+          //           children: const [
+          //             Text(
+          //               "Need Help?",
+          //               style: TextStyle(
+          //                 fontSize: 14,
+          //                 fontWeight: FontWeight.w700,
+          //                 color: Color(0xFF1A1A1A),
+          //               ),
+          //             ),
+          //             SizedBox(height: 2),
+          //             Text(
+          //               "Our support team is here to assist you.",
+          //               style: TextStyle(
+          //                 fontSize: 12,
+          //                 color: Color(0xFF707070),
+          //               ),
+          //             ),
+          //           ],
+          //         ),
+          //       ),
+          //       const SizedBox(width: 8),
+          //       OutlinedButton(
+          //         onPressed: () {},
+          //         style: OutlinedButton.styleFrom(
+          //           padding: const EdgeInsets.symmetric(
+          //               horizontal: 14, vertical: 10),
+          //           side: const BorderSide(color: Color(0xFFDCE4F2), width: 1),
+          //           backgroundColor: Colors.white,
+          //           elevation: 0,
+          //           shape: RoundedRectangleBorder(
+          //             borderRadius: BorderRadius.circular(8),
+          //           ),
+          //         ),
+          //         child: const Text(
+          //           "Contact Support",
+          //           style: TextStyle(
+          //             fontSize: 12,
+          //             color: Color(0xFF2F80ED),
+          //             fontWeight: FontWeight.w600,
+          //           ),
+          //         ),
+          //       ),
+          //     ],
+          //   ),
+          // ),
 
           // Mimics system bottom navigation bar area padding
           // const SizedBox(height: 10),
