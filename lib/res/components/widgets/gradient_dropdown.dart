@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:skill_link/res/colors/app_color.dart';
 
 class GradientDropdown<T> extends StatelessWidget {
   final String hintText;
@@ -25,8 +26,8 @@ class GradientDropdown<T> extends StatelessWidget {
       decoration: BoxDecoration(
         gradient: const LinearGradient(
           colors: [
-            Color(0xFFFFD580), // soft yellow-orange top
-            Color(0xFFFFA726), // deeper orange bottom
+            // AppColor.primaryLight,
+            AppColor.primary,
           ],
           begin: Alignment.topLeft,
           end: Alignment.bottomRight,
@@ -36,7 +37,7 @@ class GradientDropdown<T> extends StatelessWidget {
       child: Container(
         margin: const EdgeInsets.all(1.8), // gradient border thickness
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColor.cardBackground,
           borderRadius: BorderRadius.circular(11),
         ),
         child: Padding(
@@ -48,12 +49,12 @@ class GradientDropdown<T> extends StatelessWidget {
               hint: Row(
                 children: [
                   if (prefixIcon != null)
-                    Icon(prefixIcon, color: Colors.orangeAccent),
+                    Icon(prefixIcon, color: AppColor.primary),
                   if (prefixIcon != null) const SizedBox(width: 8),
                   Text(
                     hintText,
                     style: const TextStyle(
-                      color: Colors.grey,
+                      color: AppColor.textHint,
                       fontSize: 16,
                     ),
                   ),
@@ -64,13 +65,13 @@ class GradientDropdown<T> extends StatelessWidget {
                   value: item,
                   child: Text(
                     item.toString(),
-                    style: const TextStyle(fontSize: 16, color: Colors.black),
+                    style: const TextStyle(fontSize: 16, color: AppColor.textPrimary),
                   ),
                 );
               }).toList(),
               onChanged: onChanged,
-              icon: const Icon(Icons.arrow_drop_down, color: Colors.orangeAccent),
-              dropdownColor: Colors.white,
+              icon: const Icon(Icons.arrow_drop_down, color: AppColor.primary),
+              dropdownColor: AppColor.cardBackground,
             ),
           ),
         ),

@@ -2,13 +2,15 @@ import 'package:flutter/material.dart';
 import '../res/colors/app_color.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  final String initial;
+  final String name;
+  final String location;
   final VoidCallback? onProfileTap;
   final VoidCallback? onNotificationTap;
 
   const CustomAppBar({
     super.key,
-    required this.initial,
+    required this.name,
+    required this.location,
     this.onProfileTap,
     this.onNotificationTap,
   });
@@ -16,74 +18,85 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
       decoration: const BoxDecoration(
-        color: Color(0xFFFFB64D),
-        // gradient: LinearGradient(
-        //   begin: Alignment.topCenter,
-        //   end: Alignment.bottomCenter,
-        //   colors: [
-        //     Color(0xFFFFB64D), // Same as CurvedBackground top color
-        //     Color(0xFFFFE7B3), // Bottom blend for smooth transition
-        //   ],
-        // ),
+        color: Colors.transparent,
       ),
       child: SafeArea(
         bottom: false,
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.spaceBetween,
           children: [
-            // Profile Box
+            // Profile Image
             GestureDetector(
               onTap: onProfileTap,
               child: Container(
-                width: 46,
-                height: 46,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12), // Rounded square
+                width: 45,
+                height: 45,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
                   color: AppColor.white,
-                ),
-                child: Center(
-                  child: Text(
-                    initial.toUpperCase(),
-                    style: TextStyle(
-                      fontSize: 22,
-                      color: AppColor.blackColor,
-                      fontWeight: FontWeight.bold,
-                    ),
+                  image: DecorationImage(
+                    image: AssetImage("assets/images/avatar.png"),
+                    fit: BoxFit.cover,
                   ),
                 ),
               ),
             ),
-
+            const SizedBox(width: 12),
+            // Name and Location
+            Expanded(
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  Text(
+                    name,
+                    style: const TextStyle(
+                      fontSize: 14,
+                      color: AppColor.textSecondary,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  Row(
+                    children: [
+                      Text(
+                        location,
+                        style: const TextStyle(
+                          fontSize: 16,
+                          color: AppColor.textPrimary,
+                          fontWeight: FontWeight.bold,
+                        ),
+                      ),
+                      const Icon(Icons.keyboard_arrow_down, size: 20, color: AppColor.textPrimary),
+                    ],
+                  ),
+                ],
+              ),
+            ),
             // Notification Box
             GestureDetector(
               onTap: onNotificationTap,
               child: Container(
-                width: 46,
-                height: 46,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  color: AppColor.white,
+                width: 40,
+                height: 40,
+                decoration: const BoxDecoration(
+                  shape: BoxShape.circle,
+                  color: AppColor.primary,
                 ),
-                child: Stack(
+                child: const Stack(
                   alignment: Alignment.center,
                   children: [
                     Icon(
                       Icons.notifications_none_rounded,
-                      color: AppColor.blackColor,
-                      size: 28,
+                      color: AppColor.white,
+                      size: 24,
                     ),
                     Positioned(
-                      right: 12,
-                      top: 12,
-                      child: Container(
-                        width: 10,
-                        height: 10,
-                        decoration: BoxDecoration(
-                          color: AppColor.red,
-                          borderRadius: BorderRadius.circular(50),
-                        ),
+                      right: 10,
+                      top: 10,
+                      child: CircleAvatar(
+                        radius: 4,
+                        backgroundColor: AppColor.red,
                       ),
                     ),
                   ],
@@ -97,5 +110,5 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   }
 
   @override
-  Size get preferredSize => const Size.fromHeight(70);
+  Size get preferredSize => const Size.fromHeight(80);
 }

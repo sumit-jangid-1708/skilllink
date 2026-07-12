@@ -17,13 +17,14 @@ class WorkerBottomSheet extends StatelessWidget {
       height: 220,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.vertical(top: Radius.circular(25)),
+        color: AppColor.cardBackground,
+        borderRadius: const BorderRadius.vertical(top: Radius.circular(25)),
+        border: const Border(top: BorderSide(color: AppColor.grey200)),
         boxShadow: [
           BoxShadow(
-            color: Colors.black26,
+            color: AppColor.black.withOpacity(0.1),
             blurRadius: 10,
-            offset: Offset(0, -2),
+            offset: const Offset(0, -2),
           ),
         ],
       ),
@@ -37,49 +38,59 @@ class WorkerBottomSheet extends StatelessWidget {
                 style: const TextStyle(
                   fontSize: 20,
                   fontWeight: FontWeight.bold,
+                  color: AppColor.textPrimary,
                 ),
               ),
               const Spacer(),
-              IconButton(icon: const Icon(Icons.close), onPressed: onClose),
+              IconButton(
+                icon: const Icon(Icons.close, color: AppColor.textSecondary),
+                onPressed: onClose,
+              ),
             ],
           ),
           const SizedBox(height: 8),
           const Text(
             "⭐ 4.0   |   ₹10/hour   |   18 min drive",
-            style: TextStyle(color: Colors.grey),
+            style: TextStyle(color: AppColor.textSecondary),
           ),
           const SizedBox(height: 16),
-          const Expanded(
+          Expanded(
             child: Row(
               children: [
-                CircleAvatar(
+                const CircleAvatar(
                   radius: 35,
+                  backgroundColor: AppColor.grey200,
                   backgroundImage: AssetImage('assets/images/offerImage.png'),
                 ),
-                SizedBox(width: 16),
+                const SizedBox(width: 16),
                 Expanded(
                   child: Text(
                     "Experienced electrician for home and office wiring jobs.",
-                    style: TextStyle(fontSize: 14, color: Colors.black87),
+                    style: TextStyle(fontSize: 14, color: AppColor.textPrimary),
                   ),
                 ),
               ],
             ),
           ),
           const SizedBox(height: 12),
-          ElevatedButton(
-            style: ElevatedButton.styleFrom(
-              backgroundColor: AppColor.mainColor,
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(30),
+          SizedBox(
+            width: double.infinity,
+            child: ElevatedButton(
+              style: ElevatedButton.styleFrom(
+                backgroundColor: AppColor.primary,
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(30),
+                ),
+                padding: const EdgeInsets.symmetric(vertical: 12),
               ),
-              maximumSize: const Size.fromHeight(45),
-            ),
-
-            onPressed: () {},
-            child: const Text(
-              "Book Now",
-              style: TextStyle(color: Colors.white),
+              onPressed: () {},
+              child: const Text(
+                "Book Now",
+                style: TextStyle(
+                  color: AppColor.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
           ),
         ],

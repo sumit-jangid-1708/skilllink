@@ -1,4 +1,5 @@
 import "package:flutter/material.dart";
+import 'package:skill_link/res/colors/app_color.dart';
 
 class GradientTextField extends StatelessWidget {
   final String hintText;
@@ -17,7 +18,8 @@ class GradientTextField extends StatelessWidget {
     required this.keyboardType,
     this.prefixIcon,
     this.suffixIcon,
-    this.onSuffixTap});
+    this.onSuffixTap,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -25,46 +27,55 @@ class GradientTextField extends StatelessWidget {
     return Container(
       width: width * 0.9,
       decoration: BoxDecoration(
-        gradient: const LinearGradient(colors: [
-          Color(0xFFFFD580), // soft yellow-orange top
-          Color(0xFFFFA726), // deeper orange bottom
-        ],
-        begin: Alignment.topLeft,
-          end: Alignment.bottomRight
-        ),
+        color: AppColor.cardBackground,
         borderRadius: BorderRadius.circular(12),
+        border: Border.all(color: AppColor.grey200),
       ),
+      // decoration: BoxDecoration(
+      //   gradient: const LinearGradient(colors: [
+      //     // AppColor.primaryLight,
+      //     AppColor.primary,
+      //   ],
+      //   begin: Alignment.topLeft,
+      //     end: Alignment.bottomRight
+      //   ),
+      //   borderRadius: BorderRadius.circular(12),
+      // ),
       child: Container(
         margin: const EdgeInsets.all(1.8),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColor.cardBackground,
           borderRadius: BorderRadius.circular(11),
         ),
         child: TextField(
           controller: controller,
           obscureText: obscureText,
           keyboardType: keyboardType,
-          style: const TextStyle(fontSize: 16),
+          style: const TextStyle(fontSize: 16, color: AppColor.textPrimary),
           decoration: InputDecoration(
             hintText: hintText,
-            hintStyle: const TextStyle(color: Colors.grey),
-            prefixIcon: prefixIcon != null
-              ? Icon(prefixIcon, color: Colors.orangeAccent,)
-                :null,
-            suffixIcon: suffixIcon != null
-              ?GestureDetector(
-              onTap: onSuffixTap,
-              child: Icon(suffixIcon, color: Colors.orangeAccent,),
-            )
-                :null,
+            hintStyle: const TextStyle(color: AppColor.textHint),
+            prefixIcon:
+                prefixIcon != null
+                    ? Icon(prefixIcon, color: AppColor.primary)
+                    : null,
+            suffixIcon:
+                suffixIcon != null
+                    ? GestureDetector(
+                      onTap: onSuffixTap,
+                      child: Icon(suffixIcon, color: AppColor.primary),
+                    )
+                    : null,
             filled: true,
-            fillColor: Colors.white,
+            fillColor: AppColor.cardBackground,
             border: OutlineInputBorder(
               borderRadius: BorderRadius.circular(11),
               borderSide: BorderSide.none,
             ),
-            contentPadding:
-              const EdgeInsets.symmetric(vertical: 14, horizontal: 16),
+            contentPadding: const EdgeInsets.symmetric(
+              vertical: 14,
+              horizontal: 16,
+            ),
           ),
         ),
       ),

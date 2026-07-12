@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:skill_link/res/colors/app_color.dart';
 
 class ServiceListCard extends StatelessWidget {
   final String imagePath;
@@ -21,14 +22,15 @@ class ServiceListCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 8, ),
+      margin: const EdgeInsets.symmetric(vertical: 8),
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: Colors.white,
+        color: AppColor.white,
         borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: AppColor.grey200, width: 1),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
+            color: AppColor.black.withOpacity(0.05),
             blurRadius: 6,
             offset: const Offset(2, 4),
           )
@@ -63,13 +65,14 @@ class ServiceListCard extends StatelessWidget {
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
+                          color: AppColor.textPrimary,
                         ),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
                     IconButton(
                       onPressed: onFavorite,
-                      icon: const Icon(Icons.star, color: Colors.orange),
+                      icon: const Icon(Icons.star, color: AppColor.primary),
                     ),
                   ],
                 ),
@@ -77,13 +80,13 @@ class ServiceListCard extends StatelessWidget {
                 // Provider Name
                 Row(
                   children: [
-                    const Icon(Icons.person, size: 16, color: Colors.grey),
+                    const Icon(Icons.person, size: 16, color: AppColor.textSecondary),
                     const SizedBox(width: 4),
                     Flexible(
                       child: Text(
                         providerName,
                         style: const TextStyle(
-                            fontSize: 14, color: Colors.grey),
+                            fontSize: 14, color: AppColor.textSecondary),
                         overflow: TextOverflow.ellipsis,
                       ),
                     ),
@@ -101,6 +104,7 @@ class ServiceListCard extends StatelessWidget {
                       style: const TextStyle(
                         fontSize: 14,
                         fontWeight: FontWeight.w600,
+                        color: AppColor.primary,
                       ),
                     ),
                     SizedBox(
@@ -108,7 +112,7 @@ class ServiceListCard extends StatelessWidget {
                       child: ElevatedButton(
                         onPressed: onBookNow,
                         style: ElevatedButton.styleFrom(
-                          backgroundColor: Colors.orange,
+                          backgroundColor: AppColor.primary,
                           padding: const EdgeInsets.symmetric(horizontal: 12),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(12),
@@ -118,7 +122,7 @@ class ServiceListCard extends StatelessWidget {
                           "Book Now",
                           style: TextStyle(
                             fontSize: 13,
-                            color: Colors.white,
+                            color: AppColor.white,
                           ),
                         ),
                       ),

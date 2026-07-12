@@ -1,28 +1,34 @@
 import 'package:flutter/material.dart';
+import 'package:skill_link/res/colors/app_color.dart';
 
 class CustomButton extends StatelessWidget {
-  final String text;
+  final String? text;
   final VoidCallback onPressed;
   final double? width;
   final double? height;
-  final Color color;
+  final Color? color;
   final double borderRadius;
   final TextStyle? textStyle;
   final bool isDisabled;
   final Widget? icon;
+  final IconPosition iconPosition;
 
   const CustomButton({
     super.key,
-    required this.text,
+    this.text,
     required this.onPressed,
     this.width,
     this.height = 50,
-    this.color = const Color(0xFFFFB64D),
+    this.color,
     this.borderRadius = 12,
     this.textStyle,
     this.isDisabled = false,
     this.icon,
-  });
+    this.iconPosition = IconPosition.left,
+  }) : assert(
+         text != null || icon != null,
+         'At least one of text or icon must be provided',
+       );
 
   @override
   Widget build(BuildContext context) {
@@ -32,33 +38,58 @@ class CustomButton extends StatelessWidget {
       child: ElevatedButton(
         style: ElevatedButton.styleFrom(
           elevation: 3,
-          backgroundColor: isDisabled ? Colors.grey.shade400 : color,
+          backgroundColor: isDisabled ? AppColor.grey400 : (color ?? AppColor.primary),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(borderRadius),
           ),
         ),
-        // ✅ Fixed this line to actually call your provided onPressed callback
         onPressed: isDisabled ? null : onPressed,
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          mainAxisSize: MainAxisSize.min,
-          children: [
-            if (icon != null) ...[
-              icon!,
-              const SizedBox(width: 8),
-            ],
-            Text(
-              text,
-              style: textStyle ??
-                  const TextStyle(
-                    color: Colors.white,
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
-            ),
-          ],
+        child: _buildChild(),
         ),
-      ),
+    );
+  }
+
+  Widget _buildChild() {
+    // Icon only — no text
+    if (text == null && icon != null) {
+      return icon!;
+    }
+
+    // Text only — no icon
+    if (icon == null) {
+      return Text(
+        text!,
+        style:
+            textStyle ??
+            const TextStyle(
+              color: AppColor.white,
+              fontSize: 16,
+              fontWeight: FontWeight.bold,
+            ),
+      );
+    }
+
+    // Both icon and text
+    final textWidget = Text(
+      text!,
+      style:
+          textStyle ??
+          const TextStyle(
+            color: AppColor.white,
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+    );
+
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisSize: MainAxisSize.min,
+      children:
+          iconPosition == IconPosition.left
+              ? [icon!, const SizedBox(width: 8), textWidget]
+              : [textWidget, const SizedBox(width: 8), icon!],
     );
   }
 }
+
+enum IconPosition { left, right }

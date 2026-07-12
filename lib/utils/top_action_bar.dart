@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:skill_link/res/colors/app_color.dart';
 
 class TopActionBar extends StatelessWidget {
   final IconData leftIcon;
@@ -16,9 +17,9 @@ class TopActionBar extends StatelessWidget {
     this.onLeftTap,
     required this.rightIcon,
     this.onRightTap,
-    this.showNotificationDot= false,
-    this.backgroundColor= Colors.white,
-    this.iconColor= Colors.black,
+    this.showNotificationDot = false,
+    this.backgroundColor = AppColor.white,
+    this.iconColor = AppColor.textPrimary,
   });
 
   @override
@@ -45,7 +46,7 @@ class TopActionBar extends StatelessWidget {
                     width: 10,
                     height: 10,
                     decoration: BoxDecoration(
-                      color: Colors.red,
+                      color: AppColor.red,
                       borderRadius: BorderRadius.circular(50),
                     ),
                   ),

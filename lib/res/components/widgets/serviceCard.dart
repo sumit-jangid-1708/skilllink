@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:skill_link/res/colors/app_color.dart';
 
 class ServiceCard extends StatelessWidget {
   final String imagePath;
@@ -21,11 +22,12 @@ class ServiceCard extends StatelessWidget {
         margin: const EdgeInsets.symmetric(horizontal: 6, vertical: 4),
         padding: const EdgeInsets.symmetric(horizontal: 6, vertical: 6),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: AppColor.white,
           borderRadius: BorderRadius.circular(16),
+          border: Border.all(color: AppColor.grey200, width: 1),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.05),
+              color: AppColor.black.withOpacity(0.05),
               blurRadius: 4,
               offset: const Offset(2, 4),
             )
@@ -49,6 +51,7 @@ class ServiceCard extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 10, // Compact text size
                 fontWeight: FontWeight.w500,
+                color: AppColor.textPrimary,
               ),
               maxLines: 1,
               overflow: TextOverflow.ellipsis,

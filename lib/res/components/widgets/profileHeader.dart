@@ -15,23 +15,18 @@ class ProfileHeader extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(  // ✅ Fix infinite width issue
-      // width: MediaQuery.of(context).size.width, // screen width ke equal
+    return SizedBox(
       child: Container(
         decoration: BoxDecoration(
-          // color: Colors.orange,
-          // borderRadius: BorderRadius.only(
-          //   bottomLeft: Radius.circular(40),
-          //   bottomRight: Radius.circular(40),
-          // ),
           borderRadius: BorderRadius.circular(50),
+          color: AppColor.cardBackground,
         ),
         padding: const EdgeInsets.symmetric(vertical: 30, horizontal: 16),
         child: Column(
           children: [
             // Avatar
-            CircleAvatar(
-              backgroundColor: AppColor.white,
+            const CircleAvatar(
+              backgroundColor: AppColor.grey200,
               radius: 40,
               backgroundImage: NetworkImage("https://ik.imagekit.io/img4u/4b19d41e0ddf82539c2e239281939da495ccc7d5.png?updatedAt=1758465429790"),
             ),
@@ -43,7 +38,7 @@ class ProfileHeader extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
-                color: Colors.black,
+                color: AppColor.textPrimary,
               ),
             ),
 
@@ -52,7 +47,7 @@ class ProfileHeader extends StatelessWidget {
               email,
               style: const TextStyle(
                 fontSize: 14,
-                color: Colors.black54,
+                color: AppColor.textSecondary,
               ),
             ),
           ],
