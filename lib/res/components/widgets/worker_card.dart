@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:skill_link/res/colors/app_color.dart';
 
 class WorkerCard extends StatelessWidget {
@@ -38,10 +39,15 @@ class WorkerCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          CircleAvatar(
-            radius: 35,
-            backgroundImage: NetworkImage(imageUrl), // Use AssetImage if local
-            backgroundColor: AppColor.grey100,
+          ClipOval(
+            child: CachedNetworkImage(
+              imageUrl: imageUrl,
+              width: 70,
+              height: 70,
+              fit: BoxFit.cover,
+              placeholder: (context, url) => Container(color: AppColor.grey100),
+              errorWidget: (context, url, error) => const Icon(Icons.person),
+            ),
           ),
           const SizedBox(height: 12),
           Text(

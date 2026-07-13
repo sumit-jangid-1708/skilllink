@@ -213,7 +213,7 @@ class HomeScreen extends StatelessWidget {
                     rating: "4.6",
                     distance: "2.3 km",
                     imageUrl: "https://randomuser.me/api/portraits/men/32.jpg",
-                    onViewProfile: () {},
+                    onViewProfile: () { Get.toNamed(RouteName.workerProfileScreen);},
                   ),
                   const SizedBox(width: 16),
                   WorkerCard(

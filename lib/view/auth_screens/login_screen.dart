@@ -63,6 +63,7 @@ class _LoginScreenState extends State<LoginScreen> {
                     children: [
                       // ── BLUE TOP SECTION ──
                       SizedBox(
+                        width: size.width,
                         height: size.height * 0.28,
                         child: Stack(
                           children: [
@@ -79,8 +80,8 @@ class _LoginScreenState extends State<LoginScreen> {
                               ),
                             ),
                             Positioned(
-                              right: 10,
-                              top: 60,
+                              right: 30,
+                              top: 100,
                               child: Container(
                                 width: 120,
                                 height: 120,

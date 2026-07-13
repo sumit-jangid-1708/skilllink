@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:skill_link/res/colors/app_color.dart';
 import 'package:skill_link/res/components/widgets/request_card.dart';
+
+import '../../res/routes/routes_names.dart';
 
 class RequestsScreen extends StatefulWidget {
   const RequestsScreen({super.key});
@@ -192,7 +195,7 @@ class _RequestsScreenState extends State<RequestsScreen> {
                   price: item['price'],
                   status: item['status'],
                   categoryIcon: item['icon'],
-                  onTap: () {},
+                  onTap: () {Get.toNamed(RouteName.requestDetailsScreen);},
                 );
               },
             ),

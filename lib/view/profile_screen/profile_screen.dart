@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:skill_link/res/colors/app_color.dart';
 import 'package:skill_link/res/components/widgets/profile_option_tile.dart';
+import 'package:skill_link/res/routes/routes_names.dart';
 
 class ProfileScreen extends StatelessWidget {
   const ProfileScreen({super.key});
@@ -114,9 +116,9 @@ class ProfileScreen extends StatelessWidget {
                           ],
                         ),
                         const SizedBox(width: 20),
-                        Column(
+                        const Column(
                           crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
+                          children: [
                             Text(
                               "Rahul Kumar",
                               style: TextStyle(
@@ -158,7 +160,9 @@ class ProfileScreen extends StatelessWidget {
                 icon: Icons.edit_outlined,
                 iconBgColor: const Color(0xFFE8F0FF),
                 iconColor: AppColor.primary,
-                onTap: () {},
+                onTap: () {
+                  Get.toNamed(RouteName.editProfileScreen);
+                },
               ),
               const Divider(height: 1, indent: 60, endIndent: 20, color: AppColor.grey100),
               ProfileOptionTile(
