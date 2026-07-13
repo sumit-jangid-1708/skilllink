@@ -1,7 +1,5 @@
-// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:flutter/material.dart';
 import 'package:skill_link/res/colors/app_color.dart';
-
 
 class RoundButton extends StatelessWidget {
   const RoundButton({
@@ -9,8 +7,8 @@ class RoundButton extends StatelessWidget {
     required this.loading,
     required this.onPressed,
     required this.title,
-    this.textColor = AppColor.kColorPrimary,
-    this.buttonColor = AppColor.kColorAccent,
+    this.textColor = AppColor.white,
+    this.buttonColor = AppColor.primary,
     this.buttonWidth = 60,
     this.buttonHeight = 50,
   });
@@ -34,13 +32,13 @@ class RoundButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(50),
         ),
         child: loading
-            ? Center(child: CircularProgressIndicator())
+            ? const Center(child: CircularProgressIndicator(color: AppColor.white))
             : Center(
                 child: Text(title,
                     style: Theme.of(context)
                         .textTheme
                         .titleMedium!
-                        .copyWith(color: Colors.white))),
+                        .copyWith(color: textColor))),
       ),
     );
   }

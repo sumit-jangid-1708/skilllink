@@ -1,22 +1,40 @@
 import 'package:flutter/material.dart';
 
 class AppColor {
-  // Primary Colors from your palette
-  static const Color red = Color(0xFFFF0000);      // #ff0000
-  static const Color darkGrey = Color(0xFF2C2F36); // #2c2f36
-  static const Color grey = Color(0xFF85888F);     // #85888f
-  static const Color white = Color(0xFFFFFFFF);    // #ffffff
+  // ═══════════════════════════════════════
+  // SkillLink Design System (Matching Image)
+  // ═══════════════════════════════════════
+  
+  // Brand Colors
+  static const Color primary = Color(0xFF4C86FF);        // Vibrant Blue
+  static const Color primaryDark = Color(0xFF1A1D1E);    // Dark Blue/Black for "Skill"
+  static const Color accent = Color(0xFF8EB7FF);         // Soft Blue
+  
+  // Splash Gradient
+  static const Color gradientStart = Color(0xFF4C86FF);
+  static const Color gradientEnd = Color(0xFFF9FAFF);
 
-  // Keep your existing ones (if you still use them)
-  static const Color kColorPrimary = Color.fromARGB(255, 223, 38, 38);
-  static const Color kColorPrimaryDark = Color.fromARGB(255, 223, 38, 38);
-  static const Color kColorPrimaryDark2 = Color.fromARGB(255, 82, 47, 47);
-  static const Color kColorAccent = Color.fromARGB(255, 244, 140, 3);
-  static const Color kColorAccentDark = Color.fromARGB(255, 244, 140, 3);
-  static const Color kColorBackground = Color.fromARGB(255, 255, 235, 191);
-  static const Color kColorTextPrimary = Color(0xFF212121);
-  static const Color kColorTextSecondary = Color.fromARGB(255, 19, 18, 18);
-  static const Color blackColor = Color(0xFF000000);
-  static const Color mainColor = Color.fromARGB(255, 244, 140, 3);
+  // Backgrounds
+  static const Color background = Color(0xFFF9FAFF);
+  static const Color cardBackground = Color(0xFFFFFFFF);
+
+  // Text
+  static const Color textPrimary = Color(0xFF1A1D1E);    // Near black
+  static const Color textSecondary = Color(0xFF6A6A6A);  // Medium grey
+  static const Color textHint = Color(0xFFADB5BD);
+
+  // Status
+  static const Color white = Color(0xFFFFFFFF);
+  static const Color black = Color(0xFF000000);
+  static const Color red = Color(0xFFE74C3C);
+  static const Color warning = Color(0xFFFFB020);
+  static const Color success = Color(0xFF2ECC71);
+
+  static const Color grey50 = Color(0xFFF8F9FA);
+  static const Color grey100 = Color(0xFFF1F3F5);
+  static const Color grey200 = Color(0xFFE9ECEF);
+  static const Color grey400 = Color(0xFFCED4DA);
+  static const Color grey500 = Color(0xFFADB5BD);
+  // AppColor mein add karo
+
 }
-

@@ -8,4 +8,5 @@ class RouteName {
   static const String starScreen = "/starScreen";
   static const String bookingScreen = "/bookingScreen";
   static const String profileScreen = "/profileScreen";
+  static const String categoriesScreen = "/categoriesScreen";
 }

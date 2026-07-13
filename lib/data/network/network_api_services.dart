@@ -6,17 +6,34 @@ import 'package:http/http.dart' as http;
 import 'package:skill_link/data/app_exceptions.dart';
 import 'package:skill_link/data/network/base_api_services.dart';
 
+// Make sure to create this file
+import '../storage/app_storage.dart';
 
 class NetworkApiServices extends BaseApiServices {
-  @override
-  Future<dynamic> getApi(String url) async {
-    if (kDebugMode) {
-      print(url);
+
+  // ✅ Auth header helper
+  Future<Map<String, String>> _getHeaders({bool requiresAuth = true}) async {
+    Map<String, String> headers = {
+      'Content-Type': 'application/json',
+    };
+    if (requiresAuth) {
+      final token = AppStorage.getToken();
+      if (token != null) {
+        headers['Authorization'] = 'Bearer $token';
+      }
     }
+    return headers;
+  }
+
+  @override
+  Future<dynamic> getApi(String url, {bool requiresAuth = true}) async {
+    if (kDebugMode) print(url);
     dynamic responseJson;
     try {
-      final response =
-          await http.get(Uri.parse(url)).timeout(const Duration(seconds: 10));
+      final headers = await _getHeaders(requiresAuth: requiresAuth);
+      final response = await http
+          .get(Uri.parse(url), headers: headers)
+          .timeout(const Duration(seconds: 10));
       responseJson = returnResponse(response);
     } on SocketException {
       throw InternetExceptions('');
@@ -27,14 +44,31 @@ class NetworkApiServices extends BaseApiServices {
   }
 
   @override
-  Future<dynamic> postApi(var data, String url) async {
-    if (kDebugMode) {
-      print(url);
-    }
+  Future<dynamic> postApi(var data, String url, {bool requiresAuth = false}) async {
+    if (kDebugMode) print(url);
     dynamic responseJson;
     try {
+      final headers = await _getHeaders(requiresAuth: requiresAuth);
       final response = await http
-          .post(Uri.parse(url), body: data)
+          .post(Uri.parse(url), headers: headers, body: jsonEncode(data))
+          .timeout(const Duration(seconds: 10));
+      responseJson = returnResponse(response);
+    } on SocketException {
+      throw InternetExceptions('');
+    } on RequestTimeOut {
+      throw RequestTimeOut('');
+    }
+    return responseJson;
+  }
+
+  // ✅ PATCH method — status update ke liye
+  Future<dynamic> patchApi(var data, String url) async {
+    if (kDebugMode) print(url);
+    dynamic responseJson;
+    try {
+      final headers = await _getHeaders();
+      final response = await http
+          .patch(Uri.parse(url), headers: headers, body: jsonEncode(data))
           .timeout(const Duration(seconds: 10));
       responseJson = returnResponse(response);
     } on SocketException {
@@ -49,13 +83,18 @@ class NetworkApiServices extends BaseApiServices {
 dynamic returnResponse(http.Response response) {
   switch (response.statusCode) {
     case 200:
-      dynamic responseJson = jsonDecode(response.body);
-      return responseJson;
+    case 201:  // ✅ 201 Created bhi add kiya
+      return jsonDecode(response.body);
     case 400:
-      dynamic responseJson = jsonDecode(response.body);
-      return responseJson;
+      return jsonDecode(response.body);
+    case 401:
+      throw FetchDataException('Unauthorized - Please login again');
+    case 403:
+      throw FetchDataException('Permission denied');
+    case 404:
+      throw FetchDataException('Not found');
     default:
       throw FetchDataException(
-          'Error accured while communication with server${response.statusCode}');
+          'Error occurred while communication with server: ${response.statusCode}');
   }
 }

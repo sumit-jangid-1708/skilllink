@@ -14,7 +14,8 @@ class Utils {
   static toastMessage(String message) {
     Fluttertoast.showToast(
       msg: message,
-      backgroundColor: AppColor.blackColor,
+      backgroundColor: AppColor.grey400.withOpacity(0.9),
+      textColor: AppColor.white,
       gravity: ToastGravity.BOTTOM,
     );
   }
@@ -22,7 +23,8 @@ class Utils {
   static toastMessageCenter(String message) {
     Fluttertoast.showToast(
       msg: message,
-      backgroundColor: AppColor.blackColor,
+      backgroundColor: AppColor.grey400.withOpacity(0.9),
+      textColor: AppColor.white,
       gravity: ToastGravity.CENTER,
     );
   }
@@ -36,6 +38,13 @@ class Utils {
   }
 
   static snackBar(String title, String message) {
-    Get.snackbar(title, message);
+    Get.snackbar(
+      title,
+      message,
+      backgroundColor: AppColor.primary.withOpacity(0.1),
+      colorText: AppColor.textPrimary,
+      snackPosition: SnackPosition.BOTTOM,
+      margin: const EdgeInsets.all(15),
+    );
   }
 }
