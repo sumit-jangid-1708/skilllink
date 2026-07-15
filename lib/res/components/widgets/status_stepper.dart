@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:skill_link/res/colors/app_color.dart';
 
 class StatusStepper extends StatelessWidget {
   final List<StepData> steps;
@@ -13,12 +12,15 @@ class StatusStepper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       crossAxisAlignment: CrossAxisAlignment.start,
       children: List.generate(steps.length, (index) {
-        bool isActive = index <= currentStep;
-        bool isLast = index == steps.length - 1;
+        final bool isActive = index <= currentStep;
+        final bool isLast = index == steps.length - 1;
 
         return Expanded(
           child: Row(
@@ -29,46 +31,50 @@ class StatusStepper extends StatelessWidget {
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Container(
-                      padding: const EdgeInsets.all(8),
+                      width: 32,
+                      height: 32,
                       decoration: BoxDecoration(
-                        color: isActive ? AppColor.primary : Colors.grey.shade200,
+                        color: isActive ? colorScheme.primary : colorScheme.surfaceVariant,
                         shape: BoxShape.circle,
                       ),
                       child: Icon(
                         steps[index].icon,
-                        color: isActive ? Colors.white : Colors.grey.shade500,
-                        size: 16,
+                        color: isActive ? colorScheme.onPrimary : colorScheme.onSurfaceVariant,
+                        size: 18,
                       ),
                     ),
-                    const SizedBox(height: 6),
+                    const SizedBox(height: 8),
                     Text(
                       steps[index].title,
                       textAlign: TextAlign.center,
-                      style: TextStyle(
-                        fontSize: 9,
+                      maxLines: 2,
+                      overflow: TextOverflow.ellipsis,
+                      style: theme.textTheme.labelSmall?.copyWith(
                         fontWeight: isActive ? FontWeight.bold : FontWeight.normal,
-                        color: isActive ? AppColor.textPrimary : AppColor.textSecondary,
+                        color: isActive ? colorScheme.onSurface : colorScheme.onSurfaceVariant,
                       ),
                     ),
-                    const SizedBox(height: 2),
-                    Text(
-                      steps[index].time,
-                      textAlign: TextAlign.center,
-                      style: const TextStyle(
-                        fontSize: 7,
-                        color: AppColor.textSecondary,
+                    if (steps[index].time != "-") ...[
+                      const SizedBox(height: 4),
+                      Text(
+                        steps[index].time,
+                        textAlign: TextAlign.center,
+                        style: theme.textTheme.labelSmall?.copyWith(
+                          fontSize: 10,
+                          color: colorScheme.onSurfaceVariant.withOpacity(0.7),
+                        ),
                       ),
-                    ),
+                    ],
                   ],
                 ),
               ),
               if (!isLast)
                 Padding(
-                  padding: const EdgeInsets.only(top: 15),
+                  padding: const EdgeInsets.only(top: 16),
                   child: Container(
-                    width: 25, // Fixed width for the line between steps
+                    width: 20,
                     height: 2,
-                    color: index < currentStep ? AppColor.primary : Colors.grey.shade300,
+                    color: index < currentStep ? colorScheme.primary : colorScheme.outlineVariant,
                   ),
                 ),
             ],

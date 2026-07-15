@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:skill_link/res/colors/app_color.dart';
 import 'package:skill_link/view_models/controller/worker_profile_controller.dart';
 
 class WorkerProfileScreen extends StatelessWidget {
@@ -11,87 +10,90 @@ class WorkerProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Scaffold(
-      backgroundColor: const Color(0xFFF9FAFF),
+      backgroundColor: colorScheme.surface,
       body: Stack(
         children: [
           CustomScrollView(
             physics: const BouncingScrollPhysics(),
             slivers: [
-              _buildSliverAppBar(),
+              _buildSliverAppBar(context),
               SliverToBoxAdapter(
                 child: Container(
                   width: double.infinity,
-                  decoration: const BoxDecoration(
-                    color: Color(0xFFF9FAFF),
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(30),
-                      topRight: Radius.circular(30),
+                  decoration: BoxDecoration(
+                    color: colorScheme.surface,
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(32),
+                      topRight: Radius.circular(32),
                     ),
                   ),
                   child: Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 16.0),
                     child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: 35),
-                        _buildSectionHeader("About", showViewAll: false),
+                        const SizedBox(height: 32),
+                        _buildSectionHeader(context, "About", showViewAll: false),
                         const SizedBox(height: 12),
-                        const Text(
+                        Text(
                           "Professional plumber with 8+ years of experience in all types of plumbing services. Expert in pipe fitting, bathroom fittings, leak repair, and water tank installation.",
-                          style: TextStyle(
-                            color: Color(0xFF6A6A6A),
+                          style: theme.textTheme.bodyMedium?.copyWith(
+                            color: colorScheme.onSurfaceVariant,
                             height: 1.5,
-                            fontSize: 14,
                           ),
                         ),
-                        const SizedBox(height: 25),
+                        const SizedBox(height: 24),
 
-                        const Text(
+                        Text(
                           "Services",
-                          style: TextStyle(
-                            fontSize: 18,
-                            fontWeight: FontWeight.w800,
-                            color: Color(0xFF1A1D1E),
+                          style: theme.textTheme.titleMedium?.copyWith(
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
-                        const SizedBox(height: 15),
+                        const SizedBox(height: 16),
                         Wrap(
-                          spacing: 10,
-                          runSpacing: 10,
+                          spacing: 8,
+                          runSpacing: 8,
                           children: [
-                            _buildServiceChip("Pipe Fitting"),
-                            _buildServiceChip("Leak Repair"),
-                            _buildServiceChip("Bathroom Fittings"),
-                            _buildServiceChip("Drain Cleaning"),
-                            _buildServiceChip("Water Tank Installation"),
-                            _buildServiceChip("Tap Repair"),
+                            _buildServiceChip(context, "Pipe Fitting"),
+                            _buildServiceChip(context, "Leak Repair"),
+                            _buildServiceChip(context, "Bathroom Fittings"),
+                            _buildServiceChip(context, "Drain Cleaning"),
+                            _buildServiceChip(context, "Water Tank Installation"),
+                            _buildServiceChip(context, "Tap Repair"),
                           ],
                         ),
-                        const SizedBox(height: 25),
+                        const SizedBox(height: 24),
 
-                        _buildSectionHeader("Pricing", showViewAll: true),
-                        const SizedBox(height: 15),
+                        _buildSectionHeader(context, "Pricing", showViewAll: true),
+                        const SizedBox(height: 16),
                         SingleChildScrollView(
                           scrollDirection: Axis.horizontal,
                           physics: const BouncingScrollPhysics(),
                           child: Row(
                             children: [
                               _buildPriceCard(
+                                context,
                                 icon: Icons.build_outlined,
                                 title: "Basic Visit Charge",
                                 price: "₹150",
                                 desc: "Inspection & basic assessment",
                               ),
-                              const SizedBox(width: 15),
+                              const SizedBox(width: 12),
                               _buildPriceCard(
+                                context,
                                 icon: Icons.plumbing_outlined,
                                 title: "Pipe Fitting",
                                 price: "₹250 - ₹500",
                                 desc: "Per fitting (Material extra)",
                               ),
-                              const SizedBox(width: 15),
+                              const SizedBox(width: 12),
                               _buildPriceCard(
+                                context,
                                 icon: Icons.water_drop_outlined,
                                 title: "Leak Repair",
                                 price: "₹300 - ₹800",
@@ -100,11 +102,11 @@ class WorkerProfileScreen extends StatelessWidget {
                             ],
                           ),
                         ),
-                        const SizedBox(height: 25),
+                        const SizedBox(height: 24),
 
-                        _buildSectionHeader("Reviews (128)", showViewAll: true),
-                        const SizedBox(height: 15),
-                        _buildReviewCard(),
+                        _buildSectionHeader(context, "Reviews (128)", showViewAll: true),
+                        const SizedBox(height: 16),
+                        _buildReviewCard(context),
                         const SizedBox(height: 120),
                       ],
                     ),
@@ -113,36 +115,37 @@ class WorkerProfileScreen extends StatelessWidget {
               ),
             ],
           ),
-          _buildBottomActionButtons(),
+          _buildBottomActionButtons(context),
         ],
       ),
     );
   }
 
-  Widget _buildSliverAppBar() {
+  Widget _buildSliverAppBar(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return SliverAppBar(
-      expandedHeight: 400,
+      expandedHeight: 420,
       pinned: true,
       elevation: 0,
       automaticallyImplyLeading: false,
-      backgroundColor: const Color(0xFF4C86FF),
+      backgroundColor: colorScheme.primary,
       flexibleSpace: FlexibleSpaceBar(
         background: Stack(
           children: [
-            // Blue Gradient Background
             Container(
-              decoration: const BoxDecoration(
+              decoration: BoxDecoration(
                 gradient: LinearGradient(
                   begin: Alignment.topCenter,
                   end: Alignment.bottomCenter,
-                  colors: [Color(0xFF4C86FF), Color(0xFF2E6FF2)],
+                  colors: [colorScheme.primary, colorScheme.primary.withBlue(255)],
                 ),
               ),
             ),
-            // Decorative Background Shape
             Positioned(
-              right: -60,
-              top: 60,
+              right: -64,
+              top: 64,
               child: CircleAvatar(
                 radius: 100,
                 backgroundColor: Colors.white.withOpacity(0.05),
@@ -152,21 +155,40 @@ class WorkerProfileScreen extends StatelessWidget {
             SafeArea(
               child: Column(
                 children: [
-                  // 1. Top Buttons Row
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        _buildCircleIconButton(Icons.arrow_back, () => Get.back()),
+                        IconButton(
+                          onPressed: () => Get.back(),
+                          icon: const Icon(Icons.arrow_back, color: Colors.white),
+                          style: IconButton.styleFrom(
+                            backgroundColor: Colors.white.withOpacity(0.2),
+                            minimumSize: const Size(48, 48),
+                          ),
+                        ),
                         Row(
                           children: [
-                            _buildCircleIconButton(Icons.ios_share, () {}),
+                            IconButton(
+                              onPressed: () {},
+                              icon: const Icon(Icons.ios_share, color: Colors.white),
+                              style: IconButton.styleFrom(
+                                backgroundColor: Colors.white.withOpacity(0.2),
+                                minimumSize: const Size(48, 48),
+                              ),
+                            ),
                             const SizedBox(width: 12),
-                            Obx(() => _buildCircleIconButton(
-                              controller.isFavorite.value ? Icons.favorite : Icons.favorite_border,
-                              controller.toggleFavorite,
-                              iconColor: controller.isFavorite.value ? Colors.red : Colors.white,
+                            Obx(() => IconButton(
+                              onPressed: controller.toggleFavorite,
+                              icon: Icon(
+                                controller.isFavorite.value ? Icons.favorite : Icons.favorite_border,
+                                color: controller.isFavorite.value ? Colors.red : Colors.white,
+                              ),
+                              style: IconButton.styleFrom(
+                                backgroundColor: Colors.white.withOpacity(0.2),
+                                minimumSize: const Size(48, 48),
+                              ),
                             )),
                           ],
                         ),
@@ -174,18 +196,16 @@ class WorkerProfileScreen extends StatelessWidget {
                     ),
                   ),
 
-                  const SizedBox(height: 15),
+                  const SizedBox(height: 16),
 
-                  // 2. Profile Info Section
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
                     child: Row(
                       children: [
-                        // Worker Image Card
                         Container(
-                          width: 135,
+                          width: 140,
                           height: 160,
-                          padding: const EdgeInsets.all(7),
+                          padding: const EdgeInsets.all(4),
                           decoration: BoxDecoration(
                             color: Colors.white,
                             borderRadius: BorderRadius.circular(28),
@@ -193,7 +213,7 @@ class WorkerProfileScreen extends StatelessWidget {
                           child: Stack(
                             children: [
                               ClipRRect(
-                                borderRadius: BorderRadius.circular(22),
+                                borderRadius: BorderRadius.circular(24),
                                 child: CachedNetworkImage(
                                   imageUrl: "https://randomuser.me/api/portraits/men/32.jpg",
                                   fit: BoxFit.cover,
@@ -211,23 +231,23 @@ class WorkerProfileScreen extends StatelessWidget {
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(20),
                                     boxShadow: [
-                                      BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 5),
+                                      BoxShadow(color: Colors.black.withOpacity(0.05), blurRadius: 4),
                                     ],
                                   ),
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Container(
-                                        width: 6,
-                                        height: 6,
+                                        width: 8,
+                                        height: 8,
                                         decoration: const BoxDecoration(color: Color(0xFF2ECC71), shape: BoxShape.circle),
                                       ),
-                                      const SizedBox(width: 5),
+                                      const SizedBox(width: 4),
                                       const Text(
-                                        "Available Now",
+                                        "Available",
                                         style: TextStyle(
-                                          fontSize: 9,
-                                          fontWeight: FontWeight.w800,
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.bold,
                                           color: Color(0xFF2ECC71),
                                         ),
                                       ),
@@ -238,53 +258,49 @@ class WorkerProfileScreen extends StatelessWidget {
                             ],
                           ),
                         ),
-                        const SizedBox(width: 20),
-                        // Name and Rating Details
+                        const SizedBox(width: 16),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Row(
-                                children: const [
-                                  Text(
-                                    "Suresh M.",
-                                    style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 24,
-                                      fontWeight: FontWeight.w900,
+                                children: [
+                                  Expanded(
+                                    child: Text(
+                                      "Suresh M.",
+                                      style: theme.textTheme.headlineMedium?.copyWith(
+                                        color: Colors.white,
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ),
-                                  SizedBox(width: 6),
-                                  Icon(Icons.verified, color: Colors.white, size: 20),
+                                  const Icon(Icons.verified, color: Colors.white, size: 20),
                                 ],
                               ),
-                              const Text(
+                              Text(
                                 "Expert Plumber",
-                                style: TextStyle(
-                                  color: Colors.white70,
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.w500,
+                                style: theme.textTheme.titleMedium?.copyWith(
+                                  color: Colors.white.withOpacity(0.8),
                                 ),
                               ),
-                              const SizedBox(height: 15),
+                              const SizedBox(height: 16),
                               Row(
                                 children: [
-                                  const Icon(Icons.star, color: Color(0xFFFFB020), size: 18),
-                                  const SizedBox(width: 6),
-                                  const Text(
+                                  const Icon(Icons.star, color: Colors.amber, size: 20),
+                                  const SizedBox(width: 4),
+                                  Text(
                                     "4.6",
-                                    style: TextStyle(
+                                    style: theme.textTheme.titleMedium?.copyWith(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
-                                      fontSize: 16,
                                     ),
                                   ),
-                                  const SizedBox(width: 10),
-                                  Container(width: 1.5, height: 14, color: Colors.white30),
-                                  const SizedBox(width: 10),
-                                  const Text(
+                                  const SizedBox(width: 12),
+                                  Container(width: 1, height: 16, color: Colors.white.withOpacity(0.3)),
+                                  const SizedBox(width: 12),
+                                  Text(
                                     "128 Reviews",
-                                    style: TextStyle(color: Colors.white70, fontSize: 14),
+                                    style: theme.textTheme.bodyMedium?.copyWith(color: Colors.white.withOpacity(0.8)),
                                   ),
                                 ],
                               ),
@@ -295,12 +311,11 @@ class WorkerProfileScreen extends StatelessWidget {
                     ),
                   ),
 
-                  const SizedBox(height: 35),
+                  const SizedBox(height: 32),
 
-                  // 3. Exact Stats Card
                   Padding(
-                    padding: const EdgeInsets.symmetric(horizontal: 20),
-                    child: _buildExactStatsCard(),
+                    padding: const EdgeInsets.symmetric(horizontal: 16),
+                    child: _buildExactStatsCard(context),
                   ),
                 ],
               ),
@@ -311,74 +326,59 @@ class WorkerProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildCircleIconButton(IconData icon, VoidCallback onTap, {Color iconColor = Colors.white}) {
-    return Container(
-      width: 44,
-      height: 44,
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.15),
-        shape: BoxShape.circle,
-      ),
-      child: Material(
-        color: Colors.transparent,
-        child: InkWell(
-          onTap: onTap,
-          borderRadius: BorderRadius.circular(22),
-          child: Icon(icon, color: iconColor, size: 22),
-        ),
-      ),
-    );
-  }
+  Widget _buildExactStatsCard(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
 
-  Widget _buildExactStatsCard() {
     return Container(
-      padding: const EdgeInsets.symmetric(vertical: 18, horizontal: 15),
+      padding: const EdgeInsets.symmetric(vertical: 20, horizontal: 16),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(20),
+        color: colorScheme.surface,
+        borderRadius: BorderRadius.circular(24),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.1),
-            blurRadius: 20,
-            offset: const Offset(0, 10),
+            color: Colors.black.withOpacity(0.08),
+            blurRadius: 24,
+            offset: const Offset(0, 8),
           ),
         ],
       ),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          _buildExactStatItem(Icons.business_center_outlined, "8+", "Years Exp."),
-          _buildStatDivider(),
-          _buildExactStatItem(Icons.location_on_outlined, "2.3 km", "From you"),
-          _buildStatDivider(),
-          _buildExactStatItem(Icons.verified_user_outlined, "Verified", "Professional"),
+          _buildExactStatItem(context, Icons.business_center_outlined, "8+", "Years Exp."),
+          _buildStatDivider(context),
+          _buildExactStatItem(context, Icons.location_on_outlined, "2.3 km", "From you"),
+          _buildStatDivider(context),
+          _buildExactStatItem(context, Icons.verified_user_outlined, "Verified", "Professional"),
         ],
       ),
     );
   }
 
-  Widget _buildExactStatItem(IconData icon, String value, String label) {
+  Widget _buildExactStatItem(BuildContext context, IconData icon, String value, String label) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Row(
+      mainAxisSize: MainAxisSize.min,
       children: [
-        Icon(icon, size: 22, color: const Color(0xFF4C86FF)),
-        const SizedBox(width: 10),
+        Icon(icon, size: 20, color: colorScheme.primary),
+        const SizedBox(width: 8),
         Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
               value,
-              style: const TextStyle(
-                fontWeight: FontWeight.w900,
-                fontSize: 14,
-                color: Color(0xFF1A1D1E),
+              style: theme.textTheme.labelLarge?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: colorScheme.onSurface,
               ),
             ),
             Text(
               label,
-              style: const TextStyle(
-                color: Color(0xFFADB5BD),
-                fontSize: 10,
-                fontWeight: FontWeight.w600,
+              style: theme.textTheme.labelSmall?.copyWith(
+                color: colorScheme.onSurfaceVariant,
               ),
             ),
           ],
@@ -387,40 +387,43 @@ class WorkerProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildStatDivider() {
+  Widget _buildStatDivider(BuildContext context) {
     return Container(
-      height: 30,
+      height: 32,
       width: 1,
-      color: const Color(0xFFE9ECEF),
+      color: Theme.of(context).colorScheme.outlineVariant,
     );
   }
 
-  Widget _buildSectionHeader(String title, {required bool showViewAll}) {
+  Widget _buildSectionHeader(BuildContext context, String title, {required bool showViewAll}) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Row(
       mainAxisAlignment: MainAxisAlignment.spaceBetween,
       children: [
         Text(
           title,
-          style: const TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.w800,
-            color: Color(0xFF1A1D1E),
+          style: theme.textTheme.titleLarge?.copyWith(
+            fontWeight: FontWeight.bold,
           ),
         ),
         if (showViewAll)
-          GestureDetector(
-            onTap: () {},
+          TextButton(
+            onPressed: () {},
+            style: TextButton.styleFrom(
+              minimumSize: const Size(48, 48),
+            ),
             child: Row(
-              children: const [
+              children: [
                 Text(
                   "View All",
-                  style: TextStyle(
-                    color: Color(0xFF4C86FF),
-                    fontSize: 12,
+                  style: theme.textTheme.labelLarge?.copyWith(
+                    color: colorScheme.primary,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
-                Icon(Icons.chevron_right, size: 18, color: Color(0xFF4C86FF)),
+                Icon(Icons.chevron_right, size: 20, color: colorScheme.primary),
               ],
             ),
           ),
@@ -428,65 +431,67 @@ class WorkerProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildServiceChip(String label) {
-    return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
-      decoration: BoxDecoration(
-        color: const Color(0xFFF2F7FF),
-        borderRadius: BorderRadius.circular(10),
-        border: Border.all(color: const Color(0xFFE5EEFF)),
+  Widget _buildServiceChip(BuildContext context, String label) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    return Chip(
+      label: Text(label),
+      labelStyle: theme.textTheme.labelMedium?.copyWith(
+        color: colorScheme.primary,
+        fontWeight: FontWeight.bold,
       ),
-      child: Text(
-        label,
-        style: const TextStyle(
-          color: Color(0xFF4C86FF),
-          fontSize: 12,
-          fontWeight: FontWeight.w600,
-        ),
-      ),
+      backgroundColor: colorScheme.primaryContainer.withOpacity(0.3),
+      side: BorderSide(color: colorScheme.primary.withOpacity(0.1)),
+      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
     );
   }
 
-  Widget _buildPriceCard({required IconData icon, required String title, required String price, required String desc}) {
+  Widget _buildPriceCard(BuildContext context, {required IconData icon, required String title, required String price, required String desc}) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Container(
-      width: 165,
+      width: 170,
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFE9ECEF), width: 1),
+        color: colorScheme.surface,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: colorScheme.outlineVariant.withOpacity(0.5)),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
           Container(
             padding: const EdgeInsets.all(8),
-            decoration: const BoxDecoration(
-              color: Color(0xFFF2F7FF),
+            decoration: BoxDecoration(
+              color: colorScheme.primaryContainer.withOpacity(0.4),
               shape: BoxShape.circle,
             ),
-            child: Icon(icon, color: const Color(0xFF4C86FF), size: 20),
+            child: Icon(icon, color: colorScheme.primary, size: 20),
           ),
           const SizedBox(height: 12),
           Text(
             title,
-            style: const TextStyle(fontSize: 13, fontWeight: FontWeight.w700, color: Color(0xFF1A1D1E)),
+            style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
           const SizedBox(height: 4),
           Text(
             price,
-            style: const TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.w800,
-              color: Color(0xFF4C86FF),
+            style: theme.textTheme.titleLarge?.copyWith(
+              fontWeight: FontWeight.w900,
+              color: colorScheme.primary,
             ),
           ),
           const SizedBox(height: 8),
           Text(
             desc,
-            style: const TextStyle(color: Color(0xFF6A6A6A), fontSize: 11, height: 1.3),
+            style: theme.textTheme.labelSmall?.copyWith(
+              color: colorScheme.onSurfaceVariant,
+              height: 1.3,
+            ),
             maxLines: 2,
             overflow: TextOverflow.ellipsis,
           ),
@@ -495,28 +500,29 @@ class WorkerProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildReviewCard() {
+  Widget _buildReviewCard(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: const Color(0xFFE9ECEF)),
+        color: colorScheme.surface,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: colorScheme.outlineVariant.withOpacity(0.5)),
       ),
       child: Row(
         crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          Container(
-            width: 45,
-            height: 45,
-            decoration: const BoxDecoration(
-              color: Color(0xFFF2F7FF),
-              shape: BoxShape.circle,
-            ),
-            alignment: Alignment.center,
-            child: const Text(
+          CircleAvatar(
+            backgroundColor: colorScheme.primaryContainer.withOpacity(0.5),
+            radius: 24,
+            child: Text(
               "R",
-              style: TextStyle(color: Color(0xFF4C86FF), fontWeight: FontWeight.bold, fontSize: 18),
+              style: theme.textTheme.titleMedium?.copyWith(
+                color: colorScheme.primary,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
           const SizedBox(width: 12),
@@ -526,14 +532,14 @@ class WorkerProfileScreen extends StatelessWidget {
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
+                  children: [
                     Text(
                       "Rohit Sharma",
-                      style: TextStyle(fontWeight: FontWeight.w700, fontSize: 14, color: Color(0xFF1A1D1E)),
+                      style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
                     ),
                     Text(
                       "2 days ago",
-                      style: TextStyle(color: Color(0xFFADB5BD), fontSize: 11),
+                      style: theme.textTheme.labelSmall?.copyWith(color: colorScheme.onSurfaceVariant),
                     ),
                   ],
                 ),
@@ -541,13 +547,16 @@ class WorkerProfileScreen extends StatelessWidget {
                 Row(
                   children: List.generate(
                     5,
-                    (index) => const Icon(Icons.star, color: Color(0xFFFFB020), size: 14),
+                    (index) => const Icon(Icons.star, color: Colors.amber, size: 16),
                   ),
                 ),
                 const SizedBox(height: 8),
-                const Text(
+                Text(
                   "Great service! Fixed the leakage quickly and very professional behavior.",
-                  style: TextStyle(color: Color(0xFF6A6A6A), fontSize: 13, height: 1.4),
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                    height: 1.4,
+                  ),
                 ),
               ],
             ),
@@ -557,87 +566,56 @@ class WorkerProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildBottomActionButtons() {
+  Widget _buildBottomActionButtons(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Positioned(
       bottom: 0,
       left: 0,
       right: 0,
       child: Container(
-        padding: const EdgeInsets.fromLTRB(20, 15, 20, 30),
+        padding: EdgeInsets.fromLTRB(16, 16, 16, MediaQuery.of(context).padding.bottom + 16),
         decoration: BoxDecoration(
-          color: Colors.white,
+          color: colorScheme.surface,
           boxShadow: [
             BoxShadow(
               color: Colors.black.withOpacity(0.05),
-              blurRadius: 10,
-              offset: const Offset(0, -5),
+              blurRadius: 16,
+              offset: const Offset(0, -4),
             ),
           ],
         ),
         child: Row(
           children: [
             Expanded(
-              child: Container(
-                height: 52,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(12),
-                  border: Border.all(color: const Color(0xFFE9ECEF)),
-                ),
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(12),
-                  onTap: () => controller.startChat(),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(Icons.chat_bubble_outline, size: 20, color: Color(0xFF4C86FF)),
-                      SizedBox(width: 10),
-                      Text(
-                        "Chat",
-                        style: TextStyle(
-                          color: Color(0xFF4C86FF),
-                          fontWeight: FontWeight.w700,
-                          fontSize: 16,
-                        ),
-                      ),
-                    ],
-                  ),
+              child: OutlinedButton.icon(
+                onPressed: () => controller.startChat(),
+                icon: const Icon(Icons.chat_bubble_outline),
+                label: const Text("Chat"),
+                style: OutlinedButton.styleFrom(
+                  minimumSize: const Size(0, 56),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                  side: BorderSide(color: colorScheme.outlineVariant),
+                  foregroundColor: colorScheme.primary,
+                  textStyle: const TextStyle(fontWeight: FontWeight.bold),
                 ),
               ),
             ),
-            const SizedBox(width: 15),
+            const SizedBox(width: 12),
             Expanded(
               flex: 2,
-              child: Container(
-                height: 52,
-                decoration: BoxDecoration(
-                  color: const Color(0xFF4C86FF),
-                  borderRadius: BorderRadius.circular(12),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color(0xFF4C86FF).withOpacity(0.3),
-                      blurRadius: 12,
-                      offset: const Offset(0, 6),
-                    ),
-                  ],
-                ),
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(12),
-                  onTap: () => controller.bookNow(),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: const [
-                      Icon(Icons.calendar_today_outlined, size: 20, color: Colors.white),
-                      SizedBox(width: 10),
-                      Text(
-                        "Book Now",
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.w700,
-                          fontSize: 16,
-                        ),
-                      ),
-                    ],
-                  ),
+              child: FilledButton.icon(
+                onPressed: () => controller.bookNow(),
+                icon: const Icon(Icons.calendar_today_outlined),
+                label: const Text("Book Now"),
+                style: FilledButton.styleFrom(
+                  minimumSize: const Size(0, 56),
+                  shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+                  backgroundColor: colorScheme.primary,
+                  foregroundColor: colorScheme.onPrimary,
+                  textStyle: const TextStyle(fontWeight: FontWeight.bold),
+                  elevation: 0,
                 ),
               ),
             ),

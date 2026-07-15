@@ -28,20 +28,24 @@ class RequestCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    return InkWell(
       onTap: onTap,
+      borderRadius: BorderRadius.circular(20),
       child: Container(
         margin: const EdgeInsets.only(bottom: 12),
-        padding: const EdgeInsets.all(14),
+        padding: const EdgeInsets.all(16),
         decoration: BoxDecoration(
-          color: Colors.white,
-          borderRadius: BorderRadius.circular(16),
-          border: Border.all(color: const Color(0xFFF3F3F3), width: 1),
+          color: colorScheme.surface,
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(color: colorScheme.outlineVariant.withOpacity(0.5)),
           boxShadow: [
             BoxShadow(
-              color: Colors.black.withOpacity(0.02),
-              blurRadius: 6,
-              offset: const Offset(0, 2),
+              color: Colors.black.withOpacity(0.04),
+              blurRadius: 10,
+              offset: const Offset(0, 4),
             ),
           ],
         ),
@@ -50,16 +54,16 @@ class RequestCard extends StatelessWidget {
           children: [
             // ── Category Icon Container ──
             Container(
-              width: 58,
-              height: 58,
+              width: 50,
+              height: 50,
               decoration: BoxDecoration(
-                color: const Color(0xFFF0F5FF),
-                borderRadius: BorderRadius.circular(12),
+                color: colorScheme.primaryContainer.withOpacity(0.4),
+                borderRadius: BorderRadius.circular(16),
               ),
-              child: Icon(categoryIcon, color: const Color(0xFF2F80ED), size: 28),
+              child: Icon(categoryIcon, color: colorScheme.primary, size: 28),
             ),
 
-            const SizedBox(width: 12),
+            const SizedBox(width: 16),
 
             // ── Middle Meta Text details ──
             Expanded(
@@ -68,35 +72,32 @@ class RequestCard extends StatelessWidget {
                 children: [
                   Text(
                     title,
-                    style: const TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w700,
-                      color: Color(0xFF1A1A1A),
+                    style: theme.textTheme.titleMedium?.copyWith(
+                      fontWeight: FontWeight.bold,
                     ),
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                   ),
-                  const SizedBox(height: 3),
                   Text(
                     category,
-                    style: const TextStyle(
-                      fontSize: 12,
-                      color: Color(0xFF888888),
+                    style: theme.textTheme.bodySmall?.copyWith(
+                      color: colorScheme.onSurfaceVariant,
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 12),
 
                   // Location Row
                   Row(
                     children: [
-                      const Icon(Icons.location_on_rounded,
-                          size: 13, color: Color(0xFF2F80ED)),
-                      const SizedBox(width: 4),
+                      Icon(Icons.location_on_rounded,
+                          size: 14, color: colorScheme.primary),
+                      const SizedBox(width: 8),
                       Expanded(
                         child: Text(
                           location,
-                          style: const TextStyle(
-                              fontSize: 11, color: Color(0xFF707070)),
+                          style: theme.textTheme.bodySmall?.copyWith(
+                            color: colorScheme.onSurfaceVariant,
+                          ),
                           maxLines: 1,
                           overflow: TextOverflow.ellipsis,
                         ),
@@ -108,13 +109,14 @@ class RequestCard extends StatelessWidget {
                   // Date Row
                   Row(
                     children: [
-                      const Icon(Icons.calendar_month_rounded,
-                          size: 13, color: Color(0xFF2F80ED)),
-                      const SizedBox(width: 4),
+                      Icon(Icons.calendar_month_rounded,
+                          size: 14, color: colorScheme.primary),
+                      const SizedBox(width: 8),
                       Text(
                         "$date  •  $time",
-                        style: const TextStyle(
-                            fontSize: 11, color: Color(0xFF707070)),
+                        style: theme.textTheme.bodySmall?.copyWith(
+                          color: colorScheme.onSurfaceVariant,
+                        ),
                       ),
                     ],
                   ),
@@ -122,28 +124,27 @@ class RequestCard extends StatelessWidget {
               ),
             ),
 
-            const SizedBox(width: 8),
+            const SizedBox(width: 12),
 
-            // ── Right Component Content Layout (Dynamic Structure) ──
+            // ── Right Component Content Layout ──
             Column(
               crossAxisAlignment: CrossAxisAlignment.end,
               children: [
-                _buildStatusBadge(status),
-                const SizedBox(height: 20), // Controlled separation
+                _buildStatusBadge(context, status),
+                const SizedBox(height: 16),
                 Row(
                   mainAxisSize: MainAxisSize.min,
                   children: [
                     Text(
                       "₹$price",
-                      style: const TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w700,
-                        color: Color(0xFF2F80ED),
+                      style: theme.textTheme.titleMedium?.copyWith(
+                        fontWeight: FontWeight.bold,
+                        color: colorScheme.primary,
                       ),
                     ),
-                    const SizedBox(width: 2),
-                    const Icon(Icons.chevron_right_rounded,
-                        color: Color(0xFFBCBCBC), size: 20),
+                    const SizedBox(width: 4),
+                    Icon(Icons.chevron_right_rounded,
+                        color: colorScheme.onSurfaceVariant, size: 20),
                   ],
                 ),
               ],
@@ -154,46 +155,48 @@ class RequestCard extends StatelessWidget {
     );
   }
 
-  Widget _buildStatusBadge(RequestStatus status) {
+  Widget _buildStatusBadge(BuildContext context, RequestStatus status) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+    
     Color bgColor;
     Color textColor;
     String label;
 
     switch (status) {
       case RequestStatus.pending:
-        bgColor = const Color(0xFFFFF4E6);
-        textColor = const Color(0xFFFF9200);
+        bgColor = Colors.orange.withOpacity(0.1);
+        textColor = Colors.orange.shade800;
         label = "Pending";
         break;
       case RequestStatus.accepted:
-        bgColor = const Color(0xFFE6F0FF);
-        textColor = const Color(0xFF2F80ED);
+        bgColor = colorScheme.primaryContainer;
+        textColor = colorScheme.onPrimaryContainer;
         label = "Accepted";
         break;
       case RequestStatus.completed:
-        bgColor = const Color(0xFFE8F8EE);
-        textColor = const Color(0xFF27AE60);
+        bgColor = Colors.green.withOpacity(0.1);
+        textColor = Colors.green.shade800;
         label = "Completed";
         break;
       case RequestStatus.cancelled:
-        bgColor = const Color(0xFFFFEBEB);
-        textColor = const Color(0xFFEB5757);
+        bgColor = colorScheme.errorContainer;
+        textColor = colorScheme.onErrorContainer;
         label = "Cancelled";
         break;
     }
 
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 6),
       decoration: BoxDecoration(
         color: bgColor,
-        borderRadius: BorderRadius.circular(6),
+        borderRadius: BorderRadius.circular(8),
       ),
       child: Text(
         label,
-        style: TextStyle(
+        style: theme.textTheme.labelSmall?.copyWith(
           color: textColor,
-          fontSize: 10,
-          fontWeight: FontWeight.w700,
+          fontWeight: FontWeight.bold,
         ),
       ),
     );

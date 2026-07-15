@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:skill_link/res/colors/app_color.dart';
 import 'package:skill_link/res/components/widgets/category_card.dart';
 import 'package:skill_link/res/components/widgets/custom_search_bar.dart';
 import 'package:skill_link/res/components/widgets/worker_card.dart';
@@ -11,33 +10,35 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Scaffold(
-      backgroundColor: AppColor.background,
+      backgroundColor: colorScheme.surface,
       body: SingleChildScrollView(
         child: Column(
           children: [
-            // Header Section with Blue Gradient
+            // Header Section with MD3 Styling
             Stack(
               clipBehavior: Clip.none,
               children: [
                 Container(
-                  height: 280,
                   width: double.infinity,
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [
-                        Color(0xFF4C86FF),
-                        Color(0xFF2E6FF2),
+                        colorScheme.primary,
+                        colorScheme.primary.withBlue(255),
                       ],
                     ),
-                    borderRadius: BorderRadius.only(
+                    borderRadius: const BorderRadius.only(
                       bottomLeft: Radius.circular(40),
                       bottomRight: Radius.circular(40),
                     ),
                   ),
-                  padding: const EdgeInsets.fromLTRB(20, 60, 20, 0),
+                  padding: EdgeInsets.fromLTRB(20, MediaQuery.of(context).padding.top + 20, 20, 60),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
@@ -46,19 +47,17 @@ class HomeScreen extends StatelessWidget {
                         children: [
                           Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
+                            children: [
                               Text(
                                 "Good morning,",
-                                style: TextStyle(
-                                  color: Colors.white70,
-                                  fontSize: 14,
+                                style: theme.textTheme.bodyMedium?.copyWith(
+                                  color: Colors.white.withOpacity(0.8),
                                 ),
                               ),
                               Text(
                                 "Rahul Kumar",
-                                style: TextStyle(
+                                style: theme.textTheme.headlineSmall?.copyWith(
                                   color: Colors.white,
-                                  fontSize: 24,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
@@ -66,23 +65,23 @@ class HomeScreen extends StatelessWidget {
                           ),
                           Row(
                             children: [
-                              _buildHeaderAction(Icons.notifications_none_rounded),
+                              _buildHeaderAction(context, Icons.notifications_none_rounded),
                               const SizedBox(width: 12),
-                              _buildHeaderAction(Icons.person_outline_rounded),
+                              _buildHeaderAction(context, Icons.person_outline_rounded),
                             ],
                           )
                         ],
                       ),
-                      const SizedBox(height: 20),
+                      const SizedBox(height: 8),
                       Row(
-                        children: const [
-                          Icon(Icons.location_on_rounded, color: Colors.white, size: 18),
-                          SizedBox(width: 8),
+                        children: [
+                          const Icon(Icons.location_on_rounded, color: Colors.white, size: 18),
+                          const SizedBox(width: 8),
                           Text(
                             "Koramangala, Bengaluru 560034",
-                            style: TextStyle(color: Colors.white, fontSize: 13),
+                            style: theme.textTheme.bodySmall?.copyWith(color: Colors.white),
                           ),
-                          Icon(Icons.keyboard_arrow_down_rounded, color: Colors.white, size: 18),
+                          // const Icon(Icons.keyboard_arrow_down_rounded, color: Colors.white, size: 18),
                         ],
                       ),
                     ],
@@ -98,19 +97,29 @@ class HomeScreen extends StatelessWidget {
               ],
             ),
 
-            const SizedBox(height: 50),
+            const SizedBox(height: 48),
 
             // Offer Banner
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Container(
                 width: double.infinity,
-                padding: const EdgeInsets.all(20),
+                padding: const EdgeInsets.all(24),
                 decoration: BoxDecoration(
-                  gradient: const LinearGradient(
-                    colors: [Color(0xFF0052D4), Color(0xFF4364F7), Color(0xFF6FB1FC)],
+                  gradient: LinearGradient(
+                    colors: [
+                      colorScheme.primary,
+                      colorScheme.secondary,
+                    ],
                   ),
-                  borderRadius: BorderRadius.circular(20),
+                  borderRadius: BorderRadius.circular(24),
+                  boxShadow: [
+                    BoxShadow(
+                      color: colorScheme.primary.withOpacity(0.2),
+                      blurRadius: 15,
+                      offset: const Offset(0, 8),
+                    )
+                  ],
                 ),
                 child: Row(
                   children: [
@@ -119,39 +128,43 @@ class HomeScreen extends StatelessWidget {
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
                           Container(
-                            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+                            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
                             decoration: BoxDecoration(
                               color: Colors.white.withOpacity(0.2),
-                              borderRadius: BorderRadius.circular(4),
+                              borderRadius: BorderRadius.circular(8),
                             ),
-                            child: const Text(
+                            child: Text(
                               "NEW USERS",
-                              style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.bold),
+                              style: theme.textTheme.labelSmall?.copyWith(
+                                color: Colors.white,
+                                fontWeight: FontWeight.bold,
+                                letterSpacing: 1,
+                              ),
                             ),
                           ),
                           const SizedBox(height: 12),
-                          const Text(
+                          Text(
                             "First Service\nFREE!",
-                            style: TextStyle(
+                            style: theme.textTheme.headlineSmall?.copyWith(
                               color: Colors.white,
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
+                              fontWeight: FontWeight.w900,
                             ),
                           ),
                           const SizedBox(height: 8),
-                          const Text(
+                          Text(
                             "Book any service today",
-                            style: TextStyle(color: Colors.white70, fontSize: 12),
+                            style: theme.textTheme.bodySmall?.copyWith(color: Colors.white70),
                           ),
                         ],
                       ),
                     ),
-                    ElevatedButton(
+                    FilledButton(
                       onPressed: () {},
-                      style: ElevatedButton.styleFrom(
+                      style: FilledButton.styleFrom(
                         backgroundColor: Colors.white,
-                        foregroundColor: AppColor.primary,
-                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(8)),
+                        foregroundColor: colorScheme.primary,
+                        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+                        padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 12),
                       ),
                       child: const Text("Book Now", style: TextStyle(fontWeight: FontWeight.bold)),
                     ),
@@ -160,27 +173,27 @@ class HomeScreen extends StatelessWidget {
               ),
             ),
             
-            const SizedBox(height: 12),
+            const SizedBox(height: 16),
             // Carousel Dots
             Row(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
-                _buildDot(true),
-                _buildDot(false),
-                _buildDot(false),
+                _buildDot(context, true),
+                _buildDot(context, false),
+                _buildDot(context, false),
               ],
             ),
 
-            const SizedBox(height: 24),
+            const SizedBox(height: 32),
 
             // Categories Section
-            _buildSectionHeader("Categories", () {
+            _buildSectionHeader(context, "Categories", () {
               Get.toNamed(RouteName.categoriesScreen);
             }),
             const SizedBox(height: 16),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.only(left: 20),
+              padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Row(
                 children: [
                   CategoryCard(title: "Plumbing", icon: Icons.plumbing_rounded, isSelected: true, onTap: () {}),
@@ -192,7 +205,6 @@ class HomeScreen extends StatelessWidget {
                   CategoryCard(title: "AC Repair", icon: Icons.ac_unit_rounded, onTap: () {}),
                   const SizedBox(width: 16),
                   CategoryCard(title: "Carpentry", icon: Icons.handyman_rounded, onTap: () {}),
-                  const SizedBox(width: 16),
                 ],
               ),
             ),
@@ -200,11 +212,11 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 32),
 
             // Top Workers Section
-            _buildSectionHeader("Top Workers Nearby", () {}),
+            _buildSectionHeader(context, "Top Workers Nearby", () {}),
             const SizedBox(height: 16),
             SingleChildScrollView(
               scrollDirection: Axis.horizontal,
-              padding: const EdgeInsets.only(left: 20, bottom: 20),
+              padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
               child: Row(
                 children: [
                   WorkerCard(
@@ -233,42 +245,47 @@ class HomeScreen extends StatelessWidget {
                     imageUrl: "https://randomuser.me/api/portraits/men/85.jpg",
                     onViewProfile: () {},
                   ),
-                  const SizedBox(width: 16),
                 ],
               ),
             ),
-            const SizedBox(height: 80), // Space for bottom nav
+            const SizedBox(height: 32), // Padding before bottom of scroll
           ],
         ),
       ),
     );
   }
 
-  Widget _buildHeaderAction(IconData icon) {
-    return Container(
-      padding: const EdgeInsets.all(8),
-      decoration: BoxDecoration(
-        color: Colors.white.withOpacity(0.15),
-        shape: BoxShape.circle,
-        border: Border.all(color: Colors.white.withOpacity(0.2)),
+  Widget _buildHeaderAction(BuildContext context, IconData icon) {
+    return IconButton(
+      onPressed: () {},
+      icon: Icon(icon, color: Colors.white, size: 24),
+      style: IconButton.styleFrom(
+        backgroundColor: Colors.white.withOpacity(0.15),
+        shape: const CircleBorder(),
+        side: BorderSide(color: Colors.white.withOpacity(0.2)),
+        minimumSize: const Size(48, 48),
       ),
-      child: Icon(icon, color: Colors.white, size: 24),
     );
   }
 
-  Widget _buildDot(bool isActive) {
-    return Container(
+  Widget _buildDot(BuildContext context, bool isActive) {
+    final colorScheme = Theme.of(context).colorScheme;
+    return AnimatedContainer(
+      duration: const Duration(milliseconds: 300),
       margin: const EdgeInsets.symmetric(horizontal: 4),
       height: 6,
-      width: isActive ? 18 : 6,
+      width: isActive ? 24 : 6,
       decoration: BoxDecoration(
-        color: isActive ? AppColor.primary : AppColor.grey200,
+        color: isActive ? colorScheme.primary : colorScheme.outlineVariant,
         borderRadius: BorderRadius.circular(3),
       ),
     );
   }
 
-  Widget _buildSectionHeader(String title, VoidCallback onSeeAll) {
+  Widget _buildSectionHeader(BuildContext context, String title, VoidCallback onSeeAll) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20),
       child: Row(
@@ -276,21 +293,27 @@ class HomeScreen extends StatelessWidget {
         children: [
           Text(
             title,
-            style: const TextStyle(
-              fontSize: 18,
+            style: theme.textTheme.titleLarge?.copyWith(
               fontWeight: FontWeight.bold,
-              color: AppColor.textPrimary,
             ),
           ),
           TextButton(
             onPressed: onSeeAll,
+            style: TextButton.styleFrom(
+              minimumSize: const Size(48, 48),
+            ),
             child: Row(
-              children: const [
+              mainAxisSize: MainAxisSize.min,
+              children: [
                 Text(
                   "View All",
-                  style: TextStyle(color: AppColor.primary, fontWeight: FontWeight.w600),
+                  style: theme.textTheme.labelLarge?.copyWith(
+                    color: colorScheme.primary,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
-                Icon(Icons.arrow_forward_rounded, size: 16, color: AppColor.primary),
+                const SizedBox(width: 4),
+                Icon(Icons.arrow_forward_rounded, size: 16, color: colorScheme.primary),
               ],
             ),
           ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:skill_link/res/colors/app_color.dart';
 
 class ProfileOptionTile extends StatelessWidget {
   final String title;
@@ -21,32 +20,36 @@ class ProfileOptionTile extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return ListTile(
       onTap: onTap,
       contentPadding: const EdgeInsets.symmetric(horizontal: 16, vertical: 4),
       leading: Container(
-        padding: const EdgeInsets.all(8),
+        padding: const EdgeInsets.all(10),
         decoration: BoxDecoration(
-          color: iconBgColor,
-          borderRadius: BorderRadius.circular(10),
+          color: isDestructive 
+              ? colorScheme.errorContainer.withOpacity(0.5) 
+              : iconBgColor.withOpacity(0.5),
+          borderRadius: BorderRadius.circular(12),
         ),
         child: Icon(
           icon,
-          color: iconColor,
+          color: isDestructive ? colorScheme.error : iconColor,
           size: 22,
         ),
       ),
       title: Text(
         title,
-        style: TextStyle(
-          fontSize: 15,
+        style: theme.textTheme.bodyLarge?.copyWith(
           fontWeight: FontWeight.w500,
-          color: isDestructive ? Colors.red : AppColor.textPrimary,
+          color: isDestructive ? colorScheme.error : colorScheme.onSurface,
         ),
       ),
-      trailing: const Icon(
+      trailing: Icon(
         Icons.chevron_right_rounded,
-        color: AppColor.textHint,
+        color: colorScheme.onSurfaceVariant,
         size: 24,
       ),
     );

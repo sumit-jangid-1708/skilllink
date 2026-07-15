@@ -1,7 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:skill_link/res/colors/app_color.dart';
 import 'package:skill_link/res/components/widgets/custom_button.dart';
 import 'package:skill_link/view_models/controller/request_service_controller.dart';
 
@@ -12,19 +11,22 @@ class RequestServiceScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Scaffold(
-      backgroundColor: AppColor.white,
+      backgroundColor: colorScheme.surface,
       body: Stack(
         children: [
           // 1. Blue Background Gradient (Background Layer)
           Container(
-            height: 280, 
+            height: 280,
             width: double.infinity,
-            decoration: const BoxDecoration(
+            decoration: BoxDecoration(
               gradient: LinearGradient(
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight,
-                colors: [Color(0xFF4C86FF), Color(0xFF2E6FF2)],
+                colors: [colorScheme.primary, colorScheme.primary.withBlue(255)],
               ),
             ),
           ),
@@ -32,76 +34,76 @@ class RequestServiceScreen extends StatelessWidget {
           // 2. Foreground content layer
           Column(
             children: [
-              // Header UI (Transparent background, sits over blue)
-              _buildHeaderContent(),
+              // Header UI
+              _buildHeaderContent(context),
               
-              // White Body Section with Top Curves (Overlapping the blue)
+              // White Body Section with Top Curves
               Expanded(
                 child: Container(
                   width: double.infinity,
-                  decoration: const BoxDecoration(
-                    color: AppColor.white,
-                    borderRadius: BorderRadius.only(
-                      topLeft: Radius.circular(35),
-                      topRight: Radius.circular(35),
+                  decoration: BoxDecoration(
+                    color: colorScheme.surface,
+                    borderRadius: const BorderRadius.only(
+                      topLeft: Radius.circular(32),
+                      topRight: Radius.circular(32),
                     ),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black12,
+                        color: Colors.black.withOpacity(0.05),
                         blurRadius: 10,
-                        offset: Offset(0, -2),
+                        offset: const Offset(0, -4),
                       )
                     ],
                   ),
                   child: ClipRRect(
                     borderRadius: const BorderRadius.only(
-                      topLeft: Radius.circular(35),
-                      topRight: Radius.circular(35),
+                      topLeft: Radius.circular(32),
+                      topRight: Radius.circular(32),
                     ),
                     child: SingleChildScrollView(
                       physics: const BouncingScrollPhysics(),
-                      padding: const EdgeInsets.fromLTRB(20, 30, 20, 20),
+                      padding: const EdgeInsets.fromLTRB(20, 32, 20, 24),
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          _buildSectionTitle("1. Select Category"),
-                          const SizedBox(height: 15),
-                          _buildCategoryList(),
-                          const SizedBox(height: 12),
-                          _buildDotsIndicator(),
-                          const SizedBox(height: 30),
+                          _buildSectionTitle(context, "1. Select Category"),
+                          const SizedBox(height: 16),
+                          _buildCategoryList(context),
+                          const SizedBox(height: 16),
+                          _buildDotsIndicator(context),
+                          const SizedBox(height: 32),
                           
-                          _buildSectionTitle("2. Describe Your Issue"),
-                          const SizedBox(height: 15),
-                          _buildDescriptionBox(),
-                          const SizedBox(height: 30),
+                          _buildSectionTitle(context, "2. Describe Your Issue"),
+                          const SizedBox(height: 16),
+                          _buildDescriptionBox(context),
+                          const SizedBox(height: 32),
                           
-                          _buildSectionTitleWithSubtitle("3. Add Photos", "(Optional)"),
-                          const Text(
+                          _buildSectionTitleWithSubtitle(context, "3. Add Photos", "(Optional)"),
+                          Text(
                             "Add images to help professionals understand the issue better",
-                            style: TextStyle(color: AppColor.textSecondary, fontSize: 12),
+                            style: theme.textTheme.bodySmall?.copyWith(color: colorScheme.onSurfaceVariant),
                           ),
-                          const SizedBox(height: 15),
-                          _buildPhotoList(),
-                          const SizedBox(height: 30),
+                          const SizedBox(height: 16),
+                          _buildPhotoList(context),
+                          const SizedBox(height: 32),
                           
-                          _buildSectionTitle("4. Select Date & Time"),
-                          const SizedBox(height: 15),
+                          _buildSectionTitle(context, "4. Select Date & Time"),
+                          const SizedBox(height: 16),
                           _buildDateTimeSelectors(context),
-                          const SizedBox(height: 30),
+                          const SizedBox(height: 32),
                           
-                          _buildSectionTitle("5. Your Location"),
-                          const SizedBox(height: 15),
-                          _buildLocationCard(),
-                          const SizedBox(height: 40),
+                          _buildSectionTitle(context, "5. Your Location"),
+                          const SizedBox(height: 16),
+                          _buildLocationCard(context),
+                          const SizedBox(height: 48),
                           
                           CustomButton(
                             text: "Continue",
                             onPressed: () {},
-                            icon: const Icon(Icons.arrow_forward, color: Colors.white, size: 18),
+                            icon: const Icon(Icons.arrow_forward, size: 18),
                             iconPosition: IconPosition.right,
                           ),
-                          const SizedBox(height: 20),
+                          const SizedBox(height: 24),
                         ],
                       ),
                     ),
@@ -115,114 +117,107 @@ class RequestServiceScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildHeaderContent() {
+  Widget _buildHeaderContent(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       width: double.infinity,
-      padding: const EdgeInsets.fromLTRB(20, 50, 20, 35),
+      padding: EdgeInsets.fromLTRB(16, MediaQuery.of(context).padding.top + 16, 16, 32),
       child: Row(
         children: [
-          _buildCircleIconButton(Icons.arrow_back, () => Get.back()),
-          const SizedBox(width: 15),
+          IconButton(
+            onPressed: () => Get.back(),
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            style: IconButton.styleFrom(
+              backgroundColor: Colors.white.withOpacity(0.2),
+              minimumSize: const Size(48, 48),
+            ),
+          ),
+          const SizedBox(width: 16),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
-              children: const [
+              children: [
                 Text(
                   "Request Service",
-                  style: TextStyle(
+                  style: theme.textTheme.headlineSmall?.copyWith(
                     color: Colors.white,
-                    fontSize: 22,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 Text(
                   "Tell us what you need",
-                  style: TextStyle(
-                    color: Colors.white70,
-                    fontSize: 14,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: Colors.white.withOpacity(0.8),
                   ),
                 ),
               ],
             ),
           ),
-          _buildSupportButton(),
+          _buildSupportButton(context),
         ],
       ),
     );
   }
 
-  Widget _buildCircleIconButton(IconData icon, VoidCallback onTap) {
-    return InkWell(
-      onTap: onTap,
-      borderRadius: BorderRadius.circular(25),
-      child: Container(
-        padding: const EdgeInsets.all(10),
-        decoration: BoxDecoration(
-          color: Colors.white.withOpacity(0.15),
-          shape: BoxShape.circle,
-        ),
-        child: Icon(icon, color: Colors.white, size: 20),
-      ),
-    );
-  }
-
-  Widget _buildSupportButton() {
+  Widget _buildSupportButton(BuildContext context) {
+    final theme = Theme.of(context);
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 8),
       decoration: BoxDecoration(
         color: Colors.white.withOpacity(0.12),
-        borderRadius: BorderRadius.circular(15),
+        borderRadius: BorderRadius.circular(16),
       ),
       child: Column(
         mainAxisSize: MainAxisSize.min,
-        children: const [
-          Icon(Icons.headset_mic, color: Colors.white, size: 18),
-          SizedBox(height: 4),
+        children: [
+          const Icon(Icons.headset_mic, color: Colors.white, size: 18),
+          const SizedBox(height: 4),
           Text(
             "Support",
-            style: TextStyle(color: Colors.white, fontSize: 10, fontWeight: FontWeight.w600),
+            style: theme.textTheme.labelSmall?.copyWith(
+              color: Colors.white,
+              fontWeight: FontWeight.bold,
+            ),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildSectionTitle(String title) {
+  Widget _buildSectionTitle(BuildContext context, String title) {
     return Text(
       title,
-      style: const TextStyle(
-        fontSize: 16,
-        fontWeight: FontWeight.w800,
-        color: AppColor.textPrimary,
-      ),
+      style: Theme.of(context).textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.bold,
+          ),
     );
   }
 
-  Widget _buildSectionTitleWithSubtitle(String title, String subtitle) {
+  Widget _buildSectionTitleWithSubtitle(BuildContext context, String title, String subtitle) {
+    final theme = Theme.of(context);
     return Row(
       children: [
         Text(
           title,
-          style: const TextStyle(
-            fontSize: 16,
-            fontWeight: FontWeight.w800,
-            color: AppColor.textPrimary,
+          style: theme.textTheme.titleMedium?.copyWith(
+            fontWeight: FontWeight.bold,
           ),
         ),
-        const SizedBox(width: 5),
+        const SizedBox(width: 8),
         Text(
           subtitle,
-          style: const TextStyle(
-            fontSize: 14,
-            fontWeight: FontWeight.w500,
-            color: AppColor.textSecondary,
+          style: theme.textTheme.bodyMedium?.copyWith(
+            color: theme.colorScheme.onSurfaceVariant,
           ),
         ),
       ],
     );
   }
 
-  Widget _buildCategoryList() {
+  Widget _buildCategoryList(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final theme = Theme.of(context);
+
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       physics: const BouncingScrollPhysics(),
@@ -233,56 +228,38 @@ class RequestServiceScreen extends StatelessWidget {
             bool isSelected = controller.selectedCategoryIndex.value == index;
             return GestureDetector(
               onTap: () => controller.setCategory(index),
-              child: Container(
-                width: 82,
-                margin: const EdgeInsets.only(right: 15),
-                padding: const EdgeInsets.symmetric(vertical: 18),
+              child: AnimatedContainer(
+                duration: const Duration(milliseconds: 200),
+                width: 88,
+                margin: const EdgeInsets.only(right: 16),
+                padding: const EdgeInsets.symmetric(vertical: 20),
                 decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(15),
+                  color: isSelected ? colorScheme.primaryContainer.withOpacity(0.3) : colorScheme.surface,
+                  borderRadius: BorderRadius.circular(20),
                   border: Border.all(
-                    color: isSelected ? AppColor.primary : AppColor.grey200,
+                    color: isSelected ? colorScheme.primary : colorScheme.outlineVariant,
                     width: isSelected ? 2 : 1,
                   ),
                   boxShadow: isSelected ? [
-                    BoxShadow(color: AppColor.primary.withOpacity(0.1), blurRadius: 8, offset: const Offset(0, 4))
+                    BoxShadow(color: colorScheme.primary.withOpacity(0.1), blurRadius: 12, offset: const Offset(0, 4))
                   ] : [],
                 ),
-                child: Stack(
-                  clipBehavior: Clip.none,
-                  alignment: Alignment.center,
+                child: Column(
                   children: [
-                    Column(
-                      children: [
-                        Icon(
-                          category['icon'] as IconData,
-                          color: isSelected ? AppColor.primary : AppColor.textPrimary.withOpacity(0.7),
-                          size: 32,
-                        ),
-                        const SizedBox(height: 12),
-                        Text(
-                          category['name'] as String,
-                          style: TextStyle(
-                            fontSize: 11,
-                            fontWeight: isSelected ? FontWeight.w700 : FontWeight.w500,
-                            color: isSelected ? AppColor.primary : AppColor.textSecondary,
-                          ),
-                        ),
-                      ],
+                    Icon(
+                      category['icon'] as IconData,
+                      color: isSelected ? colorScheme.primary : colorScheme.onSurfaceVariant,
+                      size: 32,
                     ),
-                    if (isSelected)
-                      Positioned(
-                        top: -24,
-                        right: -6,
-                        child: Container(
-                          padding: const EdgeInsets.all(3),
-                          decoration: const BoxDecoration(
-                            color: AppColor.primary,
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(Icons.check, color: Colors.white, size: 10),
-                        ),
+                    const SizedBox(height: 12),
+                    Text(
+                      category['name'] as String,
+                      textAlign: TextAlign.center,
+                      style: theme.textTheme.labelSmall?.copyWith(
+                        fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+                        color: isSelected ? colorScheme.primary : colorScheme.onSurfaceVariant,
                       ),
+                    ),
                   ],
                 ),
               ),
@@ -293,30 +270,34 @@ class RequestServiceScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildDotsIndicator() {
+  Widget _buildDotsIndicator(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Row(
       mainAxisAlignment: MainAxisAlignment.center,
       children: List.generate(4, (index) {
         return Container(
-          width: index == 0 ? 12 : 6,
-          height: 6,
-          margin: const EdgeInsets.symmetric(horizontal: 3),
+          width: index == 0 ? 24 : 8,
+          height: 8,
+          margin: const EdgeInsets.symmetric(horizontal: 4),
           decoration: BoxDecoration(
-            color: index == 0 ? AppColor.primary : AppColor.grey200,
-            borderRadius: BorderRadius.circular(3),
+            color: index == 0 ? colorScheme.primary : colorScheme.outlineVariant,
+            borderRadius: BorderRadius.circular(4),
           ),
         );
       }),
     );
   }
 
-  Widget _buildDescriptionBox() {
+  Widget _buildDescriptionBox(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColor.white,
-        borderRadius: BorderRadius.circular(15),
-        border: Border.all(color: AppColor.grey200),
+        color: colorScheme.surface,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: colorScheme.outlineVariant),
       ),
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.end,
@@ -324,58 +305,71 @@ class RequestServiceScreen extends StatelessWidget {
           TextField(
             controller: controller.issueController,
             maxLines: 4,
-            style: const TextStyle(fontSize: 14, color: AppColor.textPrimary),
-            decoration: const InputDecoration(
+            style: theme.textTheme.bodyLarge,
+            decoration: InputDecoration(
               hintText: "Explain your issue in detail...",
-              hintStyle: TextStyle(color: AppColor.textHint, fontSize: 14),
+              hintStyle: theme.textTheme.bodyMedium?.copyWith(color: colorScheme.onSurfaceVariant),
               border: InputBorder.none,
               isDense: true,
             ),
           ),
-          const SizedBox(height: 10),
+          const SizedBox(height: 8),
           Obx(() => Text(
             "${controller.charCount.value}/250",
-            style: const TextStyle(color: AppColor.textHint, fontSize: 11, fontWeight: FontWeight.w500),
+            style: theme.textTheme.labelSmall?.copyWith(
+              color: colorScheme.onSurfaceVariant,
+              fontWeight: FontWeight.bold,
+            ),
           )),
         ],
       ),
     );
   }
 
-  Widget _buildPhotoList() {
+  Widget _buildPhotoList(BuildContext context) {
     return SingleChildScrollView(
       scrollDirection: Axis.horizontal,
       physics: const BouncingScrollPhysics(),
       child: Row(
         children: [
-          _buildUploadButton(),
-          ...List.generate(3, (index) => _buildEmptyPhotoSlot()),
+          _buildUploadButton(context),
+          ...List.generate(3, (index) => _buildEmptyPhotoSlot(context)),
         ],
       ),
     );
   }
 
-  Widget _buildUploadButton() {
+  Widget _buildUploadButton(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
+    final theme = Theme.of(context);
+
     return InkWell(
       onTap: () => controller.pickImages(),
+      borderRadius: BorderRadius.circular(20),
       child: Container(
-        width: 85,
-        height: 85,
-        margin: const EdgeInsets.only(right: 15),
+        width: 96,
+        height: 96,
+        margin: const EdgeInsets.only(right: 16),
         child: CustomPaint(
-          painter: DashedRectPainter(color: AppColor.primary.withOpacity(0.4)),
+          painter: DashedRectPainter(color: colorScheme.primary.withOpacity(0.5)),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
-            children: const [
-              Icon(Icons.camera_alt_outlined, color: AppColor.primary, size: 22),
-              SizedBox(height: 6),
+            children: [
+              Icon(Icons.camera_alt_outlined, color: colorScheme.primary, size: 28),
+              const SizedBox(height: 8),
               Text(
-                "Upload Photos",
-                style: TextStyle(color: AppColor.primary, fontSize: 8, fontWeight: FontWeight.bold),
+                "Upload",
+                style: theme.textTheme.labelSmall?.copyWith(
+                  color: colorScheme.primary,
+                  fontWeight: FontWeight.bold,
+                ),
               ),
               Text(
-                "Tap to upload",
-                style: TextStyle(color: AppColor.textHint, fontSize: 8),
+                "Tap to add",
+                style: theme.textTheme.labelSmall?.copyWith(
+                  color: colorScheme.onSurfaceVariant,
+                  fontSize: 8,
+                ),
               ),
             ],
           ),
@@ -384,17 +378,18 @@ class RequestServiceScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildEmptyPhotoSlot() {
+  Widget _buildEmptyPhotoSlot(BuildContext context) {
+    final colorScheme = Theme.of(context).colorScheme;
     return Container(
-      width: 85,
-      height: 85,
-      margin: const EdgeInsets.only(right: 15),
+      width: 96,
+      height: 96,
+      margin: const EdgeInsets.only(right: 16),
       decoration: BoxDecoration(
-        color: const Color(0xFFF9FAFF),
-        borderRadius: BorderRadius.circular(15),
-        border: Border.all(color: AppColor.grey100),
+        color: colorScheme.surfaceVariant.withOpacity(0.3),
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: colorScheme.outlineVariant),
       ),
-      child: Icon(Icons.image_outlined, color: AppColor.grey400, size: 28),
+      child: Icon(Icons.image_outlined, color: colorScheme.onSurfaceVariant.withOpacity(0.5), size: 32),
     );
   }
 
@@ -403,15 +398,17 @@ class RequestServiceScreen extends StatelessWidget {
       children: [
         Expanded(
           child: _buildSelectorTile(
+            context,
             icon: Icons.calendar_today_outlined,
             label: "Select Date",
             onTap: () => controller.selectDate(context),
             value: controller.selectedDate,
           ),
         ),
-        const SizedBox(width: 15),
+        const SizedBox(width: 16),
         Expanded(
           child: _buildSelectorTile(
+            context,
             icon: Icons.access_time_outlined,
             label: "Select Time",
             onTap: () => controller.selectTime(context),
@@ -422,46 +419,50 @@ class RequestServiceScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildSelectorTile({
+  Widget _buildSelectorTile(
+    BuildContext context, {
     required IconData icon,
     required String label,
     required VoidCallback onTap,
     required dynamic value,
   }) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Obx(() {
       String displayValue = label;
       if (value.value != null) {
         if (value.value is DateTime) {
           displayValue = "${value.value.day}/${value.value.month}/${value.value.year}";
         } else if (value.value is TimeOfDay) {
-          displayValue = value.value.format(Get.context!);
+          displayValue = value.value.format(context);
         }
       }
       return InkWell(
         onTap: onTap,
+        borderRadius: BorderRadius.circular(16),
         child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 15),
+          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
           decoration: BoxDecoration(
-            color: AppColor.white,
-            borderRadius: BorderRadius.circular(12),
-            border: Border.all(color: AppColor.grey200),
+            color: colorScheme.surface,
+            borderRadius: BorderRadius.circular(16),
+            border: Border.all(color: colorScheme.outlineVariant),
           ),
           child: Row(
             children: [
-              Icon(icon, color: AppColor.textSecondary, size: 18),
-              const SizedBox(width: 8),
+              Icon(icon, color: colorScheme.primary, size: 20),
+              const SizedBox(width: 12),
               Expanded(
                 child: Text(
                   displayValue,
-                  style: TextStyle(
-                    color: value.value != null ? AppColor.textPrimary : AppColor.textHint,
-                    fontSize: 13,
-                    fontWeight: value.value != null ? FontWeight.w600 : FontWeight.w500,
+                  style: theme.textTheme.bodyMedium?.copyWith(
+                    color: value.value != null ? colorScheme.onSurface : colorScheme.onSurfaceVariant,
+                    fontWeight: value.value != null ? FontWeight.bold : FontWeight.w500,
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
               ),
-              const Icon(Icons.keyboard_arrow_down, color: AppColor.textHint, size: 18),
+              Icon(Icons.keyboard_arrow_down, color: colorScheme.onSurfaceVariant, size: 20),
             ],
           ),
         ),
@@ -469,47 +470,55 @@ class RequestServiceScreen extends StatelessWidget {
     });
   }
 
-  Widget _buildLocationCard() {
+  Widget _buildLocationCard(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColor.white,
-        borderRadius: BorderRadius.circular(15),
-        border: Border.all(color: AppColor.grey200),
+        color: colorScheme.surface,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: colorScheme.outlineVariant),
       ),
       child: Row(
         children: [
           Container(
-            padding: const EdgeInsets.all(10),
-            decoration: const BoxDecoration(
-              color: Color(0xFFF9FAFF),
+            padding: const EdgeInsets.all(12),
+            decoration: BoxDecoration(
+              color: colorScheme.primaryContainer.withOpacity(0.4),
               shape: BoxShape.circle,
             ),
-            child: const Icon(Icons.location_on_outlined, color: AppColor.textSecondary, size: 20),
+            child: Icon(Icons.location_on_outlined, color: colorScheme.primary, size: 24),
           ),
-          const SizedBox(width: 15),
+          const SizedBox(width: 16),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Obx(() => Text(
                   controller.location.value,
-                  style: const TextStyle(fontWeight: FontWeight.w800, fontSize: 14, color: AppColor.textPrimary),
+                  style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
                 )),
                 const SizedBox(height: 4),
-                const Text(
-                  "We'll match you with professionals near you",
-                  style: TextStyle(color: AppColor.textHint, fontSize: 11, fontWeight: FontWeight.w500),
+                Text(
+                  "Professionals near you will be matched",
+                  style: theme.textTheme.labelSmall?.copyWith(color: colorScheme.onSurfaceVariant),
                 ),
               ],
             ),
           ),
           TextButton(
             onPressed: () {},
-            style: TextButton.styleFrom(padding: EdgeInsets.zero, minimumSize: const Size(50, 30)),
-            child: const Text(
+            style: TextButton.styleFrom(
+              minimumSize: const Size(48, 48),
+            ),
+            child: Text(
               "Change",
-              style: TextStyle(color: AppColor.primary, fontWeight: FontWeight.w800, fontSize: 13),
+              style: theme.textTheme.labelLarge?.copyWith(
+                color: colorScheme.primary,
+                fontWeight: FontWeight.bold,
+              ),
             ),
           ),
         ],
@@ -523,7 +532,7 @@ class DashedRectPainter extends CustomPainter {
   final double strokeWidth;
   final double gap;
 
-  DashedRectPainter({this.color = Colors.black, this.strokeWidth = 1.0, this.gap = 5.0});
+  DashedRectPainter({this.color = Colors.black, this.strokeWidth = 1.5, this.gap = 4.0});
 
   @override
   void paint(Canvas canvas, Size size) {
@@ -533,7 +542,7 @@ class DashedRectPainter extends CustomPainter {
       ..style = PaintingStyle.stroke;
 
     Path path = Path();
-    path.addRRect(RRect.fromRectAndRadius(Rect.fromLTWH(0, 0, size.width, size.height), const Radius.circular(15)));
+    path.addRRect(RRect.fromRectAndRadius(Rect.fromLTWH(0, 0, size.width, size.height), const Radius.circular(20)));
 
     Path dashPath = Path();
     double distance = 0.0;

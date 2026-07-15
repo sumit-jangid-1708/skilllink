@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:skill_link/res/colors/app_color.dart';
 import 'package:skill_link/res/components/widgets/request_card.dart';
-
-import '../../res/routes/routes_names.dart';
+import 'package:skill_link/res/routes/routes_names.dart';
 
 class RequestsScreen extends StatefulWidget {
   const RequestsScreen({super.key});
@@ -86,8 +84,11 @@ class _RequestsScreenState extends State<RequestsScreen> {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Scaffold(
-      backgroundColor: const Color(0xFFFAFAFA), // Precise off-white background
+      backgroundColor: colorScheme.surface,
       body: Column(
         children: [
           // ── STACKED HEADER & FLOATING FILTER TABS ──
@@ -96,14 +97,14 @@ class _RequestsScreenState extends State<RequestsScreen> {
             children: [
               Container(
                 width: double.infinity,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
-                    colors: [Color(0xFF2F80ED), Color(0xFF0056C6)],
+                    colors: [colorScheme.primary, colorScheme.primary.withBlue(255)],
                   ),
                 ),
-                padding: const EdgeInsets.fromLTRB(20, 60, 20, 48),
+                padding: EdgeInsets.fromLTRB(20, MediaQuery.of(context).padding.top + 20, 20, 64),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -111,58 +112,52 @@ class _RequestsScreenState extends State<RequestsScreen> {
                       child: Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
-                          const Text(
+                          Text(
                             "My Requests",
-                            style: TextStyle(
+                            style: theme.textTheme.headlineSmall?.copyWith(
                               color: Colors.white,
-                              fontSize: 26,
-                              fontWeight: FontWeight.w700,
+                              fontWeight: FontWeight.bold,
                             ),
                           ),
-                          const SizedBox(height: 6),
+                          const SizedBox(height: 4),
                           Text(
                             "Track and manage your service requests",
-                            style: TextStyle(
-                              color: Colors.white,
-                              fontSize: 13,
-                              fontWeight: FontWeight.w400,
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: Colors.white.withOpacity(0.8),
                             ),
                           ),
                         ],
                       ),
                     ),
-                    // Funnel Filter Icon from Mockup
-                    Container(
-                      padding: const EdgeInsets.all(10),
-                      decoration: BoxDecoration(
-                        color: Colors.white.withOpacity(0.15),
-                        shape: BoxShape.circle,
-                      ),
-                      child: const Icon(
-                        Icons.filter_alt_outlined,
-                        color: Colors.white,
-                        size: 22,
+                    IconButton(
+                      onPressed: () {},
+                      icon: const Icon(Icons.filter_alt_outlined, color: Colors.white),
+                      style: IconButton.styleFrom(
+                        backgroundColor: Colors.white.withOpacity(0.15),
+                        shape: const CircleBorder(),
+                        minimumSize: const Size(48, 48),
                       ),
                     ),
                   ],
                 ),
               ),
 
-              // Floating Filter Container positioned at the bottom edge
+              // Floating Filter Container
               Positioned(
-                bottom: -24,
+                bottom: -28,
                 left: 16,
                 right: 16,
                 child: Container(
-                  padding: const EdgeInsets.all(5),
+                  height: 56,
+                  padding: const EdgeInsets.all(4),
                   decoration: BoxDecoration(
-                    color: Colors.white,
-                    borderRadius: BorderRadius.circular(14),
+                    color: colorScheme.surface,
+                    borderRadius: BorderRadius.circular(16),
                     boxShadow: [
                       BoxShadow(
-                        color: Colors.black.withOpacity(0.04),
-                        blurRadius: 10,
-                        offset: const Offset(0, 4),
+                        color: Colors.black.withOpacity(0.08),
+                        blurRadius: 16,
+                        offset: const Offset(0, 8),
                       ),
                     ],
                   ),
@@ -176,13 +171,12 @@ class _RequestsScreenState extends State<RequestsScreen> {
             ],
           ),
 
-          // Spacer corresponding to the overlay overlap height
-          const SizedBox(height: 32),
+          const SizedBox(height: 40),
 
           // ── REQUEST LIST ──
           Expanded(
             child: ListView.builder(
-              padding: const EdgeInsets.fromLTRB(16, 8, 16, 0),
+              padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
               itemCount: filteredRequests.length,
               itemBuilder: (context, index) {
                 final item = filteredRequests[index];
@@ -195,108 +189,39 @@ class _RequestsScreenState extends State<RequestsScreen> {
                   price: item['price'],
                   status: item['status'],
                   categoryIcon: item['icon'],
-                  onTap: () {Get.toNamed(RouteName.requestDetailsScreen);},
+                  onTap: () {
+                    Get.toNamed(RouteName.requestDetailsScreen);
+                  },
                 );
               },
             ),
           ),
-
-          // // ── NEED HELP BANNER ──
-          // Container(
-          //   margin: const EdgeInsets.fromLTRB(16, 8, 16, 12),
-          //   padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 14),
-          //   decoration: BoxDecoration(
-          //     color: const Color(0xFFF0F5FF),
-          //     borderRadius: BorderRadius.circular(16),
-          //   ),
-          //   child: Row(
-          //     children: [
-          //       Container(
-          //         width: 44,
-          //         height: 44,
-          //         decoration: const BoxDecoration(
-          //           color: Color(0xFF2F80ED),
-          //           shape: BoxShape.circle,
-          //         ),
-          //         child: const Icon(Icons.headset_mic_rounded,
-          //             color: Colors.white, size: 20),
-          //       ),
-          //       const SizedBox(width: 12),
-          //       Expanded(
-          //         child: Column(
-          //           crossAxisAlignment: CrossAxisAlignment.start,
-          //           children: const [
-          //             Text(
-          //               "Need Help?",
-          //               style: TextStyle(
-          //                 fontSize: 14,
-          //                 fontWeight: FontWeight.w700,
-          //                 color: Color(0xFF1A1A1A),
-          //               ),
-          //             ),
-          //             SizedBox(height: 2),
-          //             Text(
-          //               "Our support team is here to assist you.",
-          //               style: TextStyle(
-          //                 fontSize: 12,
-          //                 color: Color(0xFF707070),
-          //               ),
-          //             ),
-          //           ],
-          //         ),
-          //       ),
-          //       const SizedBox(width: 8),
-          //       OutlinedButton(
-          //         onPressed: () {},
-          //         style: OutlinedButton.styleFrom(
-          //           padding: const EdgeInsets.symmetric(
-          //               horizontal: 14, vertical: 10),
-          //           side: const BorderSide(color: Color(0xFFDCE4F2), width: 1),
-          //           backgroundColor: Colors.white,
-          //           elevation: 0,
-          //           shape: RoundedRectangleBorder(
-          //             borderRadius: BorderRadius.circular(8),
-          //           ),
-          //         ),
-          //         child: const Text(
-          //           "Contact Support",
-          //           style: TextStyle(
-          //             fontSize: 12,
-          //             color: Color(0xFF2F80ED),
-          //             fontWeight: FontWeight.w600,
-          //           ),
-          //         ),
-          //       ),
-          //     ],
-          //   ),
-          // ),
-
-          // Mimics system bottom navigation bar area padding
-          // const SizedBox(height: 10),
         ],
       ),
     );
   }
 
   Widget _buildFilterTab(String label) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
     final isActive = selectedFilter == label;
+    
     return Expanded(
-      child: GestureDetector(
+      child: InkWell(
         onTap: () => setState(() => selectedFilter = label),
+        borderRadius: BorderRadius.circular(12),
         child: AnimatedContainer(
-          duration: const Duration(milliseconds: 150),
-          padding: const EdgeInsets.symmetric(vertical: 11),
+          duration: const Duration(milliseconds: 200),
+          alignment: Alignment.center,
           decoration: BoxDecoration(
-            color: isActive ? const Color(0xFF2F80ED) : Colors.transparent,
-            borderRadius: BorderRadius.circular(10),
+            color: isActive ? colorScheme.primary : Colors.transparent,
+            borderRadius: BorderRadius.circular(12),
           ),
           child: Text(
             label,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: isActive ? Colors.white : const Color(0xFF707070),
-              fontWeight: isActive ? FontWeight.w700 : FontWeight.w500,
-              fontSize: 13,
+            style: theme.textTheme.labelLarge?.copyWith(
+              color: isActive ? colorScheme.onPrimary : colorScheme.onSurfaceVariant,
+              fontWeight: isActive ? FontWeight.bold : FontWeight.w500,
             ),
           ),
         ),

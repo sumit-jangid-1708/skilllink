@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:skill_link/res/colors/app_color.dart';
 
 class WorkerCard extends StatelessWidget {
   final String name;
@@ -22,16 +21,20 @@ class WorkerCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Container(
       width: 180,
       padding: const EdgeInsets.all(12),
       decoration: BoxDecoration(
-        color: AppColor.white,
-        borderRadius: BorderRadius.circular(16),
+        color: colorScheme.surface,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: colorScheme.outlineVariant.withOpacity(0.5)),
         boxShadow: [
           BoxShadow(
             color: Colors.black.withOpacity(0.04),
-            blurRadius: 10,
+            blurRadius: 12,
             offset: const Offset(0, 4),
           ),
         ],
@@ -39,38 +42,41 @@ class WorkerCard extends StatelessWidget {
       child: Column(
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          ClipOval(
-            child: CachedNetworkImage(
-              imageUrl: imageUrl,
-              width: 70,
-              height: 70,
-              fit: BoxFit.cover,
-              placeholder: (context, url) => Container(color: AppColor.grey100),
-              errorWidget: (context, url, error) => const Icon(Icons.person),
+          Container(
+            padding: const EdgeInsets.all(2),
+            decoration: BoxDecoration(
+              shape: BoxShape.circle,
+              border: Border.all(color: colorScheme.primary.withOpacity(0.2), width: 2),
+            ),
+            child: ClipOval(
+              child: CachedNetworkImage(
+                imageUrl: imageUrl,
+                width: 72,
+                height: 72,
+                fit: BoxFit.cover,
+                placeholder: (context, url) => Container(color: colorScheme.surfaceVariant),
+                errorWidget: (context, url, error) => Icon(Icons.person, color: colorScheme.onSurfaceVariant),
+              ),
             ),
           ),
           const SizedBox(height: 12),
           Text(
             name,
-            style: const TextStyle(
-              fontSize: 14,
+            style: theme.textTheme.titleSmall?.copyWith(
               fontWeight: FontWeight.bold,
-              color: AppColor.textPrimary,
             ),
             maxLines: 1,
             overflow: TextOverflow.ellipsis,
           ),
-          const SizedBox(height: 4),
           Text(
             profession,
-            style: const TextStyle(
-              fontSize: 11,
-              color: AppColor.textSecondary,
+            style: theme.textTheme.bodySmall?.copyWith(
+              color: colorScheme.onSurfaceVariant,
             ),
           ),
           const SizedBox(height: 12),
           Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Row(
                 children: [
@@ -78,49 +84,41 @@ class WorkerCard extends StatelessWidget {
                   const SizedBox(width: 4),
                   Text(
                     rating,
-                    style: const TextStyle(
-                      fontSize: 11,
-                      fontWeight: FontWeight.w600,
-                      color: AppColor.textPrimary,
-                    ),
+                    style: theme.textTheme.labelSmall?.copyWith(fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                child: Text("•", style: TextStyle(color: colorScheme.outlineVariant)),
+              ),
               Row(
                 children: [
-                  const Icon(Icons.location_on_rounded, color: AppColor.textHint, size: 14),
+                  Icon(Icons.location_on_rounded, color: colorScheme.primary, size: 14),
                   const SizedBox(width: 4),
                   Text(
                     distance,
-                    style: const TextStyle(
-                      fontSize: 11,
-                      color: AppColor.textSecondary,
-                    ),
+                    style: theme.textTheme.labelSmall?.copyWith(color: colorScheme.onSurfaceVariant),
                   ),
                 ],
               ),
             ],
           ),
-          const SizedBox(height: 12),
+          const SizedBox(height: 16),
           SizedBox(
             width: double.infinity,
-            height: 32,
-            child: OutlinedButton(
+            child: FilledButton.tonal(
               onPressed: onViewProfile,
-              style: OutlinedButton.styleFrom(
-                side: const BorderSide(color: AppColor.primary, width: 1),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(8),
-                ),
+              style: FilledButton.styleFrom(
                 padding: EdgeInsets.zero,
+                minimumSize: const Size(0, 36),
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10),
+                ),
               ),
               child: const Text(
                 "View Profile",
-                style: TextStyle(
-                  fontSize: 11,
-                  color: AppColor.primary,
-                  fontWeight: FontWeight.w600,
-                ),
+                style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold),
               ),
             ),
           ),

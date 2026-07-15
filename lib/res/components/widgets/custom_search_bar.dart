@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:skill_link/res/colors/app_color.dart';
 
 class CustomSearchBar extends StatelessWidget {
   final String hintText;
@@ -15,43 +14,59 @@ class CustomSearchBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Container(
+      height: 56,
       decoration: BoxDecoration(
-        color: AppColor.white,
+        color: colorScheme.surface,
         borderRadius: BorderRadius.circular(16),
         boxShadow: [
           BoxShadow(
-            color: Colors.black.withOpacity(0.05),
-            blurRadius: 15,
-            offset: const Offset(0, 5),
+            color: Colors.black.withOpacity(0.06),
+            blurRadius: 16,
+            offset: const Offset(0, 4),
           ),
         ],
       ),
       child: TextField(
         onChanged: onChanged,
+        textAlignVertical: TextAlignVertical.center,
         decoration: InputDecoration(
           hintText: hintText,
-          hintStyle: const TextStyle(
-            color: AppColor.textHint,
-            fontSize: 14,
+          hintStyle: theme.textTheme.bodyMedium?.copyWith(
+            color: colorScheme.onSurfaceVariant,
           ),
-          prefixIcon: const Icon(
+          prefixIcon: Icon(
             Icons.search_rounded,
-            color: AppColor.primary,
-            size: 28,
+            color: colorScheme.primary,
+            size: 24,
           ),
-          suffixIcon: InkWell(
-            onTap: onFilterTap,
-            child: const Padding(
-              padding: EdgeInsets.all(12.0),
-              child: Icon(
-                Icons.tune_rounded, // or Icons.filter_list_rounded
-                color: AppColor.textPrimary,
-              ),
-            ),
-          ),
+          suffixIcon: onFilterTap != null 
+            ? IntrinsicHeight(
+                child: Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    VerticalDivider(
+                      indent: 12,
+                      endIndent: 12,
+                      color: colorScheme.outlineVariant,
+                    ),
+                    IconButton(
+                      onPressed: onFilterTap,
+                      icon: Icon(
+                        Icons.tune_rounded,
+                        color: colorScheme.onSurface,
+                      ),
+                      tooltip: "Filter",
+                    ),
+                  ],
+                ),
+              )
+            : null,
           border: InputBorder.none,
-          contentPadding: const EdgeInsets.symmetric(vertical: 15),
+          contentPadding: const EdgeInsets.symmetric(horizontal: 16),
         ),
       ),
     );

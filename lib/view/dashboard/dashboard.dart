@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:skill_link/res/colors/app_color.dart';
 import 'package:skill_link/view/booking_screen/requests_screen.dart';
 import 'package:skill_link/view/home/home_screen.dart';
 import 'package:skill_link/view/profile_screen/profile_screen.dart';
@@ -19,105 +18,53 @@ class DashboardScreen extends StatelessWidget {
     const ProfileScreen(),
   ];
 
-  final List<Map<String, dynamic>> navItems = [
-    {
-      'label': 'Home',
-      'icon': Icons.home_outlined,
-      'activeIcon': Icons.home_rounded,
-    },
-    {
-      'label': 'Requests',
-      'icon': Icons.assignment_outlined,
-      'activeIcon': Icons.assignment_rounded,
-    },
-    {
-      'label': 'Saved',
-      'icon': Icons.favorite_outline_rounded,
-      'activeIcon': Icons.favorite_rounded,
-    },
-    {
-      'label': 'Profile',
-      'icon': Icons.person_outline_rounded,
-      'activeIcon': Icons.person_rounded,
-    },
-  ];
-
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Scaffold(
-      backgroundColor: AppColor.background,
+      backgroundColor: colorScheme.surface,
       body: Obx(() => IndexedStack(
             index: dashboardController.currentIndex.value,
             children: screens,
           )),
-      bottomNavigationBar: customBottomBar(),
+      bottomNavigationBar: _buildBottomNavigationBar(context),
     );
   }
 
-  Widget customBottomBar() {
-    return Container(
-      height: 88,
-      padding: const EdgeInsets.only(top: 8, bottom: 10),
-      decoration: BoxDecoration(
-        color: AppColor.white,
-        boxShadow: [
-          BoxShadow(
-            color: Colors.black.withOpacity(0.06),
-            blurRadius: 25,
-            spreadRadius: 0,
-            offset: const Offset(0, -8),
-          ),
-        ],
-      ),
-      child: SafeArea(
-        top: false,
-        child: Obx(
-              () => Row(
-            children: List.generate(navItems.length, (index) {
-              final isSelected =
-                  dashboardController.currentIndex.value == index;
+  Widget _buildBottomNavigationBar(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
 
-              return Expanded(
-                child: InkWell(
-                  borderRadius: BorderRadius.circular(20),
-                  onTap: () => dashboardController.changeTab(index),
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      AnimatedSwitcher(
-                        duration: const Duration(milliseconds: 200),
-                        child: Icon(
-                          isSelected
-                              ? navItems[index]['activeIcon']
-                              : navItems[index]['icon'],
-                          key: ValueKey(isSelected),
-                          size: 25,
-                          color: isSelected
-                              ? AppColor.primary
-                              : AppColor.grey500,
-                        ),
-                      ),
-                      const SizedBox(height: 5),
-                      Text(
-                        navItems[index]['label'],
-                        style: TextStyle(
-                          fontSize: 11,
-                          fontWeight: isSelected
-                              ? FontWeight.w600
-                              : FontWeight.w500,
-                          color: isSelected
-                              ? AppColor.primary
-                              : AppColor.grey500,
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              );
-            }),
-          ),
+    return NavigationBar(
+      elevation: 3,
+      backgroundColor: colorScheme.surface,
+      indicatorColor: colorScheme.primaryContainer,
+      selectedIndex: dashboardController.currentIndex.value,
+      onDestinationSelected: (index) => dashboardController.changeTab(index),
+      destinations: const [
+        NavigationDestination(
+          icon: Icon(Icons.home_outlined),
+          selectedIcon: Icon(Icons.home_rounded),
+          label: 'Home',
         ),
-      ),
+        NavigationDestination(
+          icon: Icon(Icons.assignment_outlined),
+          selectedIcon: Icon(Icons.assignment_rounded),
+          label: 'Requests',
+        ),
+        NavigationDestination(
+          icon: Icon(Icons.favorite_outline_rounded),
+          selectedIcon: Icon(Icons.favorite_rounded),
+          label: 'Saved',
+        ),
+        NavigationDestination(
+          icon: Icon(Icons.person_outline_rounded),
+          selectedIcon: Icon(Icons.person_rounded),
+          label: 'Profile',
+        ),
+      ],
     );
   }
 }

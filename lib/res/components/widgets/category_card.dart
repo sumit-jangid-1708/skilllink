@@ -3,7 +3,7 @@ import 'package:skill_link/res/colors/app_color.dart';
 
 class CategoryCard extends StatelessWidget {
   final String title;
-  final IconData icon; // In a real app, this might be an image/SVG path
+  final IconData icon;
   final bool isSelected;
   final VoidCallback onTap;
 
@@ -17,40 +17,45 @@ class CategoryCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return GestureDetector(
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
+    return InkWell(
       onTap: onTap,
+      borderRadius: BorderRadius.circular(16),
       child: Column(
         children: [
-          Container(
-            height: 70,
-            width: 70,
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 200),
+            height: 72,
+            width: 72,
             decoration: BoxDecoration(
-              color: AppColor.white,
-              borderRadius: BorderRadius.circular(12),
-              border: isSelected 
-                ? Border.all(color: AppColor.primary, width: 2)
-                : Border.all(color: AppColor.grey100, width: 1),
-              boxShadow: [
+              color: isSelected ? colorScheme.primary : AppColor.white,
+              borderRadius: BorderRadius.circular(16),
+              border: Border.all(
+                color: isSelected ? colorScheme.primary : colorScheme.outlineVariant,
+                width: 1.5,
+              ),
+              boxShadow: isSelected ? [
                 BoxShadow(
-                  color: Colors.black.withOpacity(0.03),
-                  blurRadius: 10,
+                  color: colorScheme.primary.withOpacity(0.2),
+                  blurRadius: 12,
                   offset: const Offset(0, 4),
-                ),
-              ],
+                )
+              ] : null,
             ),
             child: Icon(
               icon,
               size: 32,
-              color: isSelected ? AppColor.primary : AppColor.primary.withOpacity(0.7),
+              color: isSelected ? colorScheme.onPrimary : colorScheme.primary,
             ),
           ),
           const SizedBox(height: 8),
           Text(
             title,
-            style: TextStyle(
-              fontSize: 12,
-              fontWeight: isSelected ? FontWeight.w600 : FontWeight.w500,
-              color: AppColor.textPrimary,
+            style: theme.textTheme.labelMedium?.copyWith(
+              fontWeight: isSelected ? FontWeight.bold : FontWeight.w500,
+              color: isSelected ? colorScheme.primary : colorScheme.onSurface,
             ),
           ),
         ],

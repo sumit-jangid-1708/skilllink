@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:skill_link/res/colors/app_color.dart';
 
 class CustomProfileDropdown<T> extends StatelessWidget {
   final String label;
@@ -21,17 +20,20 @@ class CustomProfileDropdown<T> extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Container(
-      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 8),
+      padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
       decoration: BoxDecoration(
-        color: AppColor.white,
-        borderRadius: BorderRadius.circular(12),
-        border: Border.all(color: AppColor.grey200),
+        color: colorScheme.surface,
+        borderRadius: BorderRadius.circular(16),
+        border: Border.all(color: colorScheme.outlineVariant),
       ),
       child: Row(
         children: [
-          Icon(prefixIcon, color: AppColor.textSecondary, size: 20),
-          const SizedBox(width: 12),
+          Icon(prefixIcon, color: colorScheme.primary, size: 22),
+          const SizedBox(width: 16),
           Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -39,10 +41,9 @@ class CustomProfileDropdown<T> extends StatelessWidget {
               children: [
                 Text(
                   label,
-                  style: const TextStyle(
-                    color: AppColor.textSecondary,
-                    fontSize: 12,
-                    fontWeight: FontWeight.w500,
+                  style: theme.textTheme.labelSmall?.copyWith(
+                    color: colorScheme.onSurfaceVariant,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 DropdownButtonHideUnderline(
@@ -52,22 +53,18 @@ class CustomProfileDropdown<T> extends StatelessWidget {
                     value: value,
                     hint: Text(
                       hintText,
-                      style: const TextStyle(
-                        color: AppColor.textHint,
-                        fontSize: 15,
-                        fontWeight: FontWeight.w400,
+                      style: theme.textTheme.bodyLarge?.copyWith(
+                        color: colorScheme.onSurfaceVariant.withOpacity(0.5),
                       ),
                     ),
-                    icon: const Icon(Icons.keyboard_arrow_down, color: AppColor.textSecondary, size: 20),
+                    icon: Icon(Icons.keyboard_arrow_down, color: colorScheme.onSurfaceVariant, size: 20),
                     items: items.map((T item) {
                       return DropdownMenuItem<T>(
                         value: item,
                         child: Text(
                           item.toString(),
-                          style: const TextStyle(
-                            color: AppColor.textPrimary,
-                            fontSize: 15,
-                            fontWeight: FontWeight.w600,
+                          style: theme.textTheme.bodyLarge?.copyWith(
+                            fontWeight: FontWeight.bold,
                           ),
                         ),
                       );

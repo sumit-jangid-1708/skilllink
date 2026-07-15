@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:skill_link/res/colors/app_color.dart';
 import 'package:skill_link/res/components/widgets/profile_option_tile.dart';
 import 'package:skill_link/res/routes/routes_names.dart';
 
@@ -9,8 +8,11 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Scaffold(
-      backgroundColor: AppColor.background,
+      backgroundColor: colorScheme.surface,
       body: SingleChildScrollView(
         child: Column(
           children: [
@@ -23,47 +25,45 @@ class ProfileScreen extends StatelessWidget {
                 Container(
                   height: 220,
                   width: double.infinity,
-                  decoration: const BoxDecoration(
+                  decoration: BoxDecoration(
                     gradient: LinearGradient(
                       begin: Alignment.topLeft,
                       end: Alignment.bottomRight,
                       colors: [
-                        Color(0xFF4C86FF),
-                        Color(0xFF2E6FF2),
+                        colorScheme.primary,
+                        colorScheme.primary.withBlue(255),
                       ],
                     ),
                   ),
-                  padding: const EdgeInsets.fromLTRB(20, 60, 20, 0),
+                  padding: EdgeInsets.fromLTRB(20, MediaQuery.of(context).padding.top + 20, 20, 0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
-                          const Text(
+                          Text(
                             "Profile",
-                            style: TextStyle(
+                            style: theme.textTheme.headlineSmall?.copyWith(
                               color: Colors.white,
-                              fontSize: 24,
                               fontWeight: FontWeight.bold,
                             ),
                           ),
-                          Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.15),
-                              shape: BoxShape.circle,
+                          IconButton(
+                            onPressed: () {},
+                            icon: const Icon(Icons.settings_outlined, color: Colors.white),
+                            style: IconButton.styleFrom(
+                              backgroundColor: Colors.white.withOpacity(0.15),
+                              minimumSize: const Size(48, 48),
                             ),
-                            child: const Icon(Icons.settings_outlined, color: Colors.white, size: 22),
                           ),
                         ],
                       ),
                       const SizedBox(height: 8),
-                      const Text(
+                      Text(
                         "Manage your account and preferences",
-                        style: TextStyle(
-                          color: Colors.white70,
-                          fontSize: 14,
+                        style: theme.textTheme.bodyMedium?.copyWith(
+                          color: Colors.white.withOpacity(0.8),
                         ),
                       ),
                     ],
@@ -72,18 +72,18 @@ class ProfileScreen extends StatelessWidget {
                 // Overlapping Profile Card
                 Positioned(
                   bottom: -60,
-                  left: 20,
-                  right: 20,
+                  left: 16,
+                  right: 16,
                   child: Container(
                     padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: AppColor.white,
-                      borderRadius: BorderRadius.circular(20),
+                      color: colorScheme.surface,
+                      borderRadius: BorderRadius.circular(24),
                       boxShadow: [
                         BoxShadow(
-                          color: Colors.black.withOpacity(0.06),
-                          blurRadius: 20,
-                          offset: const Offset(0, 10),
+                          color: Colors.black.withOpacity(0.08),
+                          blurRadius: 24,
+                          offset: const Offset(0, 8),
                         ),
                       ],
                     ),
@@ -92,56 +92,56 @@ class ProfileScreen extends StatelessWidget {
                         Stack(
                           children: [
                             Container(
-                              height: 80,
-                              width: 80,
+                              height: 84,
+                              width: 84,
                               decoration: BoxDecoration(
-                                color: const Color(0xFFE8F0FF),
+                                color: colorScheme.primaryContainer.withOpacity(0.5),
                                 shape: BoxShape.circle,
-                                border: Border.all(color: Colors.white, width: 3),
+                                border: Border.all(color: colorScheme.surface, width: 4),
                               ),
-                              child: const Icon(Icons.person_rounded, size: 50, color: AppColor.primary),
+                              child: Icon(Icons.person_rounded, size: 48, color: colorScheme.primary),
                             ),
                             Positioned(
-                              bottom: 0,
-                              right: 0,
+                              bottom: 2,
+                              right: 2,
                               child: Container(
                                 padding: const EdgeInsets.all(6),
-                                decoration: const BoxDecoration(
-                                  color: AppColor.primary,
+                                decoration: BoxDecoration(
+                                  color: colorScheme.primary,
                                   shape: BoxShape.circle,
+                                  border: Border.all(color: colorScheme.surface, width: 2),
                                 ),
-                                child: const Icon(Icons.edit, size: 14, color: Colors.white),
+                                child: const Icon(Icons.camera_alt_rounded, size: 12, color: Colors.white),
                               ),
                             )
                           ],
                         ),
                         const SizedBox(width: 20),
-                        const Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Text(
-                              "Rahul Kumar",
-                              style: TextStyle(
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                                color: AppColor.textPrimary,
-                              ),
-                            ),
-                            SizedBox(height: 4),
-                            Row(
-                              children: [
-                                Icon(Icons.phone_outlined, size: 16, color: AppColor.primary),
-                                SizedBox(width: 8),
-                                Text(
-                                  "+91 98765 43210",
-                                  style: TextStyle(
-                                    fontSize: 14,
-                                    color: AppColor.textSecondary,
-                                  ),
+                        Expanded(
+                          child: Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Rahul Kumar",
+                                style: theme.textTheme.titleLarge?.copyWith(
+                                  fontWeight: FontWeight.bold,
                                 ),
-                              ],
-                            ),
-                          ],
+                              ),
+                              const SizedBox(height: 4),
+                              Row(
+                                children: [
+                                  Icon(Icons.phone_outlined, size: 16, color: colorScheme.primary),
+                                  const SizedBox(width: 8),
+                                  Text(
+                                    "+91 98765 43210",
+                                    style: theme.textTheme.bodyMedium?.copyWith(
+                                      color: colorScheme.onSurfaceVariant,
+                                    ),
+                                  ),
+                                ],
+                              ),
+                            ],
+                          ),
                         ),
                       ],
                     ),
@@ -150,117 +150,113 @@ class ProfileScreen extends StatelessWidget {
               ],
             ),
 
-            const SizedBox(height: 80), // Space for the overlapping card
+            const SizedBox(height: 84),
 
             // Sections
-            _buildSectionHeader("ACCOUNT"),
-            _buildSectionCard([
+            _buildSectionHeader(context, "ACCOUNT"),
+            _buildSectionCard(context, [
               ProfileOptionTile(
                 title: "Edit Profile",
                 icon: Icons.edit_outlined,
-                iconBgColor: const Color(0xFFE8F0FF),
-                iconColor: AppColor.primary,
-                onTap: () {
-                  Get.toNamed(RouteName.editProfileScreen);
-                },
+                iconBgColor: colorScheme.primaryContainer,
+                iconColor: colorScheme.primary,
+                onTap: () => Get.toNamed(RouteName.editProfileScreen),
               ),
-              const Divider(height: 1, indent: 60, endIndent: 20, color: AppColor.grey100),
+              Divider(height: 1, indent: 64, color: colorScheme.outlineVariant.withOpacity(0.5)),
               ProfileOptionTile(
                 title: "My Requests",
                 icon: Icons.assignment_outlined,
-                iconBgColor: const Color(0xFFE8F0FF),
-                iconColor: AppColor.primary,
+                iconBgColor: colorScheme.primaryContainer,
+                iconColor: colorScheme.primary,
                 onTap: () {},
               ),
-              const Divider(height: 1, indent: 60, endIndent: 20, color: AppColor.grey100),
+              Divider(height: 1, indent: 64, color: colorScheme.outlineVariant.withOpacity(0.5)),
               ProfileOptionTile(
                 title: "Saved Workers",
                 icon: Icons.favorite_rounded,
-                iconBgColor: const Color(0xFFE7F7EF),
-                iconColor: Colors.green,
+                iconBgColor: colorScheme.primaryContainer,
+                iconColor: Colors.pink,
                 onTap: () {},
               ),
             ]),
 
-            _buildSectionHeader("SUPPORT"),
-            _buildSectionCard([
+            _buildSectionHeader(context, "SUPPORT"),
+            _buildSectionCard(context, [
               ProfileOptionTile(
                 title: "Help & Support",
                 icon: Icons.headset_mic_outlined,
-                iconBgColor: const Color(0xFFE8F0FF),
-                iconColor: AppColor.primary,
+                iconBgColor: colorScheme.primaryContainer,
+                iconColor: colorScheme.primary,
                 onTap: () {},
               ),
-              const Divider(height: 1, indent: 60, endIndent: 20, color: AppColor.grey100),
+              Divider(height: 1, indent: 64, color: colorScheme.outlineVariant.withOpacity(0.5)),
               ProfileOptionTile(
                 title: "Rate the App",
                 icon: Icons.star_outline_rounded,
-                iconBgColor: const Color(0xFFFFF4E5),
-                iconColor: Colors.orange,
+                iconBgColor: colorScheme.primaryContainer,
+                iconColor: Colors.amber,
                 onTap: () {},
               ),
-              const Divider(height: 1, indent: 60, endIndent: 20, color: AppColor.grey100),
+              Divider(height: 1, indent: 64, color: colorScheme.outlineVariant.withOpacity(0.5)),
               ProfileOptionTile(
                 title: "Privacy Policy",
                 icon: Icons.article_outlined,
-                iconBgColor: const Color(0xFFE7F7EF),
-                iconColor: Colors.green,
+                iconBgColor: colorScheme.primaryContainer,
+                iconColor: Colors.teal,
                 onTap: () {},
               ),
             ]),
 
-            _buildSectionHeader("SESSION"),
-            _buildSectionCard([
+            _buildSectionHeader(context, "SESSION"),
+            _buildSectionCard(context, [
               ProfileOptionTile(
                 title: "Logout",
                 icon: Icons.logout_rounded,
-                iconBgColor: const Color(0xFFFFEBEE),
-                iconColor: Colors.red,
+                iconBgColor: colorScheme.errorContainer,
+                iconColor: colorScheme.error,
                 isDestructive: true,
                 onTap: () {},
               ),
             ]),
 
-            const SizedBox(height: 20),
-            const Text(
+            const SizedBox(height: 32),
+            Text(
               "SkillLink v1.0.0 • Made with ❤️",
-              style: TextStyle(
-                fontSize: 12,
-                color: AppColor.textSecondary,
+              style: theme.textTheme.labelSmall?.copyWith(
+                color: colorScheme.onSurfaceVariant,
               ),
             ),
-            const SizedBox(height: 100), // Space for bottom nav
+            const SizedBox(height: 32),
           ],
         ),
       ),
     );
   }
 
-  Widget _buildSectionHeader(String title) {
+  Widget _buildSectionHeader(BuildContext context, String title) {
     return Padding(
-      padding: const EdgeInsets.fromLTRB(20, 20, 20, 10),
+      padding: const EdgeInsets.fromLTRB(20, 24, 20, 12),
       child: Align(
         alignment: Alignment.centerLeft,
         child: Text(
           title,
-          style: const TextStyle(
-            fontSize: 12,
-            fontWeight: FontWeight.bold,
-            color: AppColor.textHint,
-            letterSpacing: 1.2,
-          ),
+          style: Theme.of(context).textTheme.labelSmall?.copyWith(
+                fontWeight: FontWeight.bold,
+                color: Theme.of(context).colorScheme.onSurfaceVariant,
+                letterSpacing: 1.5,
+              ),
         ),
       ),
     );
   }
 
-  Widget _buildSectionCard(List<Widget> children) {
+  Widget _buildSectionCard(BuildContext context, List<Widget> children) {
     return Container(
-      margin: const EdgeInsets.symmetric(horizontal: 20),
+      margin: const EdgeInsets.symmetric(horizontal: 16),
       decoration: BoxDecoration(
-        color: AppColor.white,
-        borderRadius: BorderRadius.circular(16),
-        border: Border.all(color: AppColor.grey100, width: 1),
+        color: Theme.of(context).colorScheme.surface,
+        borderRadius: BorderRadius.circular(20),
+        border: Border.all(color: Theme.of(context).colorScheme.outlineVariant.withOpacity(0.5)),
       ),
       child: Column(
         children: children,

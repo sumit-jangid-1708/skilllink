@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:skill_link/res/colors/app_color.dart';
 import 'package:skill_link/res/components/widgets/category_grid_item.dart';
 import 'package:skill_link/res/components/widgets/custom_search_bar.dart';
 
@@ -8,6 +7,9 @@ class CategoriesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     final List<Map<String, dynamic>> categories = [
       {
         "title": "Plumbing",
@@ -52,7 +54,7 @@ class CategoriesScreen extends StatelessWidget {
     ];
 
     return Scaffold(
-      backgroundColor: AppColor.background,
+      backgroundColor: colorScheme.surface,
       body: Column(
         children: [
           // Header Section
@@ -60,61 +62,52 @@ class CategoriesScreen extends StatelessWidget {
             clipBehavior: Clip.none,
             children: [
               Container(
-                height: 180,
                 width: double.infinity,
-                decoration: const BoxDecoration(
+                decoration: BoxDecoration(
                   gradient: LinearGradient(
                     begin: Alignment.topLeft,
                     end: Alignment.bottomRight,
                     colors: [
-                      Color(0xFF4C86FF),
-                      Color(0xFF2E6FF2),
+                      colorScheme.primary,
+                      colorScheme.primary.withBlue(255),
                     ],
                   ),
-                  borderRadius: BorderRadius.only(
-                    bottomLeft: Radius.circular(30),
-                    bottomRight: Radius.circular(30),
+                  borderRadius: const BorderRadius.only(
+                    bottomLeft: Radius.circular(32),
+                    bottomRight: Radius.circular(32),
                   ),
                 ),
-                padding: const EdgeInsets.fromLTRB(20, 50, 20, 0),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
+                padding: EdgeInsets.fromLTRB(20, MediaQuery.of(context).padding.top + 20, 20, 64),
+                child: Row(
                   children: [
-                    Row(
-                      children: [
-                        GestureDetector(
-                          onTap: () => Navigator.pop(context),
-                          child: Container(
-                            padding: const EdgeInsets.all(8),
-                            decoration: BoxDecoration(
-                              color: Colors.white.withOpacity(0.2),
-                              shape: BoxShape.circle,
+                    IconButton(
+                      onPressed: () => Navigator.pop(context),
+                      icon: const Icon(Icons.arrow_back_rounded, color: Colors.white),
+                      style: IconButton.styleFrom(
+                        backgroundColor: Colors.white.withOpacity(0.2),
+                        minimumSize: const Size(48, 48),
+                      ),
+                    ),
+                    const SizedBox(width: 16),
+                    Expanded(
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        children: [
+                          Text(
+                            "Categories",
+                            style: theme.textTheme.headlineSmall?.copyWith(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
                             ),
-                            child: const Icon(Icons.arrow_back_rounded, color: Colors.white, size: 20),
                           ),
-                        ),
-                        const SizedBox(width: 20),
-                        Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: const [
-                            Text(
-                              "Categories",
-                              style: TextStyle(
-                                color: Colors.white,
-                                fontSize: 20,
-                                fontWeight: FontWeight.bold,
-                              ),
+                          Text(
+                            "Choose a service category",
+                            style: theme.textTheme.bodySmall?.copyWith(
+                              color: Colors.white.withOpacity(0.8),
                             ),
-                            Text(
-                              "Choose a service category",
-                              style: TextStyle(
-                                color: Colors.white70,
-                                fontSize: 12,
-                              ),
-                            ),
-                          ],
-                        ),
-                      ],
+                          ),
+                        ],
+                      ),
                     ),
                   ],
                 ),
@@ -128,7 +121,7 @@ class CategoriesScreen extends StatelessWidget {
             ],
           ),
 
-          const SizedBox(height: 45),
+          const SizedBox(height: 48),
 
           Expanded(
             child: SingleChildScrollView(
@@ -136,23 +129,21 @@ class CategoriesScreen extends StatelessWidget {
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Text(
+                  Text(
                     "All Categories",
-                    style: TextStyle(
-                      fontSize: 16,
+                    style: theme.textTheme.titleMedium?.copyWith(
                       fontWeight: FontWeight.bold,
-                      color: AppColor.textPrimary,
                     ),
                   ),
-                  const SizedBox(height: 16),
+                  const SizedBox(height: 18),
                   GridView.builder(
                     shrinkWrap: true,
                     physics: const NeverScrollableScrollPhysics(),
                     gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                       crossAxisCount: 2,
-                      crossAxisSpacing: 15,
-                      mainAxisSpacing: 15,
-                      childAspectRatio: 1.1,
+                      crossAxisSpacing: 16,
+                      mainAxisSpacing: 16,
+                      childAspectRatio: 1.0,
                     ),
                     itemCount: categories.length,
                     itemBuilder: (context, index) {
@@ -164,45 +155,43 @@ class CategoriesScreen extends StatelessWidget {
                       );
                     },
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 24),
                   // Bottom Banner
                   Container(
                     width: double.infinity,
-                    padding: const EdgeInsets.all(16),
+                    padding: const EdgeInsets.all(20),
                     decoration: BoxDecoration(
-                      color: const Color(0xFFE8F0FF),
-                      borderRadius: BorderRadius.circular(16),
-                      border: Border.all(color: AppColor.primary.withOpacity(0.1)),
+                      color: colorScheme.primaryContainer.withOpacity(0.3),
+                      borderRadius: BorderRadius.circular(24),
+                      border: Border.all(color: colorScheme.primary.withOpacity(0.1)),
                     ),
                     child: Row(
                       children: [
                         Container(
-                          padding: const EdgeInsets.all(10),
-                          decoration: const BoxDecoration(
-                            color: AppColor.primary,
+                          padding: const EdgeInsets.all(12),
+                          decoration: BoxDecoration(
+                            color: colorScheme.primary,
                             shape: BoxShape.circle,
                           ),
                           child: const Icon(Icons.verified_user_rounded, color: Colors.white, size: 24),
                         ),
-                        const SizedBox(width: 12),
+                        const SizedBox(width: 16),
                         Expanded(
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
-                            children: const [
+                            children: [
                               Text(
-                                "Verified & Trusted Professionals",
-                                style: TextStyle(
-                                  fontSize: 13,
+                                "Verified Professionals",
+                                style: theme.textTheme.titleSmall?.copyWith(
                                   fontWeight: FontWeight.bold,
-                                  color: AppColor.primary,
+                                  color: colorScheme.primary,
                                 ),
                               ),
-                              SizedBox(height: 4),
+                              const SizedBox(height: 4),
                               Text(
-                                "All our professionals are background verified and highly rated by customers.",
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  color: AppColor.textSecondary,
+                                "All our professionals are background verified and highly rated.",
+                                style: theme.textTheme.labelSmall?.copyWith(
+                                  color: colorScheme.onSurfaceVariant,
                                   height: 1.3,
                                 ),
                               ),
@@ -210,18 +199,11 @@ class CategoriesScreen extends StatelessWidget {
                           ),
                         ),
                         const SizedBox(width: 8),
-                        Container(
-                          padding: const EdgeInsets.all(4),
-                          decoration: const BoxDecoration(
-                            color: Colors.white,
-                            shape: BoxShape.circle,
-                          ),
-                          child: const Icon(Icons.chevron_right_rounded, color: AppColor.primary, size: 20),
-                        ),
+                        Icon(Icons.chevron_right_rounded, color: colorScheme.primary),
                       ],
                     ),
                   ),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 32),
                 ],
               ),
             ),

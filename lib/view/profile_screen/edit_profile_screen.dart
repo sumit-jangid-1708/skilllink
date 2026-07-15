@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:skill_link/res/colors/app_color.dart';
 import 'package:skill_link/res/components/widgets/custom_profile_dropdown.dart';
 import 'package:skill_link/res/components/widgets/custom_profile_text_field.dart';
 import 'package:skill_link/view_models/controller/edit_profile_controller.dart';
@@ -13,62 +12,59 @@ class EditProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Scaffold(
-      backgroundColor: AppColor.primary,
+      backgroundColor: colorScheme.primary,
       body: SafeArea(
         bottom: false,
         child: Column(
           children: [
-            _buildHeader(),
+            _buildHeader(context),
             Expanded(
               child: Container(
                 width: double.infinity,
-                decoration: const BoxDecoration(
-                  color: AppColor.background,
-                  borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(30),
-                    topRight: Radius.circular(30),
+                clipBehavior: Clip.antiAlias, // Fix: Clips scrolling content inside rounded corners
+                decoration: BoxDecoration(
+                  color: colorScheme.surface,
+                  borderRadius: const BorderRadius.only(
+                    topLeft: Radius.circular(32),
+                    topRight: Radius.circular(32),
                   ),
                 ),
                 child: SingleChildScrollView(
-                  padding: const EdgeInsets.all(20),
+                  physics: const BouncingScrollPhysics(),
+                  padding: const EdgeInsets.all(16),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      _buildProfilePhotoSection(),
-                      const SizedBox(height: 25),
+                      const SizedBox(height: 8),
+                      _buildProfilePhotoSection(context),
+                      const SizedBox(height: 32),
                       
-                      const Text(
+                      Text(
                         "Personal Information",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                          color: AppColor.textPrimary,
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 15),
+                      const SizedBox(height: 16),
                       
-                      Row(
-                        children: [
-                          Expanded(
-                            child: CustomProfileTextField(
-                              label: "Full Name",
-                              hintText: "Rahul Kumar",
-                              controller: controller.nameController.value,
-                              prefixIcon: Icons.person_outline,
-                            ),
-                          ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: CustomProfileTextField(
-                              label: "Phone Number",
-                              hintText: "+91 98765 43210",
-                              controller: controller.phoneController.value,
-                              prefixIcon: Icons.phone_outlined,
-                              keyboardType: TextInputType.phone,
-                            ),
-                          ),
-                        ],
+                      CustomProfileTextField(
+                        label: "Full Name",
+                        hintText: "Rahul Kumar",
+                        controller: controller.nameController.value,
+                        prefixIcon: Icons.person_outline,
+                      ),
+                      const SizedBox(height: 12),
+                      
+                      CustomProfileTextField(
+                        label: "Phone Number",
+                        hintText: "+91 98765 43210",
+                        controller: controller.phoneController.value,
+                        prefixIcon: Icons.phone_outlined,
+                        keyboardType: TextInputType.phone,
                       ),
                       const SizedBox(height: 12),
                       
@@ -86,9 +82,7 @@ class EditProfileScreen extends StatelessWidget {
                         hintText: controller.dob.value,
                         prefixIcon: Icons.calendar_today_outlined,
                         readOnly: true,
-                        onTap: () {
-                          // Date picker logic
-                        },
+                        onTap: () {},
                       )),
                       const SizedBox(height: 12),
                       
@@ -101,17 +95,15 @@ class EditProfileScreen extends StatelessWidget {
                         onChanged: controller.updateGender,
                       )),
                       
-                      const SizedBox(height: 25),
+                      const SizedBox(height: 32),
                       
-                      const Text(
+                      Text(
                         "Address Information",
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.w700,
-                          color: AppColor.textPrimary,
+                        style: theme.textTheme.titleMedium?.copyWith(
+                          fontWeight: FontWeight.bold,
                         ),
                       ),
-                      const SizedBox(height: 15),
+                      const SizedBox(height: 16),
                       
                       CustomProfileTextField(
                         label: "Address",
@@ -153,7 +145,7 @@ class EditProfileScreen extends StatelessWidget {
                           ),
                         ],
                       ),
-                      const SizedBox(height: 30),
+                      const SizedBox(height: 40),
                     ],
                   ),
                 ),
@@ -165,87 +157,81 @@ class EditProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildHeader() {
+  Widget _buildHeader(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 15),
+      padding: const EdgeInsets.fromLTRB(8, 8, 16, 16),
       child: Row(
         children: [
           IconButton(
             onPressed: () => Get.back(),
-            icon: Container(
-              padding: const EdgeInsets.all(8),
-              decoration: BoxDecoration(
-                color: AppColor.white.withOpacity(0.15),
-                shape: BoxShape.circle,
-              ),
-              child: const Icon(Icons.arrow_back, color: AppColor.white, size: 20),
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            style: IconButton.styleFrom(
+              backgroundColor: Colors.white.withOpacity(0.2),
+              minimumSize: const Size(48, 48),
             ),
           ),
-          const SizedBox(width: 5),
-          const Expanded(
+          const SizedBox(width: 8),
+          Expanded(
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
                   "Edit Profile",
-                  style: TextStyle(
-                    color: AppColor.white,
-                    fontSize: 18,
-                    fontWeight: FontWeight.w700,
+                  style: theme.textTheme.titleLarge?.copyWith(
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
                   ),
                 ),
                 Text(
-                  "Update your personal information",
-                  style: TextStyle(
-                    color: AppColor.accent,
-                    fontSize: 12,
+                  "Update your personal details",
+                  style: theme.textTheme.bodySmall?.copyWith(
+                    color: Colors.white.withOpacity(0.8),
                   ),
                 ),
               ],
             ),
           ),
-          Padding(
-            padding: const EdgeInsets.only(right: 10),
-            child: ElevatedButton(
-              onPressed: () => controller.saveProfile(),
-              style: ElevatedButton.styleFrom(
-                backgroundColor: AppColor.white,
-                foregroundColor: AppColor.primary,
-                elevation: 0,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 0),
-              ),
-              child: const Text(
-                "Save",
-                style: TextStyle(fontWeight: FontWeight.w700),
-              ),
+          FilledButton(
+            onPressed: () => controller.saveProfile(),
+            style: FilledButton.styleFrom(
+              backgroundColor: Colors.white,
+              foregroundColor: colorScheme.primary,
+              shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
+              padding: const EdgeInsets.symmetric(horizontal: 24),
+              minimumSize: const Size(0, 44),
             ),
+            child: const Text("Save", style: TextStyle(fontWeight: FontWeight.bold)),
           ),
         ],
       ),
     );
   }
 
-  Widget _buildProfilePhotoSection() {
+  Widget _buildProfilePhotoSection(BuildContext context) {
+    final theme = Theme.of(context);
+    final colorScheme = theme.colorScheme;
+
     return Container(
       padding: const EdgeInsets.all(16),
       decoration: BoxDecoration(
-        color: AppColor.white,
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: AppColor.grey100),
+        color: colorScheme.surface,
+        borderRadius: BorderRadius.circular(24),
+        border: Border.all(color: colorScheme.outlineVariant),
       ),
       child: Row(
         children: [
           Stack(
             children: [
               Container(
-                width: 90,
-                height: 90,
+                width: 84,
+                height: 84,
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
-                  color: AppColor.grey100,
+                  color: colorScheme.primaryContainer.withOpacity(0.5),
+                  border: Border.all(color: colorScheme.surface, width: 4),
                 ),
                 child: ClipOval(
                   child: CachedNetworkImage(
@@ -254,10 +240,10 @@ class EditProfileScreen extends StatelessWidget {
                     placeholder: (context, url) => const Center(
                       child: CircularProgressIndicator(strokeWidth: 2),
                     ),
-                    errorWidget: (context, url, error) => const Icon(
+                    errorWidget: (context, url, error) => Icon(
                       Icons.person,
-                      size: 50,
-                      color: AppColor.primary,
+                      size: 40,
+                      color: colorScheme.primary,
                     ),
                   ),
                 ),
@@ -266,13 +252,13 @@ class EditProfileScreen extends StatelessWidget {
                 bottom: 0,
                 right: 0,
                 child: Container(
-                  padding: const EdgeInsets.all(4),
+                  padding: const EdgeInsets.all(6),
                   decoration: BoxDecoration(
-                    color: AppColor.primary,
+                    color: colorScheme.primary,
                     shape: BoxShape.circle,
-                    border: Border.all(color: AppColor.white, width: 2),
+                    border: Border.all(color: colorScheme.surface, width: 2),
                   ),
-                  child: const Icon(Icons.camera_alt, color: AppColor.white, size: 14),
+                  child: const Icon(Icons.camera_alt, color: Colors.white, size: 14),
                 ),
               ),
             ],
@@ -282,44 +268,34 @@ class EditProfileScreen extends StatelessWidget {
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                const Text(
+                Text(
                   "Profile Photo",
-                  style: TextStyle(
-                    fontSize: 15,
-                    fontWeight: FontWeight.w700,
-                    color: AppColor.textPrimary,
-                  ),
+                  style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
                 ),
-                const Text(
-                  "JPG, PNG or GIF. Max size of 5MB.",
-                  style: TextStyle(
-                    fontSize: 11,
-                    color: AppColor.textSecondary,
-                  ),
+                const SizedBox(height: 4),
+                Text(
+                  "JPG or PNG. Max size 5MB.",
+                  style: theme.textTheme.labelSmall?.copyWith(color: colorScheme.onSurfaceVariant),
                 ),
                 const SizedBox(height: 12),
                 Row(
                   children: [
-                    OutlinedButton.icon(
+                    TextButton.icon(
                       onPressed: () {},
-                      icon: const Icon(Icons.photo_camera_outlined, size: 16),
-                      label: const Text("Change Photo", style: TextStyle(fontSize: 12)),
-                      style: OutlinedButton.styleFrom(
-                        foregroundColor: AppColor.primary,
-                        side: const BorderSide(color: AppColor.primary),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(8),
-                        ),
+                      icon: const Icon(Icons.photo_library_outlined, size: 18),
+                      label: const Text("Change"),
+                      style: TextButton.styleFrom(
+                        foregroundColor: colorScheme.primary,
                         padding: const EdgeInsets.symmetric(horizontal: 12),
                       ),
                     ),
-                    const Spacer(),
+                    const SizedBox(width: 8),
                     TextButton(
                       onPressed: () {},
-                      child: const Text(
-                        "Remove",
-                        style: TextStyle(color: AppColor.red, fontSize: 12, fontWeight: FontWeight.w600),
+                      style: TextButton.styleFrom(
+                        foregroundColor: colorScheme.error,
                       ),
+                      child: const Text("Remove"),
                     ),
                   ],
                 ),
