@@ -18,8 +18,12 @@ class RequestTimeOut extends AppExceptions {
   RequestTimeOut([String? message]) : super(message, 'Request Time Out');
 }
 
-class ServerExceptions extends AppExceptions {
-  ServerExceptions([String? message]) : super(message, 'Internal Server Error');
+class ServerException extends AppExceptions {
+  ServerException([String? message]) : super(message, 'Internal Server Error');
+}
+
+class UnauthorizedException extends AppExceptions {
+  UnauthorizedException([String? message]) : super(message, 'Unauthorized');
 }
 
 class InvalidUrlExceptions extends AppExceptions {

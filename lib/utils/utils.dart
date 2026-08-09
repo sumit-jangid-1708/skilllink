@@ -20,6 +20,16 @@ class Utils {
     );
   }
 
+  static successToast(String message) {
+    Fluttertoast.showToast(
+      msg: message,
+      backgroundColor: AppColor.success.withOpacity(0.9),
+      textColor: AppColor.white,
+      gravity: ToastGravity.BOTTOM,
+      toastLength: Toast.LENGTH_LONG,
+    );
+  }
+
   static toastMessageCenter(String message) {
     Fluttertoast.showToast(
       msg: message,

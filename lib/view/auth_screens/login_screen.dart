@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
 import 'package:skill_link/view/dashboard/dashboard.dart';
+import 'package:skill_link/view_models/controller/auth_controller.dart';
+import 'package:skill_link/utils/utils.dart';
 
 class LoginScreen extends StatefulWidget {
   const LoginScreen({super.key});
@@ -11,16 +13,36 @@ class LoginScreen extends StatefulWidget {
 }
 
 class _LoginScreenState extends State<LoginScreen> {
+  final AuthController authController = Get.put(AuthController());
   final TextEditingController _phoneController = TextEditingController();
   final RxBool otpSent = false.obs;
   final RxString phoneNumber = ''.obs;
   final RxInt countdown = 28.obs;
-  final RxBool isLoading = false.obs;
 
   final List<TextEditingController> otpControllers =
       List.generate(6, (_) => TextEditingController());
   final List<FocusNode> otpFocusNodes =
       List.generate(6, (_) => FocusNode());
+
+  @override
+  void initState() {
+    super.initState();
+    // Listen for successful OTP send to transition UI
+    ever(authController.sendOtpModel, (model) {
+      if (model != null) {
+        otpSent.value = true;
+        startCountdown();
+      }
+    });
+
+    // Listen for successful verification to navigate to Dashboard
+    ever(authController.verifyOtpModel, (model) {
+      if (model != null) {
+        Get.offAll(() =>  DashboardScreen());
+        Utils.successToast("Login Successful");
+      }
+    });
+  }
 
   @override
   void dispose() {
@@ -217,18 +239,13 @@ class _LoginScreenState extends State<LoginScreen> {
         SizedBox(
           width: double.infinity,
           height: 56,
-          child: FilledButton(
-            onPressed: isLoading.value
+          child: Obx(() => FilledButton(
+            onPressed: authController.isLoading.value
                 ? null
                 : () {
                     if (_phoneController.text.length == 10) {
                       phoneNumber.value = _phoneController.text;
-                      isLoading.value = true;
-                      Future.delayed(const Duration(seconds: 1), () {
-                        isLoading.value = false;
-                        otpSent.value = true;
-                        startCountdown();
-                      });
+                      authController.sendOtp(_phoneController.text);
                     } else {
                       Get.snackbar(
                         'Invalid Number',
@@ -244,7 +261,7 @@ class _LoginScreenState extends State<LoginScreen> {
             style: FilledButton.styleFrom(
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
             ),
-            child: isLoading.value
+            child: authController.isLoading.value
                 ? SizedBox(
                     width: 24,
                     height: 24,
@@ -264,7 +281,7 @@ class _LoginScreenState extends State<LoginScreen> {
                       Icon(Icons.arrow_forward, size: 20),
                     ],
                   ),
-          ),
+          )),
         ),
 
         const Spacer(),
@@ -340,15 +357,15 @@ class _LoginScreenState extends State<LoginScreen> {
           child: Column(
             children: [
               Obx(() => TextButton(
-                onPressed: countdown.value > 0 ? null : () {
-                  startCountdown();
+                onPressed: (countdown.value > 0 || authController.isLoading.value) ? null : () {
+                  authController.sendOtp(phoneNumber.value);
                 },
                 child: Text(
                   countdown.value > 0
                       ? "Resend code in 00:${countdown.value.toString().padLeft(2, '0')}"
                       : "Resend Code",
                   style: TextStyle(
-                    color: countdown.value > 0 ? colorScheme.onSurfaceVariant : colorScheme.primary,
+                    color: (countdown.value > 0 || authController.isLoading.value) ? colorScheme.onSurfaceVariant : colorScheme.primary,
                     fontWeight: FontWeight.bold,
                   ),
                 ),
@@ -362,29 +379,46 @@ class _LoginScreenState extends State<LoginScreen> {
         SizedBox(
           width: double.infinity,
           height: 56,
-          child: FilledButton(
-            onPressed: () {
-              Get.offAll(() => DashboardScreen());
+          child: Obx(() => FilledButton(
+            onPressed: authController.isLoading.value ? null : () {
+              String otp = otpControllers.map((e) => e.text).join();
+              if (otp.length == 6) {
+                authController.verifyOtp(phoneNumber.value, otp);
+              } else {
+                Utils.snackBar("Invalid OTP", "Please enter the 6-digit verification code.");
+              }
             },
             style: FilledButton.styleFrom(
               shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
             ),
-            child: const Row(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text(
-                  "Verify & Continue",
-                  style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
-                ),
-                SizedBox(width: 8),
-                Icon(Icons.check_circle_outline, size: 20),
-              ],
-            ),
-          ),
+            child: authController.isLoading.value
+                ? SizedBox(
+                    width: 24,
+                    height: 24,
+                    child: CircularProgressIndicator(
+                      color: colorScheme.onPrimary,
+                      strokeWidth: 2,
+                    ),
+                  )
+                : const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Text(
+                        "Verify & Continue",
+                        style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
+                      ),
+                      SizedBox(width: 8),
+                      Icon(Icons.check_circle_outline, size: 20),
+                    ],
+                  ),
+          )),
         ),
         
         TextButton(
-          onPressed: () => otpSent.value = false,
+          onPressed: authController.isLoading.value ? null : () {
+            otpSent.value = false;
+            authController.sendOtpModel.value = null; // Clear previous state
+          },
           style: TextButton.styleFrom(
             minimumSize: const Size(double.infinity, 48),
           ),
