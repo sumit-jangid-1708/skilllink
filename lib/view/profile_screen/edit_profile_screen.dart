@@ -1,3 +1,5 @@
+import 'package:skill_link/res/app_url/app_url.dart';
+import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -194,8 +196,8 @@ class EditProfileScreen extends StatelessWidget {
               ],
             ),
           ),
-          FilledButton(
-            onPressed: () => controller.saveProfile(),
+          Obx(() => FilledButton(
+            onPressed: controller.isLoading.value ? null : () => controller.saveProfile(),
             style: FilledButton.styleFrom(
               backgroundColor: Colors.white,
               foregroundColor: colorScheme.primary,
@@ -204,7 +206,7 @@ class EditProfileScreen extends StatelessWidget {
               minimumSize: const Size(0, 44),
             ),
             child: const Text("Save", style: TextStyle(fontWeight: FontWeight.bold)),
-          ),
+          )),
         ],
       ),
     );
@@ -234,8 +236,10 @@ class EditProfileScreen extends StatelessWidget {
                   border: Border.all(color: colorScheme.surface, width: 4),
                 ),
                 child: ClipOval(
-                  child: CachedNetworkImage(
-                    imageUrl: "https://ui-avatars.com/api/?name=Rahul+Kumar&background=4C86FF&color=fff",
+                  child: Obx(() => controller.selectedPhoto != null
+                    ? Image.file(File(controller.profileImage.value), fit: BoxFit.cover)
+                    : CachedNetworkImage(
+                    imageUrl: AppUrl.mediaUrl(controller.profileImage.value),
                     fit: BoxFit.cover,
                     placeholder: (context, url) => const Center(
                       child: CircularProgressIndicator(strokeWidth: 2),
@@ -245,7 +249,7 @@ class EditProfileScreen extends StatelessWidget {
                       size: 40,
                       color: colorScheme.primary,
                     ),
-                  ),
+                  )),
                 ),
               ),
               Positioned(
@@ -281,7 +285,7 @@ class EditProfileScreen extends StatelessWidget {
                 Row(
                   children: [
                     TextButton.icon(
-                      onPressed: () {},
+                      onPressed: controller.changePhoto,
                       icon: const Icon(Icons.photo_library_outlined, size: 18),
                       label: const Text("Change"),
                       style: TextButton.styleFrom(
@@ -291,7 +295,7 @@ class EditProfileScreen extends StatelessWidget {
                     ),
                     const SizedBox(width: 8),
                     TextButton(
-                      onPressed: () {},
+                      onPressed: controller.removeProfilePhoto,
                       style: TextButton.styleFrom(
                         foregroundColor: colorScheme.error,
                       ),

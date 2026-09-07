@@ -8,6 +8,8 @@ class CustomErrorDialog extends StatelessWidget {
   final IconData icon;
   final Color color;
   final VoidCallback? onRetry;
+  final String? buttonText;
+  final VoidCallback? onTap;
 
   const CustomErrorDialog({
     super.key,
@@ -16,6 +18,8 @@ class CustomErrorDialog extends StatelessWidget {
     required this.icon,
     required this.color,
     this.onRetry,
+    this.buttonText,
+    this.onTap,
   });
 
   @override
@@ -66,13 +70,13 @@ class CustomErrorDialog extends StatelessWidget {
                     child: const Text("Close"),
                   ),
                 ),
-                if (onRetry != null) ...[
+                if (onRetry != null || onTap != null) ...[
                   const SizedBox(width: 12),
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () {
+                      onPressed: onTap ?? () {
                         Get.back();
-                        onRetry!();
+                        onRetry?.call();
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: AppColor.primary,
@@ -80,7 +84,7 @@ class CustomErrorDialog extends StatelessWidget {
                         shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(12)),
                         padding: const EdgeInsets.symmetric(vertical: 12),
                       ),
-                      child: const Text("Retry"),
+                      child: Text(buttonText ?? "Retry"),
                     ),
                   ),
                 ],

@@ -1,3 +1,6 @@
+import 'package:get/get.dart';
+import 'package:skill_link/res/routes/routes_names.dart';
+import 'package:skill_link/view_models/controller/categories_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:skill_link/res/components/widgets/category_grid_item.dart';
 import 'package:skill_link/res/components/widgets/custom_search_bar.dart';
@@ -7,53 +10,13 @@ class CategoriesScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(CategoriesController());
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
-    final List<Map<String, dynamic>> categories = [
-      {
-        "title": "Plumbing",
-        "subtitle": "Faucet, pipes, fittings, drainage & more",
-        "icon": Icons.plumbing_rounded,
-      },
-      {
-        "title": "Electrical",
-        "subtitle": "Wiring, lighting, switches & more",
-        "icon": Icons.bolt_rounded,
-      },
-      {
-        "title": "Painting",
-        "subtitle": "Wall painting, texture, polish & more",
-        "icon": Icons.format_paint_rounded,
-      },
-      {
-        "title": "AC Repair",
-        "subtitle": "Installation, servicing, repair & more",
-        "icon": Icons.ac_unit_rounded,
-      },
-      {
-        "title": "Carpentry",
-        "subtitle": "Furniture, doors, windows, fixing & more",
-        "icon": Icons.handyman_rounded,
-      },
-      {
-        "title": "Cleaning",
-        "subtitle": "Home, office, deep cleaning & more",
-        "icon": Icons.cleaning_services_rounded,
-      },
-      {
-        "title": "Masonry",
-        "subtitle": "Brick work, plaster, tile work & more",
-        "icon": Icons.foundation_rounded,
-      },
-      {
-        "title": "More Services",
-        "subtitle": "Explore other available services",
-        "icon": Icons.more_horiz_rounded,
-      },
-    ];
-
-    return Scaffold(
+    return Obx(() {
+      final categories = controller.categories.where((item) => item.name.toLowerCase().contains(controller.search.value.toLowerCase())).toList();
+      return Scaffold(
       backgroundColor: colorScheme.surface,
       body: Column(
         children: [
@@ -112,11 +75,11 @@ class CategoriesScreen extends StatelessWidget {
                   ],
                 ),
               ),
-              const Positioned(
+              Positioned(
                 bottom: -28,
                 left: 20,
                 right: 20,
-                child: CustomSearchBar(hintText: "Search for services..."),
+                child: CustomSearchBar(hintText: "Search for services...", onChanged: (value) => controller.search.value = value),
               ),
             ],
           ),
@@ -148,10 +111,16 @@ class CategoriesScreen extends StatelessWidget {
                     itemCount: categories.length,
                     itemBuilder: (context, index) {
                       return CategoryGridItem(
-                        title: categories[index]['title'],
-                        subtitle: categories[index]['subtitle'],
-                        icon: categories[index]['icon'],
-                        onTap: () {},
+                        title: categories[index].name,
+                        subtitle: categories[index].description,
+                        icon: {
+                          'plumbing': Icons.plumbing_rounded, 'electrical': Icons.bolt_rounded,
+                          'painting': Icons.format_paint_rounded, 'ac repair': Icons.ac_unit_rounded,
+                          'carpentry': Icons.handyman_rounded, 'cleaning': Icons.cleaning_services_rounded,
+                          'masonry': Icons.foundation_rounded,
+                        }[categories[index].name.toLowerCase()] ?? Icons.more_horiz_rounded,
+                        onTap: () => Get.toNamed(RouteName.requestServiceScreen,
+                            arguments: {'category_id': categories[index].id}),
                       );
                     },
                   ),
@@ -211,5 +180,6 @@ class CategoriesScreen extends StatelessWidget {
         ],
       ),
     );
+    });
   }
 }

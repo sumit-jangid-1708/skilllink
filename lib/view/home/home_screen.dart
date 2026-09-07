@@ -1,3 +1,5 @@
+import 'package:skill_link/res/app_url/app_url.dart';
+import 'package:skill_link/view_models/controller/home_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:skill_link/res/components/widgets/category_card.dart';
@@ -10,10 +12,11 @@ class HomeScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(HomeController());
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
-    return Scaffold(
+    return Obx(() => Scaffold(
       backgroundColor: colorScheme.surface,
       body: SingleChildScrollView(
         child: Column(
@@ -55,7 +58,7 @@ class HomeScreen extends StatelessWidget {
                                 ),
                               ),
                               Text(
-                                "Rahul Kumar",
+                                controller.profileModel.value?.profile?.fullName ?? '',
                                 style: theme.textTheme.headlineSmall?.copyWith(
                                   color: Colors.white,
                                   fontWeight: FontWeight.bold,
@@ -78,7 +81,7 @@ class HomeScreen extends StatelessWidget {
                           const Icon(Icons.location_on_rounded, color: Colors.white, size: 18),
                           const SizedBox(width: 8),
                           Text(
-                            "Koramangala, Bengaluru 560034",
+                            controller.profileModel.value?.profile?.address ?? '',
                             style: theme.textTheme.bodySmall?.copyWith(color: Colors.white),
                           ),
                           // const Icon(Icons.keyboard_arrow_down_rounded, color: Colors.white, size: 18),
@@ -88,11 +91,11 @@ class HomeScreen extends StatelessWidget {
                   ),
                 ),
                 // Floating Search Bar
-                const Positioned(
+                Positioned(
                   bottom: -28,
                   left: 20,
                   right: 20,
-                  child: CustomSearchBar(),
+                  child: CustomSearchBar(onChanged: (value) => controller.search.value = value),
                 ),
               ],
             ),
@@ -159,7 +162,7 @@ class HomeScreen extends StatelessWidget {
                       ),
                     ),
                     FilledButton(
-                      onPressed: () {},
+                      onPressed: () => Get.toNamed(RouteName.requestServiceScreen),
                       style: FilledButton.styleFrom(
                         backgroundColor: Colors.white,
                         foregroundColor: colorScheme.primary,
@@ -195,17 +198,19 @@ class HomeScreen extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.symmetric(horizontal: 20),
               child: Row(
-                children: [
-                  CategoryCard(title: "Plumbing", icon: Icons.plumbing_rounded, isSelected: true, onTap: () {}),
-                  const SizedBox(width: 16),
-                  CategoryCard(title: "Electric", icon: Icons.bolt_rounded, onTap: () {}),
-                  const SizedBox(width: 16),
-                  CategoryCard(title: "Painting", icon: Icons.format_paint_rounded, onTap: () {}),
-                  const SizedBox(width: 16),
-                  CategoryCard(title: "AC Repair", icon: Icons.ac_unit_rounded, onTap: () {}),
-                  const SizedBox(width: 16),
-                  CategoryCard(title: "Carpentry", icon: Icons.handyman_rounded, onTap: () {}),
-                ],
+                children: controller.categories.map((category) => Padding(
+                  padding: const EdgeInsets.only(right: 16),
+                  child: CategoryCard(
+                    title: category.name,
+                    icon: {
+                      'plumbing': Icons.plumbing_rounded, 'electrical': Icons.bolt_rounded,
+                      'painting': Icons.format_paint_rounded, 'ac repair': Icons.ac_unit_rounded,
+                      'carpentry': Icons.handyman_rounded,
+                    }[category.name.toLowerCase()] ?? Icons.handyman_rounded,
+                    isSelected: controller.selectedCategory.value == category.id,
+                    onTap: () => controller.getTechnicians(category: category.id),
+                  ),
+                )).toList(),
               ),
             ),
 
@@ -218,41 +223,27 @@ class HomeScreen extends StatelessWidget {
               scrollDirection: Axis.horizontal,
               padding: const EdgeInsets.only(left: 20, right: 20, bottom: 20),
               child: Row(
-                children: [
-                  WorkerCard(
-                    name: "Suresh M.",
-                    profession: "Expert Plumber",
-                    rating: "4.6",
-                    distance: "2.3 km",
-                    imageUrl: "https://randomuser.me/api/portraits/men/32.jpg",
-                    onViewProfile: () { Get.toNamed(RouteName.workerProfileScreen);},
+                children: controller.technicians.where((worker) =>
+                  worker.fullName.toLowerCase().contains(controller.search.value.toLowerCase()) ||
+                  worker.skillCategories.any((category) => category.name.toLowerCase().contains(controller.search.value.toLowerCase()))
+                ).map((worker) => Padding(
+                  padding: const EdgeInsets.only(right: 16),
+                  child: WorkerCard(
+                    name: worker.fullName,
+                    profession: worker.skillCategories.map((item) => item.name).join(', '),
+                    rating: worker.avgRating,
+                    distance: '—',
+                    imageUrl: AppUrl.mediaUrl(worker.profilePhoto),
+                    onViewProfile: () => Get.toNamed(RouteName.workerProfileScreen, arguments: worker.id),
                   ),
-                  const SizedBox(width: 16),
-                  WorkerCard(
-                    name: "Arjun D.",
-                    profession: "Electrician",
-                    rating: "4.7",
-                    distance: "2.1 km",
-                    imageUrl: "https://randomuser.me/api/portraits/men/44.jpg",
-                    onViewProfile: () {},
-                  ),
-                  const SizedBox(width: 16),
-                  WorkerCard(
-                    name: "Vijay B.",
-                    profession: "AC Technician",
-                    rating: "4.5",
-                    distance: "3.0 km",
-                    imageUrl: "https://randomuser.me/api/portraits/men/85.jpg",
-                    onViewProfile: () {},
-                  ),
-                ],
+                )).toList(),
               ),
             ),
             const SizedBox(height: 32), // Padding before bottom of scroll
           ],
         ),
       ),
-    );
+    ));
   }
 
   Widget _buildHeaderAction(BuildContext context, IconData icon) {

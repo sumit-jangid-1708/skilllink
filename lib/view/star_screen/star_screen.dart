@@ -1,3 +1,8 @@
+import 'package:skill_link/res/app_url/app_url.dart';
+import 'package:get/get.dart';
+import 'package:skill_link/view_models/controller/star_controller.dart';
+import 'package:skill_link/res/components/widgets/worker_card.dart';
+import 'package:skill_link/res/routes/routes_names.dart';
 import 'package:flutter/material.dart';
 
 class StarScreen extends StatelessWidget {
@@ -5,6 +10,7 @@ class StarScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(StarController());
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
@@ -20,7 +26,22 @@ class StarScreen extends StatelessWidget {
         elevation: 0,
         scrolledUnderElevation: 0,
       ),
-      body: Center(
+      body: Obx(() => controller.saved.isNotEmpty
+          ? ListView(
+              padding: const EdgeInsets.all(16),
+              children: controller.saved.map((saved) => Padding(
+                padding: const EdgeInsets.only(bottom: 16),
+                child: WorkerCard(
+                  name: saved.technician.fullName,
+                  profession: saved.technician.skillCategories.map((item) => item.name).join(', '),
+                  rating: saved.technician.avgRating,
+                  distance: '—',
+                  imageUrl: AppUrl.mediaUrl(saved.technician.profilePhoto),
+                  onViewProfile: () => Get.toNamed(RouteName.workerProfileScreen, arguments: saved.technician.id),
+                ),
+              )).toList(),
+            )
+          : Center(
         child: Padding(
           padding: const EdgeInsets.all(32.0),
           child: Column(
@@ -66,7 +87,7 @@ class StarScreen extends StatelessWidget {
             ],
           ),
         ),
-      ),
+      )),
     );
   }
 }

@@ -1,3 +1,5 @@
+import 'package:skill_link/res/app_url/app_url.dart';
+import 'package:skill_link/view_models/controller/profile_controller.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:skill_link/res/components/widgets/profile_option_tile.dart';
@@ -8,10 +10,11 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final controller = Get.put(ProfileController());
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
-    return Scaffold(
+    return Obx(() => Scaffold(
       backgroundColor: colorScheme.surface,
       body: SingleChildScrollView(
         child: Column(
@@ -98,8 +101,14 @@ class ProfileScreen extends StatelessWidget {
                                 color: colorScheme.primaryContainer.withOpacity(0.5),
                                 shape: BoxShape.circle,
                                 border: Border.all(color: colorScheme.surface, width: 4),
+                                image: controller.profileModel.value?.profile?.profilePhoto == null
+                                    ? null : DecorationImage(
+                                        image: NetworkImage(AppUrl.mediaUrl(controller.profileModel.value!.profile!.profilePhoto)),
+                                        fit: BoxFit.cover),
                               ),
-                              child: Icon(Icons.person_rounded, size: 48, color: colorScheme.primary),
+                              child: controller.profileModel.value?.profile?.profilePhoto == null
+                                  ? Icon(Icons.person_rounded, size: 48, color: colorScheme.primary)
+                                  : null,
                             ),
                             Positioned(
                               bottom: 2,
@@ -122,7 +131,7 @@ class ProfileScreen extends StatelessWidget {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               Text(
-                                "Rahul Kumar",
+                                controller.profileModel.value?.profile?.fullName ?? '',
                                 style: theme.textTheme.titleLarge?.copyWith(
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -133,7 +142,7 @@ class ProfileScreen extends StatelessWidget {
                                   Icon(Icons.phone_outlined, size: 16, color: colorScheme.primary),
                                   const SizedBox(width: 8),
                                   Text(
-                                    "+91 98765 43210",
+                                    controller.profileModel.value?.phoneNumber ?? '',
                                     style: theme.textTheme.bodyMedium?.copyWith(
                                       color: colorScheme.onSurfaceVariant,
                                     ),
@@ -215,7 +224,7 @@ class ProfileScreen extends StatelessWidget {
                 iconBgColor: colorScheme.errorContainer,
                 iconColor: colorScheme.error,
                 isDestructive: true,
-                onTap: () {},
+                onTap: controller.logout,
               ),
             ]),
 
@@ -230,7 +239,7 @@ class ProfileScreen extends StatelessWidget {
           ],
         ),
       ),
-    );
+    ));
   }
 
   Widget _buildSectionHeader(BuildContext context, String title) {

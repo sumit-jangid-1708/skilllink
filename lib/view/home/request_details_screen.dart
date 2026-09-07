@@ -1,3 +1,7 @@
+import 'package:skill_link/view_models/controller/request_details_controller.dart';
+import 'package:skill_link/res/routes/routes_names.dart';
+import 'package:intl/intl.dart';
+import 'package:skill_link/res/app_url/app_url.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
@@ -6,12 +10,15 @@ import 'package:skill_link/res/components/widgets/status_stepper.dart';
 class RequestDetailsScreen extends StatelessWidget {
   const RequestDetailsScreen({super.key});
 
+  RequestDetailsController get controller => Get.find<RequestDetailsController>();
+
   @override
   Widget build(BuildContext context) {
+    Get.put(RequestDetailsController());
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
-    return Scaffold(
+    return Obx(() => Scaffold(
       backgroundColor: colorScheme.surface,
       body: SingleChildScrollView(
         child: Column(
@@ -55,7 +62,8 @@ class RequestDetailsScreen extends StatelessWidget {
                         ),
                       ),
                       TextButton(
-                        onPressed: () {},
+                        onPressed: controller.requestModel.value?.technician == null ? null : () =>
+                          Get.toNamed(RouteName.workerProfileScreen, arguments: controller.requestModel.value!.technician),
                         style: TextButton.styleFrom(
                           minimumSize: const Size(48, 48), // Touch target
                           padding: const EdgeInsets.symmetric(horizontal: 12),
@@ -91,6 +99,8 @@ class RequestDetailsScreen extends StatelessWidget {
                   ),
                   const SizedBox(height: 12),
                   _buildBillDetailsCard(context),
+                  if (controller.requestModel.value?.status == 'completed')
+                    _buildReviewInput(context),
                   const SizedBox(height: 40),
                 ],
               ),
@@ -99,7 +109,7 @@ class RequestDetailsScreen extends StatelessWidget {
         ),
       ),
       bottomNavigationBar: _buildBottomActionButtons(context),
-    );
+    ));
   }
 
   Widget _buildHeader(BuildContext context) {
@@ -218,13 +228,13 @@ class RequestDetailsScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Kitchen Tap Leakage",
+                  controller.requestModel.value?.description ?? '',
                   style: theme.textTheme.titleLarge?.copyWith(
                     fontWeight: FontWeight.bold,
                   ),
                 ),
                 Text(
-                  "Plumbing",
+                  controller.requestModel.value?.skillCategoryName ?? '',
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: colorScheme.onSurfaceVariant,
                   ),
@@ -236,7 +246,7 @@ class RequestDetailsScreen extends StatelessWidget {
                     const SizedBox(width: 8),
                     Expanded(
                       child: Text(
-                        "Koramangala, Bengaluru 560034",
+                        controller.requestModel.value?.address ?? '',
                         style: theme.textTheme.bodySmall?.copyWith(
                           color: colorScheme.onSurfaceVariant,
                         ),
@@ -251,7 +261,7 @@ class RequestDetailsScreen extends StatelessWidget {
                     Icon(Icons.calendar_month, size: 16, color: colorScheme.primary),
                     const SizedBox(width: 8),
                     Text(
-                      "12 May 2024  •  10:00 AM",
+                      controller.requestModel.value?.scheduledAt ?? controller.requestModel.value?.createdAt ?? '',
                       style: theme.textTheme.bodySmall?.copyWith(
                         color: colorScheme.onSurfaceVariant,
                       ),
@@ -272,7 +282,7 @@ class RequestDetailsScreen extends StatelessWidget {
                   borderRadius: BorderRadius.circular(8),
                 ),
                 child: Text(
-                  "Accepted",
+                  controller.requestModel.value?.status ?? '',
                   style: theme.textTheme.labelSmall?.copyWith(
                     color: colorScheme.onPrimaryContainer,
                     fontWeight: FontWeight.bold,
@@ -281,7 +291,7 @@ class RequestDetailsScreen extends StatelessWidget {
               ),
               const SizedBox(height: 16),
               Text(
-                "₹350",
+                controller.requestModel.value?.amount == null ? '—' : '₹' + controller.requestModel.value!.amount!,
                 style: theme.textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.w900,
                   color: colorScheme.primary,
@@ -315,15 +325,18 @@ class RequestDetailsScreen extends StatelessWidget {
   }
 
   Widget _buildStatusStepperWidget() {
+    final timeline = controller.requestModel.value?.timeline ?? [];
     return StatusStepper(
-      currentStep: 1,
-      steps: [
-        StepData(title: "Requested", time: "09:15 AM", icon: Icons.assignment_outlined),
-        StepData(title: "Accepted", time: "09:25 AM", icon: Icons.check_circle),
-        StepData(title: "On The Way", time: "09:45 AM", icon: Icons.person_outline),
-        StepData(title: "In Progress", time: "10:10 AM", icon: Icons.build_outlined),
-        StepData(title: "Completed", time: "-", icon: Icons.check_circle_outline),
-      ],
+      currentStep: timeline.lastIndexWhere((step) => step.done),
+      steps: timeline.asMap().entries.map((entry) {
+        final date = DateTime.tryParse(entry.value.time ?? '')?.toLocal();
+        return StepData(
+          title: entry.value.label,
+          time: date == null ? '-' : DateFormat('hh:mm a').format(date),
+          icon: [Icons.assignment_outlined, Icons.check_circle, Icons.person_outline,
+            Icons.check_circle_outline][entry.key.clamp(0, 3)],
+        );
+      }).toList(),
     );
   }
 
@@ -349,7 +362,7 @@ class RequestDetailsScreen extends StatelessWidget {
             child: ClipRRect(
               borderRadius: BorderRadius.circular(30),
               child: CachedNetworkImage(
-                imageUrl: 'https://images.unsplash.com/photo-1540560085022-d8cdd038b32c?w=150',
+                imageUrl: AppUrl.mediaUrl(controller.technicianModel.value?.profilePhoto),
                 width: 60,
                 height: 60,
                 fit: BoxFit.cover,
@@ -368,7 +381,7 @@ class RequestDetailsScreen extends StatelessWidget {
                 Row(
                   children: [
                     Text(
-                      "Suresh M.",
+                      controller.requestModel.value?.technicianName ?? '',
                       style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
                     ),
                     const SizedBox(width: 4),
@@ -376,7 +389,7 @@ class RequestDetailsScreen extends StatelessWidget {
                   ],
                 ),
                 Text(
-                  "Expert Plumber",
+                  controller.requestModel.value?.skillCategoryName ?? '',
                   style: theme.textTheme.bodySmall?.copyWith(color: colorScheme.onSurfaceVariant),
                 ),
                 const SizedBox(height: 4),
@@ -385,11 +398,11 @@ class RequestDetailsScreen extends StatelessWidget {
                     const Icon(Icons.star, color: Colors.amber, size: 14),
                     const SizedBox(width: 4),
                     Text(
-                      "4.6 ",
+                      '—',
                       style: theme.textTheme.labelSmall?.copyWith(fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      "(128 Reviews)",
+                      '',
                       style: theme.textTheme.labelSmall?.copyWith(color: colorScheme.onSurfaceVariant),
                     ),
                   ],
@@ -400,7 +413,7 @@ class RequestDetailsScreen extends StatelessWidget {
                     Icon(Icons.security, color: colorScheme.primary, size: 14),
                     const SizedBox(width: 4),
                     Text(
-                      "Verified Professional",
+                      '',
                       style: theme.textTheme.labelSmall?.copyWith(
                         color: colorScheme.primary,
                         fontWeight: FontWeight.w600,
@@ -478,7 +491,7 @@ class RequestDetailsScreen extends StatelessWidget {
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
-                  "Water leakage from kitchen tap. Continuous dripping even after closing. Needs immediate fix.",
+                  controller.requestModel.value?.description ?? '',
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: colorScheme.onSurfaceVariant,
                     height: 1.5,
@@ -503,7 +516,7 @@ class RequestDetailsScreen extends StatelessWidget {
                       Icon(Icons.image_outlined, color: colorScheme.primary, size: 20),
                       const SizedBox(width: 12),
                       Text(
-                        "3 Photos Attached",
+                        ([controller.requestModel.value?.image, controller.requestModel.value?.photoBefore, controller.requestModel.value?.photoAfter].where((image) => image != null && image.isNotEmpty).length).toString() + ' Photos Attached',
                         style: theme.textTheme.labelLarge?.copyWith(
                           fontWeight: FontWeight.bold,
                           color: colorScheme.primary,
@@ -534,11 +547,11 @@ class RequestDetailsScreen extends StatelessWidget {
       ),
       child: Column(
         children: [
-          _buildBillRow(context, "Service Charge", "₹300"),
+          _buildBillRow(context, "Service Charge", '—'),
           const SizedBox(height: 12),
-          _buildBillRow(context, "Material Cost", "₹0"),
+          _buildBillRow(context, "Material Cost", '—'),
           const SizedBox(height: 12),
-          _buildBillRow(context, "Platform Fee", "₹50", hasInfo: true),
+          _buildBillRow(context, "Platform Fee", '—', hasInfo: true),
           Padding(
             padding: const EdgeInsets.symmetric(vertical: 16.0),
             child: Divider(height: 1, color: colorScheme.outlineVariant),
@@ -551,7 +564,7 @@ class RequestDetailsScreen extends StatelessWidget {
                 style: theme.textTheme.titleMedium?.copyWith(fontWeight: FontWeight.bold),
               ),
               Text(
-                "₹350",
+                controller.requestModel.value?.amount == null ? '—' : '₹' + controller.requestModel.value!.amount!,
                 style: theme.textTheme.titleLarge?.copyWith(
                   fontWeight: FontWeight.w900,
                   color: colorScheme.primary,
@@ -594,6 +607,37 @@ class RequestDetailsScreen extends StatelessWidget {
     );
   }
 
+  Widget _buildReviewInput(BuildContext context) {
+    final theme = Theme.of(context);
+    return Padding(
+      padding: const EdgeInsets.only(top: 24),
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.start,
+        children: [
+          Text('Rate your service', style: theme.textTheme.titleMedium),
+          Obx(() => Row(
+            children: List.generate(5, (index) => IconButton(
+              onPressed: controller.reviewModel.value != null ? null :
+                  () => controller.rating.value = index + 1,
+              icon: Icon(index < controller.rating.value ? Icons.star : Icons.star_border,
+                color: Colors.amber),
+            )),
+          )),
+          TextField(
+            controller: controller.commentController,
+            decoration: const InputDecoration(hintText: 'Write a review (optional)'),
+          ),
+          const SizedBox(height: 12),
+          Obx(() => FilledButton(
+            onPressed: controller.isLoading.value || controller.reviewModel.value != null
+                ? null : () => controller.submitReview(controller.commentController.text),
+            child: Text(controller.reviewModel.value == null ? 'Submit Review' : 'Review Submitted'),
+          )),
+        ],
+      ),
+    );
+  }
+
   Widget _buildBottomActionButtons(BuildContext context) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
@@ -614,7 +658,9 @@ class RequestDetailsScreen extends StatelessWidget {
         children: [
           Expanded(
             child: OutlinedButton(
-              onPressed: () {},
+              onPressed: controller.isLoading.value || controller.requestModel.value == null ||
+                  ['completed', 'cancelled'].contains(controller.requestModel.value?.status)
+                  ? null : controller.cancelRequest,
               style: OutlinedButton.styleFrom(
                 foregroundColor: colorScheme.onSurfaceVariant,
                 side: BorderSide(color: colorScheme.outlineVariant),

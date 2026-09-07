@@ -8,6 +8,43 @@ import 'package:skill_link/data/network/base_api_services.dart';
 import 'package:skill_link/data/storage/app_storage.dart';
 
 class NetworkApiServices extends BaseApiServices {
+  Future<dynamic> deleteApi(String url) async {
+    dynamic responseJson;
+    try {
+      final headers = await _getHeaders();
+      final response = await http.delete(Uri.parse(url), headers: headers)
+          .timeout(const Duration(seconds: 10));
+      responseJson = returnResponse(response);
+    } on SocketException {
+      throw InternetExceptions('');
+    } on RequestTimeOut {
+      throw RequestTimeOut('');
+    }
+    return responseJson;
+  }
+
+  Future<dynamic> multipartApi(String method, Map<String, String> data,
+      String url, Map<String, String> files) async {
+    dynamic responseJson;
+    try {
+      final headers = await _getHeaders();
+      headers.remove('Content-Type');
+      final request = http.MultipartRequest(method, Uri.parse(url));
+      request.headers.addAll(headers);
+      request.fields.addAll(data);
+      for (final file in files.entries) {
+        request.files.add(await http.MultipartFile.fromPath(file.key, file.value));
+      }
+      final response = await http.Response.fromStream(
+          await request.send().timeout(const Duration(seconds: 10)));
+      responseJson = returnResponse(response);
+    } on SocketException {
+      throw InternetExceptions('');
+    } on RequestTimeOut {
+      throw RequestTimeOut('');
+    }
+    return responseJson;
+  }
 
   // ✅ Auth header helper
   Future<Map<String, String>> _getHeaders({bool requiresAuth = true}) async {
@@ -87,7 +124,7 @@ dynamic returnResponse(http.Response response) {
     case 400:
       return jsonDecode(response.body);
     case 401:
-      throw FetchDataException('Unauthorized - Please login again');
+      throw UnauthorizedException('Please login again');
     case 403:
       throw FetchDataException('Permission denied');
     case 404:

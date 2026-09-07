@@ -6,6 +6,7 @@ import 'package:skill_link/view_models/services/auth_service.dart';
 import 'package:skill_link/data/storage/app_storage.dart';
 
 import '../../models/verify_otp_model.dart';
+import '../../data/app_exceptions.dart';
 
 class AuthController extends GetxController with BaseController {
   final AuthService authService = AuthService();
@@ -36,8 +37,8 @@ class AuthController extends GetxController with BaseController {
     }
   }
 
-  void verifyOtp(String phoneNumber, String otp)async{
-    try{
+  void verifyOtp(String phoneNumber, String otp) async {
+    try {
       isLoading.value = true;
       Map data = {
         "phone_number": phoneNumber,
@@ -46,16 +47,17 @@ class AuthController extends GetxController with BaseController {
       };
       final response = await authService.verifyOtpApi(data);
       VerifyOtpResponseModel model = VerifyOtpResponseModel.fromJson(response);
-      verifyOtpModel.value = model;
-
-      // Save token to local storage
-      if (model.tokens.access.isNotEmpty) {
-        await AppStorage.saveToken(model.tokens.access);
+      
+      if (model.tokens.access.isEmpty) {
+        throw FetchDataException("Authentication failed: No access token received");
       }
+      
+      // Save both access and refresh tokens
+      await AppStorage.saveToken(model.tokens.access, refresh: model.tokens.refresh);
 
       isLoading.value = false;
-      print(response);
-    }catch(e){
+      verifyOtpModel.value = model;
+    } catch (e) {
       isLoading.value = false;
       handleError(e, onRetry: () => verifyOtp(phoneNumber, otp));
     }

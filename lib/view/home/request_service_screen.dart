@@ -1,6 +1,8 @@
+import 'dart:io';
 import 'dart:ui';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:intl/intl.dart';
 import 'package:skill_link/res/components/widgets/custom_button.dart';
 import 'package:skill_link/view_models/controller/request_service_controller.dart';
 
@@ -18,7 +20,6 @@ class RequestServiceScreen extends StatelessWidget {
       backgroundColor: colorScheme.surface,
       body: Stack(
         children: [
-          // 1. Blue Background Gradient (Background Layer)
           Container(
             height: 280,
             width: double.infinity,
@@ -30,14 +31,9 @@ class RequestServiceScreen extends StatelessWidget {
               ),
             ),
           ),
-          
-          // 2. Foreground content layer
           Column(
             children: [
-              // Header UI
               _buildHeaderContent(context),
-              
-              // White Body Section with Top Curves
               Expanded(
                 child: Container(
                   width: double.infinity,
@@ -68,7 +64,7 @@ class RequestServiceScreen extends StatelessWidget {
                         children: [
                           _buildSectionTitle(context, "1. Select Category"),
                           const SizedBox(height: 16),
-                          _buildCategoryList(context),
+                          Obx(() => _buildCategoryList(context)),
                           const SizedBox(height: 16),
                           _buildDotsIndicator(context),
                           const SizedBox(height: 32),
@@ -97,12 +93,15 @@ class RequestServiceScreen extends StatelessWidget {
                           _buildLocationCard(context),
                           const SizedBox(height: 48),
                           
-                          CustomButton(
-                            text: "Continue",
-                            onPressed: () {},
-                            icon: const Icon(Icons.arrow_forward, size: 18),
+                          Obx(() => CustomButton(
+                            text: controller.isLoading.value ? "Processing..." : "Continue",
+                            onPressed: controller.createRequest,
+                            isDisabled: controller.isLoading.value,
+                            icon: controller.isLoading.value 
+                                ? const SizedBox(width: 18, height: 18, child: CircularProgressIndicator(strokeWidth: 2, color: Colors.white))
+                                : const Icon(Icons.arrow_forward, size: 18),
                             iconPosition: IconPosition.right,
-                          ),
+                          )),
                           const SizedBox(height: 24),
                         ],
                       ),
@@ -333,7 +332,30 @@ class RequestServiceScreen extends StatelessWidget {
       child: Row(
         children: [
           _buildUploadButton(context),
-          ...List.generate(3, (index) => _buildEmptyPhotoSlot(context)),
+          Obx(() => Row(
+            children: List.generate(controller.images.length, (index) => Container(
+                  width: 96, height: 96,
+                  margin: const EdgeInsets.only(right: 16),
+                  clipBehavior: Clip.antiAlias,
+                  decoration: BoxDecoration(borderRadius: BorderRadius.circular(20)),
+                  child: Stack(
+                    children: [
+                      Image.file(File(controller.images[index]), fit: BoxFit.cover, width: 96, height: 96),
+                      Position88(
+                        top: 4, right: 4,
+                        child: GestureDetector(
+                          onTap: () => controller.images.removeAt(index),
+                          child: Container(
+                            padding: const EdgeInsets.all(4),
+                            decoration: const BoxDecoration(color: Colors.black54, shape: BoxShape.circle),
+                            child: const Icon(Icons.close, color: Colors.white, size: 16),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                )),
+          )),
         ],
       ),
     );
@@ -378,21 +400,6 @@ class RequestServiceScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildEmptyPhotoSlot(BuildContext context) {
-    final colorScheme = Theme.of(context).colorScheme;
-    return Container(
-      width: 96,
-      height: 96,
-      margin: const EdgeInsets.only(right: 16),
-      decoration: BoxDecoration(
-        color: colorScheme.surfaceVariant.withOpacity(0.3),
-        borderRadius: BorderRadius.circular(20),
-        border: Border.all(color: colorScheme.outlineVariant),
-      ),
-      child: Icon(Icons.image_outlined, color: colorScheme.onSurfaceVariant.withOpacity(0.5), size: 32),
-    );
-  }
-
   Widget _buildDateTimeSelectors(BuildContext context) {
     return Row(
       children: [
@@ -424,40 +431,46 @@ class RequestServiceScreen extends StatelessWidget {
     required IconData icon,
     required String label,
     required VoidCallback onTap,
-    required dynamic value,
+    required Rxn value,
   }) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
     return Obx(() {
       String displayValue = label;
-      if (value.value != null) {
+      bool hasValue = value.value != null;
+      
+      if (hasValue) {
         if (value.value is DateTime) {
-          displayValue = "${value.value.day}/${value.value.month}/${value.value.year}";
+          displayValue = DateFormat('dd MMM, yyyy').format(value.value);
         } else if (value.value is TimeOfDay) {
           displayValue = value.value.format(context);
         }
       }
+      
       return InkWell(
         onTap: onTap,
         borderRadius: BorderRadius.circular(16),
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 16),
           decoration: BoxDecoration(
-            color: colorScheme.surface,
+            color: hasValue ? colorScheme.primary.withOpacity(0.05) : colorScheme.surface,
             borderRadius: BorderRadius.circular(16),
-            border: Border.all(color: colorScheme.outlineVariant),
+            border: Border.all(
+              color: hasValue ? colorScheme.primary : colorScheme.outlineVariant,
+              width: hasValue ? 1.5 : 1,
+            ),
           ),
           child: Row(
             children: [
-              Icon(icon, color: colorScheme.primary, size: 20),
+              Icon(icon, color: hasValue ? colorScheme.primary : colorScheme.onSurfaceVariant, size: 20),
               const SizedBox(width: 12),
               Expanded(
                 child: Text(
                   displayValue,
                   style: theme.textTheme.bodyMedium?.copyWith(
-                    color: value.value != null ? colorScheme.onSurface : colorScheme.onSurfaceVariant,
-                    fontWeight: value.value != null ? FontWeight.bold : FontWeight.w500,
+                    color: hasValue ? colorScheme.onSurface : colorScheme.onSurfaceVariant,
+                    fontWeight: hasValue ? FontWeight.bold : FontWeight.w500,
                   ),
                   overflow: TextOverflow.ellipsis,
                 ),
@@ -497,7 +510,7 @@ class RequestServiceScreen extends StatelessWidget {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Obx(() => Text(
-                  controller.location.value,
+                  controller.location.value.isEmpty ? "Location not set" : controller.location.value,
                   style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
                 )),
                 const SizedBox(height: 4),
@@ -525,6 +538,14 @@ class RequestServiceScreen extends StatelessWidget {
       ),
     );
   }
+}
+
+class Position88 extends StatelessWidget {
+  final double? top, right, bottom, left;
+  final Widget child;
+  const Position88({super.key, this.top, this.right, this.bottom, this.left, required this.child});
+  @override
+  Widget build(BuildContext context) => Positioned(top: top, right: right, bottom: bottom, left: left, child: child);
 }
 
 class DashedRectPainter extends CustomPainter {

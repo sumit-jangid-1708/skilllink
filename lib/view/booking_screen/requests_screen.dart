@@ -1,3 +1,5 @@
+import 'package:skill_link/view_models/controller/requests_controller.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:skill_link/res/components/widgets/request_card.dart';
@@ -13,58 +15,32 @@ class RequestsScreen extends StatefulWidget {
 class _RequestsScreenState extends State<RequestsScreen> {
   String selectedFilter = "All";
 
-  final List<Map<String, dynamic>> requests = [
-    {
-      "title": "Kitchen Tap Leakage",
-      "category": "Plumbing",
-      "location": "Koramangala, Bengaluru",
-      "date": "12 May 2024",
-      "time": "10:00 AM",
-      "price": "350",
-      "status": RequestStatus.pending,
-      "icon": Icons.plumbing_rounded,
-    },
-    {
-      "title": "Switch Board Repair",
-      "category": "Electrical",
-      "location": "Koramangala, Bengaluru",
-      "date": "11 May 2024",
-      "time": "02:30 PM",
-      "price": "250",
-      "status": RequestStatus.accepted,
-      "icon": Icons.bolt_rounded,
-    },
-    {
-      "title": "AC Service",
-      "category": "AC Repair",
-      "location": "Koramangala, Bengaluru",
-      "date": "09 May 2024",
-      "time": "11:00 AM",
-      "price": "650",
-      "status": RequestStatus.completed,
-      "icon": Icons.ac_unit_rounded,
-    },
-    {
-      "title": "Wall Painting",
-      "category": "Painting",
-      "location": "Indiranagar, Bengaluru",
-      "date": "05 May 2024",
-      "time": "09:00 AM",
-      "price": "1,200",
-      "status": RequestStatus.completed,
-      "icon": Icons.format_paint_rounded,
-    },
-    {
-      "title": "Door Repair",
-      "category": "Carpentry",
-      "location": "Koramangala, Bengaluru",
-      "date": "02 May 2024",
-      "time": "04:00 PM",
-      "price": "400",
-      "status": RequestStatus.cancelled,
-      "icon": Icons.handyman_rounded,
-    },
-  ];
+  final controller = Get.put(RequestsController());
+
+  List<Map<String, dynamic>> get requests => controller.requests.map((request) {
+    final date = DateTime.tryParse(request.scheduledAt ?? request.createdAt)?.toLocal();
+    return <String, dynamic>{
+      'id': request.id,
+      'title': request.description,
+      'category': request.skillCategoryName,
+      'location': request.address,
+      'date': date == null ? '' : DateFormat('dd MMM yyyy').format(date),
+      'time': date == null ? '' : DateFormat('hh:mm a').format(date),
+      'price': request.amount ?? '—',
+      'status': {
+        'pending': RequestStatus.pending,
+        'assigned': RequestStatus.accepted,
+        'in_progress': RequestStatus.accepted,
+        'completed': RequestStatus.completed,
+        'cancelled': RequestStatus.cancelled,
+      }[request.status] ?? RequestStatus.pending,
+      'icon': {
+        'plumbing': Icons.plumbing_rounded, 'electrical': Icons.bolt_rounded,
+        'painting': Icons.format_paint_rounded, 'ac repair': Icons.ac_unit_rounded,
+        'carpentry': Icons.handyman_rounded,
+      }[request.skillCategoryName.toLowerCase()] ?? Icons.handyman_rounded,
+    };
+  }).toList();
 
   List<Map<String, dynamic>> get filteredRequests {
     if (selectedFilter == "All") return requests;
@@ -175,7 +151,7 @@ class _RequestsScreenState extends State<RequestsScreen> {
 
           // ── REQUEST LIST ──
           Expanded(
-            child: ListView.builder(
+            child: Obx(() => ListView.builder(
               padding: const EdgeInsets.fromLTRB(16, 0, 16, 16),
               itemCount: filteredRequests.length,
               itemBuilder: (context, index) {
@@ -190,11 +166,11 @@ class _RequestsScreenState extends State<RequestsScreen> {
                   status: item['status'],
                   categoryIcon: item['icon'],
                   onTap: () {
-                    Get.toNamed(RouteName.requestDetailsScreen);
+                    Get.toNamed(RouteName.requestDetailsScreen, arguments: item['id']);
                   },
                 );
               },
-            ),
+            )),
           ),
         ],
       ),

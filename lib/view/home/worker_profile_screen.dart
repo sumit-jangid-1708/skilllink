@@ -1,3 +1,5 @@
+import 'package:skill_link/res/app_url/app_url.dart';
+import 'package:skill_link/models/review_model.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -13,7 +15,7 @@ class WorkerProfileScreen extends StatelessWidget {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
-    return Scaffold(
+    return Obx(() => Scaffold(
       backgroundColor: colorScheme.surface,
       body: Stack(
         children: [
@@ -40,7 +42,7 @@ class WorkerProfileScreen extends StatelessWidget {
                         _buildSectionHeader(context, "About", showViewAll: false),
                         const SizedBox(height: 12),
                         Text(
-                          "Professional plumber with 8+ years of experience in all types of plumbing services. Expert in pipe fitting, bathroom fittings, leak repair, and water tank installation.",
+                          '—',
                           style: theme.textTheme.bodyMedium?.copyWith(
                             color: colorScheme.onSurfaceVariant,
                             height: 1.5,
@@ -58,14 +60,8 @@ class WorkerProfileScreen extends StatelessWidget {
                         Wrap(
                           spacing: 8,
                           runSpacing: 8,
-                          children: [
-                            _buildServiceChip(context, "Pipe Fitting"),
-                            _buildServiceChip(context, "Leak Repair"),
-                            _buildServiceChip(context, "Bathroom Fittings"),
-                            _buildServiceChip(context, "Drain Cleaning"),
-                            _buildServiceChip(context, "Water Tank Installation"),
-                            _buildServiceChip(context, "Tap Repair"),
-                          ],
+                          children: (controller.technicianModel.value?.skillCategories ?? [])
+                              .map((item) => _buildServiceChip(context, item.name)).toList(),
                         ),
                         const SizedBox(height: 24),
 
@@ -80,7 +76,7 @@ class WorkerProfileScreen extends StatelessWidget {
                                 context,
                                 icon: Icons.build_outlined,
                                 title: "Basic Visit Charge",
-                                price: "₹150",
+                                price: '—',
                                 desc: "Inspection & basic assessment",
                               ),
                               const SizedBox(width: 12),
@@ -88,7 +84,7 @@ class WorkerProfileScreen extends StatelessWidget {
                                 context,
                                 icon: Icons.plumbing_outlined,
                                 title: "Pipe Fitting",
-                                price: "₹250 - ₹500",
+                                price: '—',
                                 desc: "Per fitting (Material extra)",
                               ),
                               const SizedBox(width: 12),
@@ -96,7 +92,7 @@ class WorkerProfileScreen extends StatelessWidget {
                                 context,
                                 icon: Icons.water_drop_outlined,
                                 title: "Leak Repair",
-                                price: "₹300 - ₹800",
+                                price: '—',
                                 desc: "Depends on complexity",
                               ),
                             ],
@@ -104,9 +100,9 @@ class WorkerProfileScreen extends StatelessWidget {
                         ),
                         const SizedBox(height: 24),
 
-                        _buildSectionHeader(context, "Reviews (128)", showViewAll: true),
+                        _buildSectionHeader(context, 'Reviews (' + (controller.technicianModel.value?.totalReviews ?? 0).toString() + ')', showViewAll: true),
                         const SizedBox(height: 16),
-                        _buildReviewCard(context),
+                        ...(controller.technicianModel.value?.reviews ?? []).map((review) => _buildReviewCard(context, review)),
                         const SizedBox(height: 120),
                       ],
                     ),
@@ -118,7 +114,7 @@ class WorkerProfileScreen extends StatelessWidget {
           _buildBottomActionButtons(context),
         ],
       ),
-    );
+    ));
   }
 
   Widget _buildSliverAppBar(BuildContext context) {
@@ -215,7 +211,9 @@ class WorkerProfileScreen extends StatelessWidget {
                               ClipRRect(
                                 borderRadius: BorderRadius.circular(24),
                                 child: CachedNetworkImage(
-                                  imageUrl: "https://randomuser.me/api/portraits/men/32.jpg",
+                                  imageUrl: AppUrl.mediaUrl(controller.technicianModel.value?.profilePhoto),
+                                  placeholder: (context, url) => const Center(child: CircularProgressIndicator(strokeWidth: 2)),
+                                  errorWidget: (context, url, error) => const Icon(Icons.person, size: 64),
                                   fit: BoxFit.cover,
                                   width: double.infinity,
                                   height: double.infinity,
@@ -243,8 +241,8 @@ class WorkerProfileScreen extends StatelessWidget {
                                         decoration: const BoxDecoration(color: Color(0xFF2ECC71), shape: BoxShape.circle),
                                       ),
                                       const SizedBox(width: 4),
-                                      const Text(
-                                        "Available",
+                                      Text(
+                                        controller.technicianModel.value?.isAvailable == true ? 'Available' : 'Unavailable',
                                         style: TextStyle(
                                           fontSize: 10,
                                           fontWeight: FontWeight.bold,
@@ -267,7 +265,7 @@ class WorkerProfileScreen extends StatelessWidget {
                                 children: [
                                   Expanded(
                                     child: Text(
-                                      "Suresh M.",
+                                      controller.technicianModel.value?.fullName ?? '',
                                       style: theme.textTheme.headlineMedium?.copyWith(
                                         color: Colors.white,
                                         fontWeight: FontWeight.bold,
@@ -278,7 +276,7 @@ class WorkerProfileScreen extends StatelessWidget {
                                 ],
                               ),
                               Text(
-                                "Expert Plumber",
+                                controller.technicianModel.value?.skillCategories.map((item) => item.name).join(', ') ?? '',
                                 style: theme.textTheme.titleMedium?.copyWith(
                                   color: Colors.white.withOpacity(0.8),
                                 ),
@@ -289,7 +287,7 @@ class WorkerProfileScreen extends StatelessWidget {
                                   const Icon(Icons.star, color: Colors.amber, size: 20),
                                   const SizedBox(width: 4),
                                   Text(
-                                    "4.6",
+                                    controller.technicianModel.value?.avgRating ?? '—',
                                     style: theme.textTheme.titleMedium?.copyWith(
                                       color: Colors.white,
                                       fontWeight: FontWeight.bold,
@@ -299,7 +297,7 @@ class WorkerProfileScreen extends StatelessWidget {
                                   Container(width: 1, height: 16, color: Colors.white.withOpacity(0.3)),
                                   const SizedBox(width: 12),
                                   Text(
-                                    "128 Reviews",
+                                    (controller.technicianModel.value?.totalReviews ?? 0).toString() + ' Reviews',
                                     style: theme.textTheme.bodyMedium?.copyWith(color: Colors.white.withOpacity(0.8)),
                                   ),
                                 ],
@@ -346,11 +344,11 @@ class WorkerProfileScreen extends StatelessWidget {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
-          _buildExactStatItem(context, Icons.business_center_outlined, "8+", "Years Exp."),
+          _buildExactStatItem(context, Icons.business_center_outlined, controller.technicianModel.value?.experienceYears.toString() ?? '—', "Years Exp."),
           _buildStatDivider(context),
-          _buildExactStatItem(context, Icons.location_on_outlined, "2.3 km", "From you"),
+          _buildExactStatItem(context, Icons.location_on_outlined, '—', "From you"),
           _buildStatDivider(context),
-          _buildExactStatItem(context, Icons.verified_user_outlined, "Verified", "Professional"),
+          _buildExactStatItem(context, Icons.verified_user_outlined, controller.technicianModel.value?.verificationStatus ?? '', "Professional"),
         ],
       ),
     );
@@ -500,7 +498,7 @@ class WorkerProfileScreen extends StatelessWidget {
     );
   }
 
-  Widget _buildReviewCard(BuildContext context) {
+  Widget _buildReviewCard(BuildContext context, ReviewModel review) {
     final theme = Theme.of(context);
     final colorScheme = theme.colorScheme;
 
@@ -534,11 +532,11 @@ class WorkerProfileScreen extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     Text(
-                      "Rohit Sharma",
+                      'Customer',
                       style: theme.textTheme.titleSmall?.copyWith(fontWeight: FontWeight.bold),
                     ),
                     Text(
-                      "2 days ago",
+                      review.createdAt.split('T').first,
                       style: theme.textTheme.labelSmall?.copyWith(color: colorScheme.onSurfaceVariant),
                     ),
                   ],
@@ -546,13 +544,13 @@ class WorkerProfileScreen extends StatelessWidget {
                 const SizedBox(height: 4),
                 Row(
                   children: List.generate(
-                    5,
+                    review.rating,
                     (index) => const Icon(Icons.star, color: Colors.amber, size: 16),
                   ),
                 ),
                 const SizedBox(height: 8),
                 Text(
-                  "Great service! Fixed the leakage quickly and very professional behavior.",
+                  review.comment,
                   style: theme.textTheme.bodyMedium?.copyWith(
                     color: colorScheme.onSurfaceVariant,
                     height: 1.4,
